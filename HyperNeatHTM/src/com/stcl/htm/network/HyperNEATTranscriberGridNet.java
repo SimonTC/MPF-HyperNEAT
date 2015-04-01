@@ -29,18 +29,18 @@ import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
  * 
  * @author Oliver Coleman
  */
-public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
+public class HyperNEATTranscriberGridNet extends HyperNEATTranscriber {
 	public static final String HYPERNEAT_ACTIVATION_FUNCTION_KEY = "ann.hyperneat.activation.function";
 
-	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
+	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberGridNet.class);
 
 	private ActivationFunction activationFunction;
 	private boolean layerEncodingIsInput = false;
 
-	public HyperNEATTranscriberHTMNet() {
+	public HyperNEATTranscriberGridNet() {
 	}
 
-	public HyperNEATTranscriberHTMNet(Properties props) {
+	public HyperNEATTranscriberGridNet(Properties props) {
 		init(props);
 	}
 
