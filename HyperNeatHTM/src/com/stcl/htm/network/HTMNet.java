@@ -198,64 +198,6 @@ public class HTMNet implements Activator {
 	}
 
 	/**
-	 * Perform one activation step, consisting of cyclesPerStep steps, calculating new activation for all neurons. For
-	 * feed-forward networks use stepFF.
-	 */
-	public void step() {
-		// the activationNew and activation arrays are swapped every step, so set
-		// the first/input layer (which doesn't changes during stepping) of
-		// activationNew to the same input layer array
-		activationNew[0] = activation[0];
-
-		for (int cycle = 0; cycle < cyclesPerStep; cycle++) {
-			// for each target neuron
-			for (int tz = 1; tz < depth; tz++) { // first layer is input layer, don't update it
-				for (int ty = 0; ty < height[tz]; ty++) {
-					for (int tx = 0; tx < width[tz]; tx++) {
-
-						// System.out.println(tz + "," + ty + "," + tx);
-
-						double[][][] w = weights[tz - 1][ty][tx];
-						double sum = bias[tz - 1][ty][tx];
-
-						// for each source neuron for connections to zyx
-						// s{z,y,x} is an index into the activation matrix to the source neuron
-						// w{z,y,x} is an index into the weight matrix w for the connection from s{z,y,x} to zyx
-						for (int wz = 0, sz = Math.max(0, tz + wz - connectionMaxRanges[tz - 1][0][0]); wz < w.length; wz++, sz++) {
-
-							for (int wy = 0, sy = Math.max(0, ty + wy - connectionMaxRanges[tz - 1][1][0]); wy < w[wz].length; wy++, sy++) {
-
-								for (int wx = 0, sx = Math.max(0, tx + wx - connectionMaxRanges[tz - 1][2][0]); wx < w[wz][wy].length; wx++, sx++) {
-
-									// System.out.println("\tw: " + wz + "," + wy + "," + wx + "\tt: " + tz + "," + ty +
-									// "," + tx);
-
-									sum += activation[sz][sy][sx] * w[wz][wy][wx];
-								}
-							}
-						}
-
-						activationNew[tz][ty][tx] = activationFunction.apply(sum);
-
-						// System.out.println();
-
-						System.out.print("\t" + activationNew[tz][ty][tx]);
-					}
-					System.out.println();
-				}
-				System.out.println();
-			}
-			System.out.println();
-			System.out.println();
-			System.out.println();
-
-			double[][][] temp = activation;
-			activation = activationNew;
-			activationNew = temp;
-		}
-	}
-
-	/**
 	 * Perform one complete cycle for a feed forward network, propogating signal from input layer to output layer, only
 	 * activating each layer once in sequence (connections can only exist from layer n to layer n+1).
 	 */
@@ -305,10 +247,7 @@ public class HTMNet implements Activator {
 	 * @see Activator#next(double[][])
 	 */
 	public Object next() {
-		if (isFeedForward)
-			stepFF();
-		else
-			step();
+		stepFF();
 		return getOutputs();
 	}
 
@@ -322,10 +261,7 @@ public class HTMNet implements Activator {
 	 */
 	public double[] next(double[] stimuli) {
 		activation[0][0] = stimuli;
-		if (isFeedForward)
-			stepFF();
-		else
-			step();
+		stepFF();
 		return activation[depth - 1][0];
 	}
 
@@ -339,10 +275,7 @@ public class HTMNet implements Activator {
 		double[][] response = new double[stimuli.length][width[depth - 1]];
 		for (int seq = 0; seq < stimuli.length; seq++) {
 			activation[0][0] = stimuli[seq];
-			if (isFeedForward)
-				stepFF();
-			else
-				step();
+			stepFF();
 			System.arraycopy(activation[depth - 1][0], 0, response[seq], 0, width[depth - 1]);
 		}
 		return response;
@@ -356,10 +289,7 @@ public class HTMNet implements Activator {
 	 */
 	public double[][] next(double[][] stimuli) {
 		activation[0] = stimuli;
-		if (isFeedForward)
-			stepFF();
-		else
-			step();
+		stepFF();
 		return getOutputs();
 	}
 
@@ -374,10 +304,7 @@ public class HTMNet implements Activator {
 		double[][][] response = new double[stimuli.length][height[depth - 1]][width[depth - 1]];
 		for (int seq = 0; seq < stimuli.length; seq++) {
 			activation[0] = stimuli[seq];
-			if (isFeedForward)
-				stepFF();
-			else
-				step();
+			stepFF();
 			for (int y = 0; y < height[depth - 1]; y++) {
 				for (int x = 0; x < width[depth - 1]; x++) {
 					response[seq][y][x] = activation[depth - 1][y][x];
