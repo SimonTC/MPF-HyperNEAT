@@ -99,6 +99,7 @@ public class Run {
 				jcom.usage();
 				System.exit(-1);
 			}
+			System.out.println("Using properties file at " + args[0]);
 			runner.run();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,6 +171,7 @@ public class Run {
 
 			configureLog4J(aggFilesOnly);
 			//logEnv();
+			
 
 			resultFileNameBase = outputDir + properties.getProperty(HyperNEATConfiguration.OUTPUT_PREFIX_KEY, "") + resultFileNameBase;
 
