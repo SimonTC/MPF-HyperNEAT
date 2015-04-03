@@ -1,17 +1,11 @@
 package com.stcl.htm.network;
 
-import com.ojcoleman.bain.neuron.rate.NeuronCollectionWithBias;
-
 import org.apache.log4j.Logger;
 import org.jgapcustomised.*;
 
 import com.anji.integration.Activator;
-import com.anji.integration.ActivatorTranscriber;
-import com.anji.integration.AnjiActivator;
-import com.anji.integration.AnjiNetTranscriber;
 import com.anji.integration.Transcriber;
 import com.anji.integration.TranscriberException;
-import com.anji.nn.*;
 import com.anji.nn.activationfunction.ActivationFunction;
 import com.anji.nn.activationfunction.ActivationFunctionFactory;
 import com.ojcoleman.ahni.hyperneat.Properties;
@@ -29,22 +23,22 @@ import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
  * 
  * @author Oliver Coleman
  */
-public class HyperNEATTranscriberGridNet extends HyperNEATTranscriber {
+public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	public static final String HYPERNEAT_ACTIVATION_FUNCTION_KEY = "ann.hyperneat.activation.function";
 
-	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberGridNet.class);
+	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
 
 	private ActivationFunction activationFunction;
 	private boolean layerEncodingIsInput = false;
 
-	public HyperNEATTranscriberGridNet() {
+	public HyperNEATTranscriberHTMNet() {
 	}
 
-	public HyperNEATTranscriberGridNet(Properties props) {
+	public HyperNEATTranscriberHTMNet(Properties props) {
 		init(props);
 	}
 
-	public void init(com.ojcoleman.ahni.hyperneat.Properties props) {
+	public void init(Properties props) {
 		super.init(props);
 		activationFunction = ActivationFunctionFactory.getInstance().get(props.getProperty(HYPERNEAT_ACTIVATION_FUNCTION_KEY));
 	}
@@ -107,19 +101,6 @@ public class HyperNEATTranscriberGridNet extends HyperNEATTranscriber {
 							int cppnOutputIndex = layerEncodingIsInput ? 0 : tz-1;
 							bias[tz - 1][ty][tx] = cppn.getRangedBiasWeight(cppnOutputIndex);
 									
-							/* below now handled by getRangedBiasWeight
-							double biasVal = Math.min(connectionWeightMax, Math.max(connectionWeightMin, cppn.getBiasWeight(cppnOutputIndex)));
-							if (Math.abs(biasVal) > connectionExprThresh) {
-								if (biasVal > 0)
-									biasVal = (biasVal - connectionExprThresh) * (connectionWeightMax / (connectionWeightMax - connectionExprThresh));
-								else
-									biasVal = (biasVal + connectionExprThresh) * (connectionWeightMin / (connectionWeightMin + connectionExprThresh));
-
-								bias[tz - 1][ty][tx] = biasVal;
-							} else {
-								bias[tz - 1][ty][tx] = 0;
-							}
-							*/
 						}
 
 						// calculate dimensions of this weight target matrix
@@ -152,36 +133,12 @@ public class HyperNEATTranscriberGridNet extends HyperNEATTranscriber {
 								
 								w[wy][wx] = cppn.getLEO(cppnOutputIndex) ? cppn.getRangedWeight(cppnOutputIndex) : 0;
 								
-								/* below now handled by getRangedWeight
-								double weightVal = Math.min(connectionWeightMax, Math.max(connectionWeightMin, cppn.getWeight(cppnOutputIndex)));
-								
-								if (enableLEO) {
-									weightVal = cppn.getLEO(cppnOutputIndex) ? weightVal : 0; 
-								}
-								// Otherwise use conventional thresholding.
-								else if (Math.abs(weightVal) > connectionExprThresh) {
-									if (weightVal > 0)
-										weightVal = (weightVal - connectionExprThresh) * (connectionWeightMax / (connectionWeightMax - connectionExprThresh));
-									else
-										weightVal = (weightVal + connectionExprThresh) * (connectionWeightMin / (connectionWeightMin + connectionExprThresh));
-								}
-								else {
-									weightVal = 0;
-								}
-								w[wy][wx] = weightVal;
-								*/
-								// System.out.print("\t" + w[wy][wx]);
 							}
-							// System.out.println();
 						}
-						// System.out.println();
 					}
 				}
-
-				// System.out.println();
 			}
-			// System.out.println();
-			// System.out.println();
+
 
 			int[][][] connectionMaxRanges = new int[depth - 1][3][2];
 			for (int l = 0; l < depth - 1; l++) {
