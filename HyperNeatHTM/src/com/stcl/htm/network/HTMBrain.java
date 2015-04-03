@@ -6,10 +6,21 @@ import stcl.algo.brain.Network;
 
 import com.anji.integration.Activator;
 
-public class HTMBrain extends Network implements Activator {
+public class HTMBrain  implements Activator {
 
 	private boolean[][][][][][] connectionMatrix;
 	private int[][][][] parameterMatrix;
+	private Network network;
+	
+	private String name;
+	
+	HTMBrain(){
+		this.network = new Network();
+	}
+	
+	HTMBrain(Network network){
+		this.network = network;
+	}
 	
 	@Override
 	public String getXmlRootTag() {
@@ -67,8 +78,11 @@ public class HTMBrain extends Network implements Activator {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
 	}
 
 	@Override
@@ -131,6 +145,14 @@ public class HTMBrain extends Network implements Activator {
 	
 	public int[][][][] getParameterMatrix(){
 		return this.parameterMatrix;
+	}
+	
+	public Network getNetwork(){
+		return network;
+	}
+	
+	public void setNetwork(Network network){
+		this.network = network;
 	}
 
 }

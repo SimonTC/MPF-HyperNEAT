@@ -3,11 +3,17 @@ package com.stcl.htm.network;
 import org.apache.log4j.Logger;
 import org.jgapcustomised.*;
 
+import stcl.algo.brain.Network;
+import stcl.algo.brain.nodes.Node;
+import stcl.algo.brain.nodes.Sensor;
+import stcl.algo.brain.nodes.UnitNode;
+
 import com.anji.integration.Activator;
 import com.anji.integration.Transcriber;
 import com.anji.integration.TranscriberException;
 import com.anji.nn.activationfunction.ActivationFunction;
 import com.anji.nn.activationfunction.ActivationFunctionFactory;
+import com.anji.util.Randomizer;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.nn.GridNet;
 import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
@@ -24,12 +30,15 @@ import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
  * @author Oliver Coleman
  */
 public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
-	public static final String HYPERNEAT_ACTIVATION_FUNCTION_KEY = "ann.hyperneat.activation.function";
+	//public static final String HYPERNEAT_ACTIVATION_FUNCTION_KEY = "ann.hyperneat.activation.function";
 
 	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
-
-	private ActivationFunction activationFunction;
-	private boolean layerEncodingIsInput = false;
+	
+	private int numParameters = 2; //TODO: Figure out how to get this number from the CPPN
+	private double initialPredictionLearningRate = 0.1;
+	private int markovOrder = 3;
+	private int numPossibleActions = 3;
+	private Randomizer rand;
 
 	public HyperNEATTranscriberHTMNet() {
 	}
@@ -40,18 +49,17 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 
 	public void init(Properties props) {
 		super.init(props);
-		activationFunction = ActivationFunctionFactory.getInstance().get(props.getProperty(HYPERNEAT_ACTIVATION_FUNCTION_KEY));
 	}
 
 	/**
 	 * @see Transcriber#transcribe(Chromosome)
 	 */
-	public GridNet transcribe(Chromosome genotype) throws TranscriberException {
-		return newGridNet(genotype, null);
+	public HTMBrain transcribe(Chromosome genotype) throws TranscriberException {
+		return newHTMBrain(genotype, null);
 	}
 
-	public GridNet transcribe(Chromosome genotype, Activator substrate) throws TranscriberException {
-		return newGridNet(genotype, (GridNet) substrate);
+	public HTMBrain transcribe(Chromosome genotype, Activator substrate) throws TranscriberException {
+		return newHTMBrain(genotype, (HTMBrain) substrate);
 	}
 
 	/**
@@ -61,10 +69,8 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	 * @return phenotype If given this will be updated and returned, if NULL then a new network will be created.
 	 * @throws TranscriberException
 	 */
-	public GridNet newGridNet(Chromosome genotype, HTMBrain phenotype) throws TranscriberException {
+	public HTMBrain newHTMBrain(Chromosome genotype, HTMBrain phenotype) throws TranscriberException {
 		CPPN cppn = new CPPN(genotype);
-
-		int numParameters = 2; //TODO: Figure out how to get this number from the CPPN
 		
 		int connectionRange = this.connectionRange == -1 ? Integer.MAX_VALUE / 4 : this.connectionRange;
 
@@ -72,88 +78,78 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		int[][][][] parameterMatrix;
 		double[][][] bias;
 		boolean createNewPhenotype = (phenotype == null);
+		Node[][][] nodes;
+		int nextFreeID = 0;
+		
 
-		if (createNewPhenotype) {
-			connectionMatrix = new boolean[depth - 1][][][][][];
-			parameterMatrix = new int[depth - 1][][][];
-			for (int l = 1; l < depth; l++){
-				parameterMatrix[l - 1] = new int[height[l]][width[l]][numParameters];
-				connectionMatrix[l - 1] = new boolean[height[l]][width[l]][1][][];
-			}
-		} else {
-			parameterMatrix = phenotype.getParameterMatrix();
-			connectionMatrix = phenotype.getConnectionMatrix();
+		Network brainNetwork = new Network();
+		nodes = new Node[depth - 1][][];			
+		for (int l = 1; l < depth; l++){
+			nodes[l-1] = new Node[height[l]][width[l]];
 		}
 
 		// query CPPN for substrate connections and node parameters
-		for (int tz = 1; tz < depth; tz++) {
-			for (int ty = 0; ty < height[tz]; ty++) {
-				for (int tx = 0; tx < width[tz]; tx++) {
-					cppn.setTargetCoordinatesFromGridIndices(tx, ty, tz);
-
-					//Decide on spatial and temporal mapsize of node
-					cppn.setSourceCoordinatesFromGridIndices(tx, ty, tz);
-					cppn.query();
-					int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
-					int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
-					parameterMatrix[tz][ty][tx][0] = spatialMapSize;
-					parameterMatrix[tz][ty][tx][1] = temporalMapSize;
-
-					// calculate dimensions of this weight target matrix
-					// (bounded by grid edges)
-					int dy = Math.min(height[tz - 1] - 1, ty + connectionRange) - Math.max(0, ty - connectionRange) + 1;
-					int dx = Math.min(width[tz - 1] - 1, tx + connectionRange) - Math.max(0, tx - connectionRange) + 1;
-
-					if (createNewPhenotype){
-						connectionMatrix[tz - 1][ty][tx][0] = new boolean[dy][dx];
+		for (int sz = 0; sz < depth; sz++) { //Node in top layer doesn't have any parent
+			for (int sy = 0; sy < height[sz]; sy++) {
+				for (int sx = 0; sx < width[sz]; sx++) {					
+					//If node doesn't exist (no children), we don't need to test for parent
+					Node n;
+					if (sz == 0){
+						//Create node without any children
+						n = new Sensor(nextFreeID++, 1);
+						brainNetwork.addSensor((Sensor) n);
+					} else {
+						n = nodes[sz][sy][sx];
 					}
 					
-					boolean[][] w = connectionMatrix[tz - 1][ty][tx][0];
-
-					// System.out.println("\tsy0 = " + Math.max(0,
-					// ty-connectionRange) + ", sx0 = " + Math.max(0,
-					// tx-connectionRange));
-
-					// for each connection to zyx
-					// w{y,x} is index into weight matrix
-					// s{y,x} is index of source neuron
-					for (int wy = 0, sy = Math.max(0, ty - connectionRange); wy < dy; wy++, sy++) {
-						for (int wx = 0, sx = Math.max(0, tx - connectionRange); wx < dx; wx++, sx++) {
-							cppn.setSourceCoordinatesFromGridIndices(sx, sy, tz-1);
-
+					if (n != null){					
+						cppn.setSourceCoordinatesFromGridIndices(sx, sy, sz);						
+						
+						//Decide on spatial and temporal mapsize of node and initialize it
+						if (sz > 0){ //Sensors should not be initialized
+							cppn.setTargetCoordinatesFromGridIndices(sx, sy, sz);
 							cppn.query();
-
-							// Determine weight for synapse from source to target.
-							int cppnOutputIndex = layerEncodingIsInput ? 0 : tz-1;
-							
-							w[wy][wx] = cppn.getLEO(cppnOutputIndex) ? cppn.getRangedWeight(cppnOutputIndex) : 0;
-							
+							int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
+							int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
+							UnitNode unitnode = (UnitNode) n;
+							unitnode.initializeUnit(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, numPossibleActions);
+							brainNetwork.addUnitNode(unitnode, sz);
 						}
-					}
+						
+						//Go through all possible parents and find the one with the highest connection weight
+						int[] parentCoordinates = new int[3];
+						double maxWeight = Double.NEGATIVE_INFINITY;
+						
+						for (int tz = sz + 1; tz < Math.min(depth, sz + connectionRange + 1); tz++){
+							for (int ty = Math.max(0, sy - connectionRange); ty < Math.min(height[tz], sy + connectionRange); ty++){
+								for (int tx = Math.max(0, sx - connectionRange); tx < Math.min(width[tz], sx + connectionRange); tx++){
+									cppn.setTargetCoordinatesFromGridIndices(tx, ty, tz);
+									double weight = cppn.getWeight();
+									if (weight > maxWeight){
+										maxWeight = weight;
+										int[] tmp = {tz,ty,tx};
+										parentCoordinates = tmp;
+									}
+								}
+							}						
+						}
+						
+						Node parent = nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]];
+						if (parent == null){
+							parent = new UnitNode(nextFreeID++);
+						}
+						parent.addChild(n);
+						n.setParent(parent);						
+					}					
 				}
 			}
 		}
 
-
-		int[][][] connectionMaxRanges = new int[depth - 1][3][2];
-		for (int l = 0; l < depth - 1; l++) {
-			connectionMaxRanges[l][0][0] = -1; // no connections to previous or own layer
-			connectionMaxRanges[l][0][1] = 1;
-			connectionMaxRanges[l][1][0] = connectionRange;
-			connectionMaxRanges[l][1][1] = connectionRange;
-			connectionMaxRanges[l][2][0] = connectionRange;
-			connectionMaxRanges[l][2][1] = connectionRange;
-		}
-		int[][] layerDimensions = new int[2][depth];
-		for (int l = 0; l < depth; l++) {
-			layerDimensions[0][l] = width[l];
-			layerDimensions[1][l] = height[l];
-		}
-
 		if (createNewPhenotype) {
-			//phenotype = new GridNet(connectionMaxRanges, layerDimensions, weights, bias, activationFunction, 1, "network " + genotype.getId());
-			logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getConnectionCount(true) + " connections.");
+			phenotype = new HTMBrain(brainNetwork);
+			logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getNetwork().getNumUnitNodes() + " active unit nodes.");
 		} else {
+			phenotype.setNetwork(brainNetwork);
 			phenotype.setName("network " + genotype.getId());
 		}
 
