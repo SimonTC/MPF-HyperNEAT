@@ -79,88 +79,86 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 			bias = phenotype.getBias();
 		}
 
-		if (feedForward) {
-			if (createNewPhenotype) {
-				weights = new double[depth - 1][][][][][];
-				for (int l = 1; l < depth; l++)
-					weights[l - 1] = new double[height[l]][width[l]][1][][];
-			} else {
-				weights = phenotype.getWeights();
-			}
+		if (createNewPhenotype) {
+			weights = new double[depth - 1][][][][][];
+			for (int l = 1; l < depth; l++)
+				weights[l - 1] = new double[height[l]][width[l]][1][][];
+		} else {
+			weights = phenotype.getWeights();
+		}
 
-			// query CPPN for substrate connection weights
-			for (int tz = 1; tz < depth; tz++) {
-				for (int ty = 0; ty < height[tz]; ty++) {
-					for (int tx = 0; tx < width[tz]; tx++) {
-						cppn.setTargetCoordinatesFromGridIndices(tx, ty, tz);
+		// query CPPN for substrate connection weights
+		for (int tz = 1; tz < depth; tz++) {
+			for (int ty = 0; ty < height[tz]; ty++) {
+				for (int tx = 0; tx < width[tz]; tx++) {
+					cppn.setTargetCoordinatesFromGridIndices(tx, ty, tz);
 
-						// bias
-						if (enableBias) {
-							cppn.setSourceCoordinatesFromGridIndices(tx, ty, tz);
+					// bias
+					if (enableBias) {
+						cppn.setSourceCoordinatesFromGridIndices(tx, ty, tz);
+						cppn.query();
+						int cppnOutputIndex = layerEncodingIsInput ? 0 : tz-1;
+						bias[tz - 1][ty][tx] = cppn.getRangedBiasWeight(cppnOutputIndex);
+								
+					}
+
+					// calculate dimensions of this weight target matrix
+					// (bounded by grid edges)
+					int dy = Math.min(height[tz - 1] - 1, ty + connectionRange) - Math.max(0, ty - connectionRange) + 1;
+					int dx = Math.min(width[tz - 1] - 1, tx + connectionRange) - Math.max(0, tx - connectionRange) + 1;
+
+					// if (createNewPhenotype)
+					// System.out.println(tz + "," + ty + "," + tx + "  dy = " + dy + "  dx = " + dx);
+
+					if (createNewPhenotype)
+						weights[tz - 1][ty][tx][0] = new double[dy][dx];
+					double[][] w = weights[tz - 1][ty][tx][0];
+
+					// System.out.println("\tsy0 = " + Math.max(0,
+					// ty-connectionRange) + ", sx0 = " + Math.max(0,
+					// tx-connectionRange));
+
+					// for each connection to zyx
+					// w{y,x} is index into weight matrix
+					// s{y,x} is index of source neuron
+					for (int wy = 0, sy = Math.max(0, ty - connectionRange); wy < dy; wy++, sy++) {
+						for (int wx = 0, sx = Math.max(0, tx - connectionRange); wx < dx; wx++, sx++) {
+							cppn.setSourceCoordinatesFromGridIndices(sx, sy, tz-1);
+
 							cppn.query();
+
+							// Determine weight for synapse from source to target.
 							int cppnOutputIndex = layerEncodingIsInput ? 0 : tz-1;
-							bias[tz - 1][ty][tx] = cppn.getRangedBiasWeight(cppnOutputIndex);
-									
-						}
-
-						// calculate dimensions of this weight target matrix
-						// (bounded by grid edges)
-						int dy = Math.min(height[tz - 1] - 1, ty + connectionRange) - Math.max(0, ty - connectionRange) + 1;
-						int dx = Math.min(width[tz - 1] - 1, tx + connectionRange) - Math.max(0, tx - connectionRange) + 1;
-
-						// if (createNewPhenotype)
-						// System.out.println(tz + "," + ty + "," + tx + "  dy = " + dy + "  dx = " + dx);
-
-						if (createNewPhenotype)
-							weights[tz - 1][ty][tx][0] = new double[dy][dx];
-						double[][] w = weights[tz - 1][ty][tx][0];
-
-						// System.out.println("\tsy0 = " + Math.max(0,
-						// ty-connectionRange) + ", sx0 = " + Math.max(0,
-						// tx-connectionRange));
-
-						// for each connection to zyx
-						// w{y,x} is index into weight matrix
-						// s{y,x} is index of source neuron
-						for (int wy = 0, sy = Math.max(0, ty - connectionRange); wy < dy; wy++, sy++) {
-							for (int wx = 0, sx = Math.max(0, tx - connectionRange); wx < dx; wx++, sx++) {
-								cppn.setSourceCoordinatesFromGridIndices(sx, sy, tz-1);
-
-								cppn.query();
-
-								// Determine weight for synapse from source to target.
-								int cppnOutputIndex = layerEncodingIsInput ? 0 : tz-1;
-								
-								w[wy][wx] = cppn.getLEO(cppnOutputIndex) ? cppn.getRangedWeight(cppnOutputIndex) : 0;
-								
-							}
+							
+							w[wy][wx] = cppn.getLEO(cppnOutputIndex) ? cppn.getRangedWeight(cppnOutputIndex) : 0;
+							
 						}
 					}
 				}
 			}
+		}
 
 
-			int[][][] connectionMaxRanges = new int[depth - 1][3][2];
-			for (int l = 0; l < depth - 1; l++) {
-				connectionMaxRanges[l][0][0] = -1; // no connections to previous or own layer
-				connectionMaxRanges[l][0][1] = 1;
-				connectionMaxRanges[l][1][0] = connectionRange;
-				connectionMaxRanges[l][1][1] = connectionRange;
-				connectionMaxRanges[l][2][0] = connectionRange;
-				connectionMaxRanges[l][2][1] = connectionRange;
-			}
-			int[][] layerDimensions = new int[2][depth];
-			for (int l = 0; l < depth; l++) {
-				layerDimensions[0][l] = width[l];
-				layerDimensions[1][l] = height[l];
-			}
+		int[][][] connectionMaxRanges = new int[depth - 1][3][2];
+		for (int l = 0; l < depth - 1; l++) {
+			connectionMaxRanges[l][0][0] = -1; // no connections to previous or own layer
+			connectionMaxRanges[l][0][1] = 1;
+			connectionMaxRanges[l][1][0] = connectionRange;
+			connectionMaxRanges[l][1][1] = connectionRange;
+			connectionMaxRanges[l][2][0] = connectionRange;
+			connectionMaxRanges[l][2][1] = connectionRange;
+		}
+		int[][] layerDimensions = new int[2][depth];
+		for (int l = 0; l < depth; l++) {
+			layerDimensions[0][l] = width[l];
+			layerDimensions[1][l] = height[l];
+		}
 
-			if (createNewPhenotype) {
-				phenotype = new GridNet(connectionMaxRanges, layerDimensions, weights, bias, activationFunction, 1, "network " + genotype.getId());
-				logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getConnectionCount(true) + " connections.");
-			} else {
-				phenotype.setName("network " + genotype.getId());
-			}
+		if (createNewPhenotype) {
+			phenotype = new GridNet(connectionMaxRanges, layerDimensions, weights, bias, activationFunction, 1, "network " + genotype.getId());
+			logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getConnectionCount(true) + " connections.");
+		} else {
+			phenotype.setName("network " + genotype.getId());
 		}
 
 		return phenotype;
