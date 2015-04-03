@@ -30,8 +30,6 @@ public class HTMNet implements Activator {
 	 */
 	public final static String XML_TAG = "HTM network";
 
-	private ActivationFunction activationFunction;
-
 	private boolean isFeedForward;
 
 	// The maximum length/range of connections in either direction in the tx, ty and tz axes.
@@ -75,7 +73,7 @@ public class HTMNet implements Activator {
 	 *            network.
 	 * @param aName Name of the network.
 	 */
-	public HTMNet(int[][][] connectionMaxRanges, int[][] layerDimensions, double[][][][][] weights, double[][][] bias, ActivationFunction function, String aName) {
+	public HTMNet(int[][][] connectionMaxRanges, int[][] layerDimensions, double[][][][][] weights, double[][][] bias, String aName) {
 		depth = weights.length + 1;
 		width = layerDimensions[0];
 		height = layerDimensions[1];
@@ -91,10 +89,10 @@ public class HTMNet implements Activator {
 		}
 		this.bias = bias;
 
-		initFeedForward(this.connectionMaxRanges, weights, function, aName);
+		initFeedForward(this.connectionMaxRanges, weights, aName);
 	}
 
-	private void initFeedForward(int[][][] connectionMaxRanges, double[][][][][] weights, ActivationFunction function, String aName) {
+	private void initFeedForward(int[][][] connectionMaxRanges, double[][][][][] weights, String aName) {
 		// System.out.println("GridNet dimensions (DxHxW): " + depth + " x " + height + " x " + width);
 
 		connectionTotalRanges = new int[depth - 1][connectionMaxRanges[0].length];
@@ -119,7 +117,6 @@ public class HTMNet implements Activator {
 		for (int l = 0; l < depth; l++) {
 			activation[l] = new double[height[l]][width[l]];
 		}
-		this.activationFunction = function;
 		this.cyclesPerStep = 1;
 		name = aName;
 		isFeedForward = true;
@@ -137,7 +134,7 @@ public class HTMNet implements Activator {
 	 *         dependent on the ratio of the connectionMaxRanges to the dimensions of the network.
 	 */
 	public long cost() {
-		return getConnectionCount(true) * activationFunction.cost();
+		return getConnectionCount(true) * 50;//activationFunction.cost(); //TODO: What should the cost be? /STC
 	}
 
 	/**
@@ -225,7 +222,10 @@ public class HTMNet implements Activator {
 							sum += activation[sz][sy][sx] * w[wy][wx];
 						}
 					}
-					activation[tz][ty][tx] = activationFunction.apply(sum);
+					
+					//DO activation here
+					
+					//activation[tz][ty][tx] = activationFunction.apply(sum);
 
 					// System.out.println();
 
@@ -339,17 +339,19 @@ public class HTMNet implements Activator {
 	}
 
 	/**
+	 * Not used by te THM Network
 	 * @return min response value
 	 */
 	public double getMinResponse() {
-		return activationFunction.getMinValue();
+		return -1;
 	}
 
 	/**
+	 * Not used by the HTM network
 	 * @return max response value
 	 */
 	public double getMaxResponse() {
-		return activationFunction.getMaxValue();
+		return -1;
 	}
 
 	/**
