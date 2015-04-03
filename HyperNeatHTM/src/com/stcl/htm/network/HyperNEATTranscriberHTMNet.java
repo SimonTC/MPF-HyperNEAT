@@ -61,58 +61,54 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	 * @return phenotype If given this will be updated and returned, if NULL then a new network will be created.
 	 * @throws TranscriberException
 	 */
-	public GridNet newGridNet(Chromosome genotype, GridNet phenotype) throws TranscriberException {
+	public GridNet newGridNet(Chromosome genotype, HTMBrain phenotype) throws TranscriberException {
 		CPPN cppn = new CPPN(genotype);
 
+		int numParameters = 2; //TODO: Figure out how to get this number from the CPPN
+		
 		int connectionRange = this.connectionRange == -1 ? Integer.MAX_VALUE / 4 : this.connectionRange;
 
-		double[][][][][][] weights;
+		boolean[][][][][][] connectionMatrix;
+		int[][][][] parameterMatrix;
 		double[][][] bias;
 		boolean createNewPhenotype = (phenotype == null);
 
 		if (createNewPhenotype) {
-			bias = new double[depth - 1][][];
-			for (int l = 1; l < depth; l++)
-				bias[l - 1] = new double[height[l]][width[l]];
-			// logger.info("Creating new substrate.");
+			connectionMatrix = new boolean[depth - 1][][][][][];
+			parameterMatrix = new int[depth - 1][][][];
+			for (int l = 1; l < depth; l++){
+				parameterMatrix[l - 1] = new int[height[l]][width[l]][numParameters];
+				connectionMatrix[l - 1] = new boolean[height[l]][width[l]][1][][];
+			}
 		} else {
-			bias = phenotype.getBias();
+			parameterMatrix = phenotype.getParameterMatrix();
+			connectionMatrix = phenotype.getConnectionMatrix();
 		}
 
-		if (createNewPhenotype) {
-			weights = new double[depth - 1][][][][][];
-			for (int l = 1; l < depth; l++)
-				weights[l - 1] = new double[height[l]][width[l]][1][][];
-		} else {
-			weights = phenotype.getWeights();
-		}
-
-		// query CPPN for substrate connection weights
+		// query CPPN for substrate connections and node parameters
 		for (int tz = 1; tz < depth; tz++) {
 			for (int ty = 0; ty < height[tz]; ty++) {
 				for (int tx = 0; tx < width[tz]; tx++) {
 					cppn.setTargetCoordinatesFromGridIndices(tx, ty, tz);
 
-					// bias
-					if (enableBias) {
-						cppn.setSourceCoordinatesFromGridIndices(tx, ty, tz);
-						cppn.query();
-						int cppnOutputIndex = layerEncodingIsInput ? 0 : tz-1;
-						bias[tz - 1][ty][tx] = cppn.getRangedBiasWeight(cppnOutputIndex);
-								
-					}
+					//Decide on spatial and temporal mapsize of node
+					cppn.setSourceCoordinatesFromGridIndices(tx, ty, tz);
+					cppn.query();
+					int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
+					int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
+					parameterMatrix[tz][ty][tx][0] = spatialMapSize;
+					parameterMatrix[tz][ty][tx][1] = temporalMapSize;
 
 					// calculate dimensions of this weight target matrix
 					// (bounded by grid edges)
 					int dy = Math.min(height[tz - 1] - 1, ty + connectionRange) - Math.max(0, ty - connectionRange) + 1;
 					int dx = Math.min(width[tz - 1] - 1, tx + connectionRange) - Math.max(0, tx - connectionRange) + 1;
 
-					// if (createNewPhenotype)
-					// System.out.println(tz + "," + ty + "," + tx + "  dy = " + dy + "  dx = " + dx);
-
-					if (createNewPhenotype)
-						weights[tz - 1][ty][tx][0] = new double[dy][dx];
-					double[][] w = weights[tz - 1][ty][tx][0];
+					if (createNewPhenotype){
+						connectionMatrix[tz - 1][ty][tx][0] = new boolean[dy][dx];
+					}
+					
+					boolean[][] w = connectionMatrix[tz - 1][ty][tx][0];
 
 					// System.out.println("\tsy0 = " + Math.max(0,
 					// ty-connectionRange) + ", sx0 = " + Math.max(0,
@@ -155,7 +151,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		}
 
 		if (createNewPhenotype) {
-			phenotype = new GridNet(connectionMaxRanges, layerDimensions, weights, bias, activationFunction, 1, "network " + genotype.getId());
+			//phenotype = new GridNet(connectionMaxRanges, layerDimensions, weights, bias, activationFunction, 1, "network " + genotype.getId());
 			logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getConnectionCount(true) + " connections.");
 		} else {
 			phenotype.setName("network " + genotype.getId());

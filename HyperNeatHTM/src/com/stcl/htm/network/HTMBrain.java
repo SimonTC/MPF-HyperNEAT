@@ -8,6 +8,9 @@ import com.anji.integration.Activator;
 
 public class HTMBrain extends Network implements Activator {
 
+	private boolean[][][][][][] connectionMatrix;
+	private int[][][][] parameterMatrix;
+	
 	@Override
 	public String getXmlRootTag() {
 		// TODO Auto-generated method stub
@@ -120,6 +123,14 @@ public class HTMBrain extends Network implements Activator {
 	public boolean isRecurrent() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public boolean[][][][][][] getConnectionMatrix(){
+		return this.connectionMatrix;
+	}
+	
+	public int[][][][] getParameterMatrix(){
+		return this.parameterMatrix;
 	}
 
 }
