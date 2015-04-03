@@ -1,28 +1,19 @@
-/**
- * Implements a layer or grid-type neural network.
- *
- * The width (tx-axis), height (ty-axis) and depth (tz-axis) are defined and fixed
- * upon construction. Inputs can be applied to the "top" layer (tz=0) and the
- * bottom layer (tz=depth-1) is the output.
- *
- * The distance connections extend in any direction (axis) is configurable.
- * Anything from "Standard" feed-forward networks to fully recurrent networks
- * can be created.
- *
- * This implementation is designed to be fast and minimise memory consumption.
- *
- * @author oliver
- */
-
 package com.stcl.htm.network;
 
 import java.awt.Graphics2D;
+
+import stcl.algo.brain.Network;
 
 import com.anji.integration.Activator;
 import com.anji.nn.activationfunction.ActivationFunction;
 import com.anji.nn.activationfunction.ActivationFunctionFactory;
 import com.ojcoleman.ahni.nn.BainNN.Topology;
 
+/**
+ * Creates a wrapper around the the Brain used in the HTM network
+ * @author Simon
+ *
+ */
 public class HTMNet implements Activator {
 
 	/**
@@ -58,7 +49,7 @@ public class HTMNet implements Activator {
 	 * Creates a feed-forward GridNet with the given specifications.
 	 * 
 	 * @param connectionMaxRanges The maximum length/range of connections in either direction in the tx and ty axes. The
-	 *            array has format [ty=0|tx=1],[negative=0|positive=1] = max range.
+	 *            array has format [ty=0|tx=1],[negative=0|positive=1] = max range. Used in optimizatio of the code
 	 * @param weights The connection weights of the network between layers. Format is [l-1][y1][x1][yR][xR], where x1
 	 *            and y1 are the coordinates of the target neuron in layer l and xR and yR are the relative (to x1 and
 	 *            y1) coordinates of the source neuron in layer l-1, and with the corresponding negative direction
@@ -93,7 +84,7 @@ public class HTMNet implements Activator {
 	}
 
 	private void initFeedForward(int[][][] connectionMaxRanges, double[][][][][] weights, String aName) {
-		// System.out.println("GridNet dimensions (DxHxW): " + depth + " x " + height + " x " + width);
+		Network brain = new Network();
 
 		connectionTotalRanges = new int[depth - 1][connectionMaxRanges[0].length];
 		for (int l = 0; l < depth - 1; l++) {
