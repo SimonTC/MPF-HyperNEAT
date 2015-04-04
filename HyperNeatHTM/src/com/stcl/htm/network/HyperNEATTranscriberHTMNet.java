@@ -119,6 +119,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 						//Go through all possible parents and find the one with the highest connection weight
 						int[] parentCoordinates = new int[3];
 						double maxWeight = Double.NEGATIVE_INFINITY;
+						boolean noParent = true;
 						
 						for (int tz = sz + 1; tz < Math.min(depth, sz + connectionRange + 1); tz++){
 							for (int ty = Math.max(0, sy - connectionRange); ty < Math.min(height[tz], sy + connectionRange); ty++){
@@ -129,17 +130,20 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 										maxWeight = weight;
 										int[] tmp = {tz,ty,tx};
 										parentCoordinates = tmp;
+										noParent = false;
 									}
 								}
 							}						
 						}
 						
-						Node parent = nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]];
-						if (parent == null){
-							parent = new UnitNode(nextFreeID++);
+						if (!noParent){ //There is no parent if we are looking at the top node
+							Node parent = nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]];
+							if (parent == null){
+								parent = new UnitNode(nextFreeID++);
+							}
+							parent.addChild(n);
+							n.setParent(parent);
 						}
-						parent.addChild(n);
-						n.setParent(parent);						
 					}					
 				}
 			}
