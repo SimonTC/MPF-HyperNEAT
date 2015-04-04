@@ -102,7 +102,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					if (sz == 0){
 						//Create node without any children
 						n = new Sensor(nextFreeID, 1);
-						System.out.println("Added sensor with id " + n.getID());
+						//System.out.println("Added sensor with id " + n.getID());
 						brainNetwork.addSensor((Sensor) n);
 						nodes[sz][sy][sx] = n;
 						nextFreeID++;
@@ -123,7 +123,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							unitnode.setID(nextFreeID++);
 							unitnode.initializeUnit(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, numPossibleActions);
 							brainNetwork.addUnitNode(unitnode, sz);
-							System.out.println("Initialized unitnode with id " + unitnode.getID());
+							//System.out.println("Initialized unitnode with id " + unitnode.getID());
 						}
 						
 						//Go through all possible parents and find the one with the highest connection weight
