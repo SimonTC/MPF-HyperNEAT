@@ -57,7 +57,7 @@ public class HTMBrain  implements Activator {
 		actionSensor.setInput(input);
 	}
 	
-	public double[] getInput(){
+	public double[] getOutput(){
 		ArrayList<Sensor> sensors = network.getSensors();
 		double[] output = new double[sensors.size()];
 		for (int i = 0; i < sensors.size(); i++){
