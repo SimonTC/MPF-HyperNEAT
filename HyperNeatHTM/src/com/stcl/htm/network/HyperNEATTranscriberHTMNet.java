@@ -47,11 +47,13 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	}
 
 	public HyperNEATTranscriberHTMNet(Properties props) {
-		init(props);
+		init(props);		
 	}
 
 	public void init(Properties props) {
 		super.init(props);
+		rand = new Randomizer();
+		rand.init(props);
 	}
 
 	/**
@@ -86,9 +88,9 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		
 
 		Network brainNetwork = new Network();
-		nodes = new Node[depth - 1][][];			
-		for (int l = 1; l < depth; l++){
-			nodes[l-1] = new Node[height[l]][width[l]];
+		nodes = new Node[depth][][];			
+		for (int l = 0; l < depth; l++){
+			nodes[l] = new Node[height[l]][width[l]];
 		}
 
 		// query CPPN for substrate connections and node parameters
@@ -141,10 +143,12 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 						}
 						
 						if (!noParent){ //There is no parent if we are looking at the top node
+							//Test if coordinates are within bounds
 							Node parent = nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]];
 							if (parent == null){
 								parent = new UnitNode(nextFreeID++);
-							}
+								nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]] = parent;
+							}							
 							parent.addChild(n);
 							n.setParent(parent);
 						}
