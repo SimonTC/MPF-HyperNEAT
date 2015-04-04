@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.jgapcustomised.*;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.nodes.ActionNode;
 import stcl.algo.brain.nodes.Node;
 import stcl.algo.brain.nodes.Sensor;
 import stcl.algo.brain.nodes.UnitNode;
@@ -39,6 +40,8 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	private int markovOrder = 3;
 	private int numPossibleActions = 3;
 	private Randomizer rand;
+	private boolean useActions = true;
+	private double explorationChance = 0.05;
 
 	public HyperNEATTranscriberHTMNet() {
 	}
@@ -147,6 +150,14 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					}					
 				}
 			}
+		}
+		
+		if (useActions){
+			Sensor actionSensor = new Sensor(nextFreeID++, numPossibleActions);
+			ActionNode actionNode = new ActionNode(nextFreeID++, explorationChance, actionSensor);
+			actionSensor.setParent(actionNode);
+			brainNetwork.setActionNode(actionNode);
+			brainNetwork.addSensor(actionSensor);
 		}
 
 		if (createNewPhenotype) {
