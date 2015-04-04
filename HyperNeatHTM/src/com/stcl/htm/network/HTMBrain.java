@@ -43,7 +43,7 @@ public class HTMBrain  implements Activator {
 	public void setInput(double[] stimuli){
 		ArrayList<Sensor> sensors = network.getSensors();
 		
-		for (int i = 0; i < sensors.size(); i++){
+		for (int i = 0; i < stimuli.length; i++){
 			Sensor s = sensors.get(i);
 			s.setInput(stimuli[i]);
 		}
@@ -60,7 +60,7 @@ public class HTMBrain  implements Activator {
 	public double[] getOutput(){
 		ArrayList<Sensor> sensors = network.getSensors();
 		double[] output = new double[sensors.size()];
-		for (int i = 0; i < sensors.size(); i++){
+		for (int i = 0; i < sensors.size()-1; i++){ //Substracting one because we don't want the action
 			Sensor s = sensors.get(i);
 			output[i] = s.getFeedbackOutput().get(0);
 		}
