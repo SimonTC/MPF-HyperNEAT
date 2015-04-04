@@ -38,7 +38,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	private int numParameters = 2; //TODO: Figure out how to get this number from the CPPN
 	private double initialPredictionLearningRate = 0.1;
 	private int markovOrder = 3;
-	private int numPossibleActions = 3;
+	private int numPossibleActions = 4; //This is the set of actions the action deciders can choose between
 	private Randomizer rand;
 	private boolean useActions = true;
 	private double explorationChance = 0.05;
@@ -158,8 +158,9 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		}
 		
 		if (useActions){
-			Sensor actionSensor = new Sensor(nextFreeID++, numPossibleActions);
+			Sensor actionSensor = new Sensor(nextFreeID++, 3); //Move input length to parameter
 			ActionNode actionNode = new ActionNode(nextFreeID++, explorationChance, actionSensor);
+			actionNode.initialize(rand.getRand(), 3, 2, 0.1); //TODO: Use parameters
 			actionSensor.setParent(actionNode);
 			brainNetwork.setActionNode(actionNode);
 			brainNetwork.addSensor(actionSensor);
