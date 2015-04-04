@@ -1,8 +1,12 @@
 package com.stcl.htm.network;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+
+import org.ejml.simple.SimpleMatrix;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.nodes.Sensor;
 
 import com.anji.integration.Activator;
 
@@ -13,6 +17,7 @@ public class HTMBrain  implements Activator {
 	private Network network;
 	
 	private String name;
+	private double reward;
 	
 	HTMBrain(){
 		this.network = new Network();
@@ -20,6 +25,53 @@ public class HTMBrain  implements Activator {
 	
 	HTMBrain(Network network){
 		this.network = network;
+	}
+		
+	/**
+	 * Activate the whole network once.
+	 * Call setInput() and setAction() before calling this
+	 * @param reward
+	 */
+	public void step(double reward){
+		network.step(reward);
+	}
+	
+	/**
+	 * Set the values of the input sensors
+	 * @param stimuli
+	 */
+	public void setInput(double[] stimuli){
+		ArrayList<Sensor> sensors = network.getSensors();
+		
+		for (int i = 0; i < sensors.size(); i++){
+			Sensor s = sensors.get(i);
+			s.setInput(stimuli[i]);
+		}
+
+	}
+	
+	public void setAction(double[] action){
+		ArrayList<Sensor> sensors = network.getSensors();
+		Sensor actionSensor = sensors.get(sensors.size()-1);
+		SimpleMatrix input = new SimpleMatrix(1, action.length, true, action);
+		actionSensor.setInput(input);
+	}
+	
+	public double[] getInput(){
+		ArrayList<Sensor> sensors = network.getSensors();
+		double[] output = new double[sensors.size()];
+		for (int i = 0; i < sensors.size(); i++){
+			Sensor s = sensors.get(i);
+			output[i] = s.getFeedbackOutput().get(0);
+		}
+		return output;
+	}
+	
+	public double[] getAction(){
+		ArrayList<Sensor> sensors = network.getSensors();
+		Sensor actionSensor = sensors.get(sensors.size()-1);
+		double[] output = actionSensor.getFeedbackOutput().getMatrix().data;
+		return output;
 	}
 	
 	@Override
@@ -39,7 +91,7 @@ public class HTMBrain  implements Activator {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public double[] next(double[] stimuli) {
 		// TODO Auto-generated method stub
@@ -72,7 +124,7 @@ public class HTMBrain  implements Activator {
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
+		network.flush();
 
 	}
 
