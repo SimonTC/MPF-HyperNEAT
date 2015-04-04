@@ -19,9 +19,9 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	private int[] labelSequence;
 	private int[] lblCounter;
 	private SimpleMatrix rewardMatrix;
-	private int learningIterations = 1000;
-	private int trainingIterations = 10000;
-	private int evaluationIterations = 1000;
+	private int learningIterations = 100;
+	private int trainingIterations = 1000;
+	private int evaluationIterations = 100;
 	private Random rand;
 	
 	/**
