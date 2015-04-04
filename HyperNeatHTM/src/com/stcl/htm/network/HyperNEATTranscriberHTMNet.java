@@ -101,8 +101,11 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					Node n;
 					if (sz == 0){
 						//Create node without any children
-						n = new Sensor(nextFreeID++, 1);
+						n = new Sensor(nextFreeID, 1);
+						System.out.println("Added sensor with id " + n.getID());
 						brainNetwork.addSensor((Sensor) n);
+						nodes[sz][sy][sx] = n;
+						nextFreeID++;
 					} else {
 						n = nodes[sz][sy][sx];
 					}
@@ -117,8 +120,10 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
 							int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
 							UnitNode unitnode = (UnitNode) n;
+							unitnode.setID(nextFreeID++);
 							unitnode.initializeUnit(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, numPossibleActions);
 							brainNetwork.addUnitNode(unitnode, sz);
+							System.out.println("Initialized unitnode with id " + unitnode.getID());
 						}
 						
 						//Go through all possible parents and find the one with the highest connection weight
@@ -146,7 +151,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							//Test if coordinates are within bounds
 							Node parent = nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]];
 							if (parent == null){
-								parent = new UnitNode(nextFreeID++);
+								parent = new UnitNode(-1); //We don't give it its final id yet
 								nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]] = parent;
 							}							
 							parent.addChild(n);
@@ -162,6 +167,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 			ActionNode actionNode = new ActionNode(nextFreeID++, explorationChance, actionSensor);
 			actionNode.initialize(rand.getRand(), 3, 2, 0.1); //TODO: Use parameters
 			actionSensor.setParent(actionNode);
+			actionNode.addChild(actionSensor);
 			brainNetwork.setActionNode(actionNode);
 			brainNetwork.addSensor(actionSensor);
 		}
