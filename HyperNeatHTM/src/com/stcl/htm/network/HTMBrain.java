@@ -11,9 +11,7 @@ import stcl.algo.brain.nodes.Sensor;
 import com.anji.integration.Activator;
 
 public class HTMBrain  implements Activator {
-
-	private boolean[][][][][][] connectionMatrix;
-	private int[][][][] parameterMatrix;
+	
 	private Network network;
 	
 	private String name;
@@ -174,7 +172,15 @@ public class HTMBrain  implements Activator {
 	}
 
 	@Override
-	public boolean render(Graphics2D g, int width, int height, int neuronSize) {
+	public boolean render(Graphics2D g, int width, int height, int nodeSize) {		
+		
+		width -= nodeSize * 2;
+		height -= nodeSize * 2;
+		
+		
+		
+		
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -187,18 +193,9 @@ public class HTMBrain  implements Activator {
 
 	@Override
 	public boolean isRecurrent() {
-		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public boolean[][][][][][] getConnectionMatrix(){
-		return this.connectionMatrix;
-	}
-	
-	public int[][][][] getParameterMatrix(){
-		return this.parameterMatrix;
-	}
-	
+		
 	public Network getNetwork(){
 		return network;
 	}
