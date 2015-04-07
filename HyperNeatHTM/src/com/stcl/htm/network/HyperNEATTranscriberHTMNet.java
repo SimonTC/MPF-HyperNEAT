@@ -175,7 +175,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 
 		if (createNewPhenotype) {
 			phenotype = new HTMNetwork(brainNetwork);
-			logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getNetwork().getNumUnitNodes() + " active unit nodes.");
+			//logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getNetwork().getNumUnitNodes() + " active unit nodes.");
 		} else {
 			phenotype.setNetwork(brainNetwork);
 			phenotype.setName("network " + genotype.getId());
