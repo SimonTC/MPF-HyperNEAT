@@ -101,7 +101,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					Node n;
 					if (sz == 0){
 						//Create node without any children
-						n = new Sensor(nextFreeID, 1);
+						n = new Sensor(nextFreeID, sz, 1);
 						//System.out.println("Added sensor with id " + n.getID());
 						brainNetwork.addSensor((Sensor) n);
 						nodes[sz][sy][sx] = n;
@@ -151,7 +151,8 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							//Test if coordinates are within bounds
 							Node parent = nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]];
 							if (parent == null){
-								parent = new UnitNode(-1); //We don't give it its final id yet
+								int layer = parentCoordinates[0];
+								parent = new UnitNode(-1, layer); //We don't give it its final id yet
 								nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]] = parent;
 							}							
 							parent.addChild(n);
@@ -163,7 +164,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		}
 		
 		if (useActions){
-			Sensor actionSensor = new Sensor(nextFreeID++, 3); //Move input length to parameter
+			Sensor actionSensor = new Sensor(nextFreeID++, 0, 3); //Move input length to parameter
 			ActionNode actionNode = new ActionNode(nextFreeID++, explorationChance, actionSensor);
 			actionNode.initialize(rand.getRand(), 3, 2, 0.1); //TODO: Use parameters
 			actionSensor.setParent(actionNode);

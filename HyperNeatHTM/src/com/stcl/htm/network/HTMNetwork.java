@@ -185,9 +185,13 @@ public class HTMNetwork  implements Activator {
 		
 		
 		
-		
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public String toString(){
+		return network.toString();
 	}
 
 	@Override

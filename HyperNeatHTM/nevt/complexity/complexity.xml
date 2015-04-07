@@ -1,0 +1,1938 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="./graphComplexity.xsl" ?>
+<!DOCTYPE run SYSTEM "../run.dtd">
+<run name="rps" timedatestamp="[20150407 16:00:25 - 20150407 16:00:49]" >
+<search-parameters>
+<population-size>100</population-size>
+<generations>10</generations>
+</search-parameters>
+<generation id="1" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>35</champ>
+<max>35</max>
+<min>35</min>
+<avg>35.0</avg>
+</complexity>
+</generation>
+<generation id="2" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>35</champ>
+<max>37</max>
+<min>33</min>
+<avg>35.366336633663366</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="1085" fitness="0.95" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="3" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>35</champ>
+<max>38</max>
+<min>33</min>
+<avg>35.707070707070706</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="1325" fitness="0.945" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="4" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>35</champ>
+<max>39</max>
+<min>33</min>
+<avg>35.878787878787875</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="1497" fitness="0.96" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="5" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>35</champ>
+<max>41</max>
+<min>34</min>
+<avg>36.386138613861384</avg>
+</complexity>
+<species id="1">
+<chromosome id="1497" fitness="0.96" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="6" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>37</champ>
+<max>42</max>
+<min>34</min>
+<avg>37.76237623762376</avg>
+</complexity>
+<species id="1">
+<chromosome id="1497" fitness="0.845" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="7" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>35</champ>
+<max>43</max>
+<min>32</min>
+<avg>38.535353535353536</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="1965" fitness="0.89" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="8" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>43</champ>
+<max>43</max>
+<min>35</min>
+<avg>39.55555555555556</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="2107" fitness="0.835" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="9" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>38</champ>
+<max>44</max>
+<min>35</min>
+<avg>39.78787878787879</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="2233" fitness="0.835" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="10" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>45</champ>
+<max>45</max>
+<min>35</min>
+<avg>39.83838383838384</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="2449" fitness="0.835" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+</run>
