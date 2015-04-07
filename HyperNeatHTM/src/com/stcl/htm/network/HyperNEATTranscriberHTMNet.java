@@ -136,7 +136,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 								for (int tx = Math.max(0, sx - connectionRange); tx < Math.min(width[tz], sx + connectionRange); tx++){
 									cppn.setTargetCoordinatesFromGridIndices(tx, ty, tz);
 									cppn.query();
-									double weight = cppn.getWeight();
+									double weight = cppn.getRangedWeight();
 									if (weight > maxWeight){
 										maxWeight = weight;
 										int[] tmp = {tz,ty,tx};

@@ -169,7 +169,7 @@ public class HTMNetwork  implements Activator {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public int getOutputCount() {
 		// TODO Auto-generated method stub
