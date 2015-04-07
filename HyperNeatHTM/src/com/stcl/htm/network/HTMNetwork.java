@@ -10,18 +10,23 @@ import stcl.algo.brain.nodes.Sensor;
 
 import com.anji.integration.Activator;
 
-public class HTMBrain  implements Activator {
+public class HTMNetwork  implements Activator {
 	
 	private Network network;
+	
+	/**
+	 * base XML tag
+	 */
+	public final static String XML_TAG = "HTM network";
 	
 	private String name;
 	private double reward;
 	
-	HTMBrain(){
+	HTMNetwork(){
 		this.network = new Network();
 	}
 	
-	HTMBrain(Network network){
+	HTMNetwork(Network network){
 		this.network = network;
 	}
 		

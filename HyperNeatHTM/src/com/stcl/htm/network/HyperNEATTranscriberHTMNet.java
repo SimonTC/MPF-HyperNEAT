@@ -59,12 +59,12 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	/**
 	 * @see Transcriber#transcribe(Chromosome)
 	 */
-	public HTMBrain transcribe(Chromosome genotype) throws TranscriberException {
+	public HTMNetwork transcribe(Chromosome genotype) throws TranscriberException {
 		return newHTMBrain(genotype, null);
 	}
 
-	public HTMBrain transcribe(Chromosome genotype, Activator substrate) throws TranscriberException {
-		return newHTMBrain(genotype, (HTMBrain) substrate);
+	public HTMNetwork transcribe(Chromosome genotype, Activator substrate) throws TranscriberException {
+		return newHTMBrain(genotype, (HTMNetwork) substrate);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	 * @return phenotype If given this will be updated and returned, if NULL then a new network will be created.
 	 * @throws TranscriberException
 	 */
-	public HTMBrain newHTMBrain(Chromosome genotype, HTMBrain phenotype) throws TranscriberException {
+	public HTMNetwork newHTMBrain(Chromosome genotype, HTMNetwork phenotype) throws TranscriberException {
 		CPPN cppn = new CPPN(genotype);
 		
 		int connectionRange = this.connectionRange == -1 ? Integer.MAX_VALUE / 4 : this.connectionRange;
@@ -173,7 +173,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		}
 
 		if (createNewPhenotype) {
-			phenotype = new HTMBrain(brainNetwork);
+			phenotype = new HTMNetwork(brainNetwork);
 			logger.info("New substrate has input size " + width[0] + "x" + height[0] + " and " + phenotype.getNetwork().getNumUnitNodes() + " active unit nodes.");
 		} else {
 			phenotype.setNetwork(brainNetwork);

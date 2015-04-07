@@ -11,7 +11,7 @@ import com.anji.integration.Activator;
 import com.anji.util.Randomizer;
 import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
 import com.ojcoleman.ahni.hyperneat.Properties;
-import com.stcl.htm.network.HTMBrain;
+import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 
@@ -44,7 +44,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
-		HTMBrain brain = (HTMBrain) activator;
+		HTMNetwork brain = (HTMNetwork) activator;
 		//Show good and bad actions
 		runLearning(learningIterations, brain);
 		
@@ -61,7 +61,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		return fitness;
 	}
 	
-	private double[] runExperiment(int maxIterations, HTMBrain activator){
+	private double[] runExperiment(int maxIterations, HTMNetwork activator){
 		int curInput = 0;
 		double externalReward = 0;
 		
@@ -143,7 +143,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		return result;
 	}
 	
-	private void runLearning(int iterations, HTMBrain activator){
+	private void runLearning(int iterations, HTMNetwork activator){
 		int[][] positiveExamples = {{0,1},{1,2},{2,0}};
 		int[][] negativeExamples = {{1,0},{2,1},{0,2}};
 		int[][] neutralExamples = {{0,0},{1,1},{2,2}};
