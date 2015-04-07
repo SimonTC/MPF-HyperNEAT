@@ -37,7 +37,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	
 	private int numParameters = 2; //TODO: Figure out how to get this number from the CPPN
 	private double initialPredictionLearningRate = 0.1;
-	//private int markovOrder = 3;
+	private int markovOrder = 3;
 	private int numPossibleActions = 4; //This is the set of actions the action deciders can choose between
 	private Randomizer rand;
 	private boolean useActions = true;
