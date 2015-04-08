@@ -23,6 +23,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	private int difficulty = 2; //TODO: Should grow the better the agents are
 	private int numTrainingLevels = 2;
 	private int levelLength = 256;
+	private String agentName = "Scanner";
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -81,7 +82,9 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	
 	private int[] runNormalRound(ScannerAgent agent, String levelOptions){
 		Environment environment = MarioEnvironment.getInstance();
+		environment.setAgent(agent);
 		environment.reset(levelOptions);
+		
 		
 		int distanceNow = 0;
 		int distanceBefore = 0;
