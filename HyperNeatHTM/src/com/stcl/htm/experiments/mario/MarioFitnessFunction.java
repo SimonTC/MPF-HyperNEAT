@@ -19,9 +19,9 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	private static final long serialVersionUID = 4426806925845602500L;
 	private Random rand;
 	private String[] levelParameters;
-	private int numLevels = 15; //TODO: Take from parameter
+	private int numLevels = 5; //TODO: Take from parameter
 	private int difficulty = 2; //TODO: Should grow the better the agents are
-	private int numTrainingLevels = 10;
+	private int numTrainingLevels = 2;
 	private int levelLength = 256;
 
 	/**
@@ -43,9 +43,9 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	
 	private void createLevels(){
 		levelParameters = new String[numLevels];
-		String base = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off ll " + levelLength;
+		String base = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
-			String s = base + " ls " + rand.nextInt(100);
+			String s = base + " -ls " + rand.nextInt(100);
 			levelParameters[i] = s;
 		}
 	}
