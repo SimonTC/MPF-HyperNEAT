@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.8.jar"/>
 	<classpathentry kind="lib" path="lib/wildcard-1.03.jar"/>
+	<classpathentry kind="lib" path="lib/Mario/Mario_Full.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
