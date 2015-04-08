@@ -44,7 +44,8 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	
 	private void createLevels(){
 		levelParameters = new String[numLevels];
-		String base = "-vis off -echo off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
+		String base = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on -ll " + levelLength;
+		//String base = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
 			String s = base + " -ls " + rand.nextInt(100);
 			levelParameters[i] = s;
@@ -77,8 +78,6 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		double fitness = travelDistance / (double) numLevels;
 		fitness = fitness / (double) levelLength; 
 		genotype.setPerformanceValue(fitness);
-		if (fitness == 1.0) 
-			System.out.println();
 		return fitness;
 	}
 	
