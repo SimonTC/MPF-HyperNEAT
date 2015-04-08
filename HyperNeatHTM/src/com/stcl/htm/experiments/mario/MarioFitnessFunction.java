@@ -77,11 +77,13 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		double fitness = travelDistance / (double) numLevels;
 		fitness = fitness / (double) levelLength; 
 		genotype.setPerformanceValue(fitness);
+		if (fitness == 1.0) 
+			System.out.println();
 		return fitness;
 	}
 	
 	private int[] runNormalRound(ScannerAgent agent, String levelOptions){
-		Environment environment = MarioEnvironment.getInstance();
+		Environment environment = new MarioEnvironment();
 		environment.setAgent(agent);
 		environment.reset(levelOptions);
 		
