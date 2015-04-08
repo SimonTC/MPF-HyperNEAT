@@ -128,7 +128,6 @@ public class HTMNetwork  implements Activator {
 	@Override
 	public void reset() {
 		network.flush();
-
 	}
 
 	@Override
