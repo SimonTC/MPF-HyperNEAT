@@ -32,6 +32,9 @@ import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
  */
 public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	//public static final String HYPERNEAT_ACTIVATION_FUNCTION_KEY = "ann.hyperneat.activation.function";
+	
+	public static final String HTM_ACTION_VECTOR_LENGTH_KEY = "htm.action.inputlenght";
+	public static final String HTM_ACTION_GROUP_MAPSIZE_KEY = "htm.action.mapsize";
 
 	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
 	
@@ -42,18 +45,20 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	private Randomizer rand;
 	private boolean useActions = true;
 	private double explorationChance = 0.05;
+	private Properties props;
 
 	public HyperNEATTranscriberHTMNet() {
 	}
 
 	public HyperNEATTranscriberHTMNet(Properties props) {
-		init(props);		
+		init(props);
 	}
 
 	public void init(Properties props) {
 		super.init(props);
 		rand = new Randomizer();
 		rand.init(props);
+		this.props = props;
 	}
 
 	/**
@@ -120,9 +125,10 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
 							int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
 							int markovOrder = (int) Math.round(cppn.getRangedNeuronParam(0, 2));
+							int actionMapSize = props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2);
 							UnitNode unitnode = (UnitNode) n;
 							unitnode.setID(nextFreeID++);
-							unitnode.initializeUnit(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, numPossibleActions);
+							unitnode.initializeUnit(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, actionMapSize * actionMapSize);
 							brainNetwork.addUnitNode(unitnode, sz);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
 						}
@@ -165,9 +171,10 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		}
 		
 		if (useActions){
-			Sensor actionSensor = new Sensor(nextFreeID++, 0, 3); //Move input length to parameter
+			int actionVectorLength = props.getIntProperty(HTM_ACTION_VECTOR_LENGTH_KEY,3);
+			Sensor actionSensor = new Sensor(nextFreeID++, 0, actionVectorLength);
 			ActionNode actionNode = new ActionNode(nextFreeID++, explorationChance, actionSensor);
-			actionNode.initialize(rand.getRand(), 3, 2, 0.1); //TODO: Use parameters
+			actionNode.initialize(rand.getRand(), actionVectorLength, props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2), 0.1); //TODO: Use parameters
 			actionSensor.setParent(actionNode);
 			actionNode.addChild(actionSensor);
 			brainNetwork.setActionNode(actionNode);
