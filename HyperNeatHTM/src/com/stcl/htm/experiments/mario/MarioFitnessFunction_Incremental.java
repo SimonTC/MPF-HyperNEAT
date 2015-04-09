@@ -46,12 +46,12 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	}
 	
 	private void createTrainingSet(){
-		String flatNoBlock = "-vis on -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
+		String flatNoBlock = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String flatBlocks = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String withCoins = "-vis off -lb on -lca off -lco on -lde off -le off -lf off -lg off -lhs off -ltb off";
-		String withGaps = "-vis on -lb on -lca off -lco on -lde off -le off -lf off -lg on -lhs off -ltb off";
+		String withGaps = "-vis off -lb on -lca off -lco on -lde off -le off -lf off -lg on -lhs off -ltb off";
 		String deadEnds = "-vis off -lb on -lca off -lco on -lde on -le off -lf off -lg on -lhs off -ltb off";
-		String withTubes = "-vis on -lb on -lca off -lco on -lde off -le off -lf off -lg on -lhs off -ltb on";
+		String withTubes = "-vis off -lb on -lca off -lco on -lde off -le off -lf off -lg on -lhs off -ltb on";
 		String withFrozenEnemies = "-vis off -lb on -lca off -lco on -lde on -le on -lf off -lg on -lhs off -ltb on -fc on";
 		String everything = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on";
 		
@@ -69,11 +69,10 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	
 	private String[] createLevels(String base){
 		String[] levelParameters = new String[numLevels];
-		//String base = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on -ll " + levelLength;
-		base += "-ll " + levelLength;
+		String s = base + " -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
-			String s = base + " -ls " + rand.nextInt(100);
-			levelParameters[i] = s;
+			 String param = s + " -ls " + rand.nextInt(100);
+			levelParameters[i] = param;
 		}
 		return levelParameters;
 	}
