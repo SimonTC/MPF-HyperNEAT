@@ -1,7 +1,9 @@
 package com.stcl.htm.experiments.mario;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
 import vikrasim.agents.MPFAgent;
@@ -19,11 +21,12 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	private static final long serialVersionUID = 4426806925845602500L;
 	private Random rand;
 	private String[] levelParameters;
-	private int numLevels = 5; //TODO: Take from parameter
+	private int numLevels = 10; //TODO: Take from parameter
 	private int difficulty = 2; //TODO: Should grow the better the agents are
-	private int numTrainingLevels = 2;
+	private int numTrainingLevels = 5;
 	private int levelLength = 256;
 	private String agentName = "Scanner";
+	private ArrayList<SimpleMatrix> actions;
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -40,6 +43,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	@Override
 	public void initialiseEvaluation() {
 		createLevels();
+		createActionMatrix();
 	}
 	
 	private void createLevels(){
@@ -52,8 +56,44 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		}
 	}
 	
+	/**
+	 * Create all combinations f data that are possible to perform
+	 */
+	private void createActionMatrix(){
+		double[][][] actionData = {
+				{{1,0,0,1,1,0}},
+				{{1,0,0,0,1,0}},
+				{{1,0,0,1,0,0}},
+				{{1,0,0,0,0,0}},
+				{{0,1,0,1,1,0}},
+				{{0,1,0,0,1,0}},
+				{{0,1,0,1,0,0}},
+				{{0,1,0,0,0,0}},
+				{{0,0,1,1,1,0}},
+				{{0,0,1,0,1,0}},
+				{{0,0,1,1,0,0}},
+				{{0,0,1,0,0,0}},
+				{{0,0,0,1,1,1}},
+				{{0,0,0,0,1,1}},
+				{{0,0,0,1,0,1}},
+				{{0,0,0,0,0,1}}};
+		
+		actions = new ArrayList<SimpleMatrix>();
+		for (double[][] dataMatrix : actionData){
+			SimpleMatrix m = new SimpleMatrix(dataMatrix);
+			actions.add(m);
+		}
+		
+	}
+	
+	private void loadActionMatrix(HTMNetwork brain){
+		brain.getNetwork().getActionNode().setPossibleActions(actions);
+	}
+	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		HTMNetwork brain = (HTMNetwork) activator;
+		
+		loadActionMatrix(brain);
 		
 		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
 		
