@@ -27,6 +27,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	private int levelLength = 256;
 	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
+	private double totalReward;
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -109,17 +110,20 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		brain.getNetwork().getActionNode().setExplorationChance(0.0);
 		brain.getNetwork().setLearning(false);
 		int travelDistance = 0;
+		totalReward = 0;
 		for (int level = 0; level < numLevels; level++){
 			String levelParams = levelParameters[level];
 			int[] ev = runNormalRound(agent, levelParams);
 			travelDistance += ev[0];
 		}
 		
-		double fitness = travelDistance / (double) numLevels;
-		fitness = fitness / (double) levelLength; 
+		double fitness = totalReward / numLevels; //travelDistance / (double) numLevels;
+		//fitness = fitness / (double) levelLength; 
 		genotype.setPerformanceValue(fitness);
 		return fitness;
 	}
+	
+
 	
 	private int[] runNormalRound(ScannerAgent agent, String levelOptions){
 		Environment environment = new MarioEnvironment();
@@ -136,13 +140,14 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 			distanceNow = ev[0];
 			double reward = distanceNow - distanceBefore;
 			reward = reward - 0.5; //Punish it for not moving
+			totalReward += reward;
 			agent.giveReward(reward);
 			agent.integrateObservation(environment);
 			action = agent.getAction();
 			distanceBefore = distanceNow;
 			environment.performAction(action);				
 		}
-		
+		if (totalReward <  0) totalReward = 0;
 		int[] ev = environment.getEvaluationInfoAsInts();
 		return ev;
 	}
