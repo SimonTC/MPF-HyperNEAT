@@ -48,8 +48,8 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	
 	private void createLevels(){
 		levelParameters = new String[numLevels];
-		String base = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on -ll " + levelLength;
-		//String base = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
+		//String base = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on -ll " + levelLength;
+		String base = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
 			String s = base + " -ls " + rand.nextInt(100);
 			levelParameters[i] = s;
@@ -135,6 +135,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 			int[] ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];
 			double reward = distanceNow - distanceBefore;
+			reward = reward - 0.5; //Punish it for not moving
 			agent.giveReward(reward);
 			agent.integrateObservation(environment);
 			action = agent.getAction();
