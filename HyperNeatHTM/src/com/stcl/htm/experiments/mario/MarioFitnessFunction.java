@@ -18,16 +18,15 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 
-	private static final long serialVersionUID = 4426806925845602500L;
+	private static final long serialVersionUID = 1L;
 	protected Random rand;
 	protected String[] levelParameters;
-	private int numLevels = 1; //TODO: Take from parameter
+	private int numLevels = 10; //TODO: Take from parameter
 	private int difficulty = 2; //TODO: Should grow the better the agents are
 	private int numTrainingLevels = 10;
+	private int numEvaluationLevels = 5;
 	private int levelLength = 256;
-	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
-	protected ScannerAgent agent;
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -57,6 +56,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		for (int i = 0; i < numLevels; i++){
 			String s = base + " -ls " + rand.nextInt(100);
 			levelParameters[i] = s;
+			//System.out.println("Parameters, " + i + ":" + s);
 		}
 	}
 	
@@ -105,7 +105,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	protected double runEvaluation(HTMNetwork brain, boolean printInfo){
 		loadActionMatrix(brain);
 		
-		agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
 		
 		//Training
 		brain.getNetwork().getActionNode().setExplorationChance(0.05);
@@ -120,9 +120,9 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		brain.getNetwork().getActionNode().setExplorationChance(0.0);
 		brain.getNetwork().setLearning(false);
 		int travelDistance = 0;
-		for (int level = 0; level < numLevels; level++){
+		for (int level = 0; level < numEvaluationLevels; level++){
 			if(printInfo) System.out.println("Starting evaluation level " + level + "/" + numLevels);
-			String levelParams = levelParameters[level];
+			String levelParams = levelParameters[rand.nextInt(levelParameters.length)];
 			int[] ev = runNormalRound(agent, levelParams);
 			travelDistance += ev[0];
 		}
