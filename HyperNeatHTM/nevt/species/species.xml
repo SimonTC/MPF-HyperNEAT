@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="./graphSpeciesRefresh.xsl" ?>
 <!DOCTYPE run SYSTEM "../run.dtd">
-<run name="mario" timedatestamp="[20150411 12:05:31 - 20150411 12:06:16]" >
+<run name="mario" timedatestamp="[20150411 12:54:57 - 20150411 12:55:55]" >
 <search-parameters>
 <population-size>10</population-size>
 <generations>200</generations>
@@ -18,5 +18,75 @@
 <min>34</min>
 <avg>34.0</avg>
 </complexity>
+</generation>
+<generation id="2" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>34</champ>
+<max>36</max>
+<min>34</min>
+<avg>34.36363636363637</avg>
+</complexity>
+<species id="1">
+<chromosome id="1086" fitness="0.57421875" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="3" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>34</champ>
+<max>34</max>
+<min>34</min>
+<avg>34.0</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="1179" fitness="0.64453125" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 </generation>
 </run>

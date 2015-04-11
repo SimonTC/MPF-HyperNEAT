@@ -144,7 +144,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 			int[] ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];
 			double reward = distanceNow - distanceBefore;
-			reward = reward - 0.5; //Punish it for not moving
+			//reward = reward - 0.5; //Punish it for not moving
 			agent.giveReward(reward);
 			agent.integrateObservation(environment);
 			action = agent.getAction();
