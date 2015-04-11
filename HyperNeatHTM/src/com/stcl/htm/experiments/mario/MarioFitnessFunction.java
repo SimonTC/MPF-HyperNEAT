@@ -21,9 +21,9 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	private static final long serialVersionUID = 4426806925845602500L;
 	protected Random rand;
 	protected String[] levelParameters;
-	private int numLevels = 10; //TODO: Take from parameter
+	private int numLevels = 5; //TODO: Take from parameter
 	private int difficulty = 2; //TODO: Should grow the better the agents are
-	private int numTrainingLevels = 20;
+	private int numTrainingLevels = 10;
 	private int levelLength = 256;
 	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
@@ -95,6 +95,12 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		HTMNetwork brain = (HTMNetwork) activator;
 		
+		double fitness = runEvaluation(brain, false);
+		if (genotype != null) genotype.setPerformanceValue(fitness);
+		return fitness;
+	}
+	
+	protected double runEvaluation(HTMNetwork brain, boolean printInfo){
 		loadActionMatrix(brain);
 		
 		agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
@@ -102,6 +108,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		//Training
 		brain.getNetwork().getActionNode().setExplorationChance(0.05);
 		for (int level = 0; level < numTrainingLevels; level++){
+			if(printInfo) System.out.println("Starting training level " + level + "/" + numTrainingLevels);
 			String levelParams = levelParameters[rand.nextInt(levelParameters.length)];
 			runNormalRound(agent, levelParams);
 		}
@@ -112,6 +119,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		brain.getNetwork().setLearning(false);
 		int travelDistance = 0;
 		for (int level = 0; level < numLevels; level++){
+			if(printInfo) System.out.println("Starting evaluation level " + level + "/" + numLevels);
 			String levelParams = levelParameters[level];
 			int[] ev = runNormalRound(agent, levelParams);
 			travelDistance += ev[0];
@@ -119,7 +127,6 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		
 		double fitness = travelDistance / (double) numLevels;
 		fitness = fitness / (double) levelLength; 
-		if (genotype != null) genotype.setPerformanceValue(fitness);
 		return fitness;
 	}
 	
@@ -132,7 +139,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		int distanceNow = 0;
 		int distanceBefore = 0;
 		boolean[] action = null;
-		while (!environment.isLevelFinished()) {			
+		while (!environment.isLevelFinished()) {	
 			environment.tick(); // Execute one tick in the game //STC
 			int[] ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];

@@ -173,8 +173,8 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		if (useActions){
 			int actionVectorLength = props.getIntProperty(HTM_ACTION_VECTOR_LENGTH_KEY,3);
 			Sensor actionSensor = new Sensor(nextFreeID++, 0, actionVectorLength);
-			ActionNode actionNode = new ActionNode(nextFreeID++, explorationChance, actionSensor);
-			actionNode.initialize(rand.getRand(), actionVectorLength, props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2), 0.1); //TODO: Use parameters
+			ActionNode actionNode = new ActionNode(nextFreeID++);
+			actionNode.initialize(rand.getRand(), actionVectorLength, props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2), 0.1, explorationChance); //TODO: Use parameters
 			actionSensor.setParent(actionNode);
 			actionNode.addChild(actionSensor);
 			brainNetwork.setActionNode(actionNode);
