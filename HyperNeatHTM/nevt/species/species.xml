@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="./graphSpeciesRefresh.xsl" ?>
 <!DOCTYPE run SYSTEM "../run.dtd">
-<run name="mario" timedatestamp="[20150411 11:11:57 - 20150411 11:13:22]" >
+<run name="mario" timedatestamp="[20150411 12:05:31 - 20150411 12:06:16]" >
 <search-parameters>
 <population-size>10</population-size>
 <generations>200</generations>
