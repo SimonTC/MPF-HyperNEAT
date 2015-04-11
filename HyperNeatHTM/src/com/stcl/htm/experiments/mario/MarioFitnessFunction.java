@@ -19,14 +19,15 @@ import com.stcl.htm.network.HTMNetwork;
 public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 
 	private static final long serialVersionUID = 4426806925845602500L;
-	private Random rand;
-	private String[] levelParameters;
+	protected Random rand;
+	protected String[] levelParameters;
 	private int numLevels = 10; //TODO: Take from parameter
 	private int difficulty = 2; //TODO: Should grow the better the agents are
 	private int numTrainingLevels = 20;
 	private int levelLength = 256;
 	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
+	protected ScannerAgent agent;
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -87,7 +88,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		
 	}
 	
-	private void loadActionMatrix(HTMNetwork brain){
+	protected void loadActionMatrix(HTMNetwork brain){
 		brain.getNetwork().getActionNode().setPossibleActions(actions);
 	}
 	
@@ -96,7 +97,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		
 		loadActionMatrix(brain);
 		
-		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
 		
 		//Training
 		brain.getNetwork().getActionNode().setExplorationChance(0.05);
@@ -118,11 +119,11 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		
 		double fitness = travelDistance / (double) numLevels;
 		fitness = fitness / (double) levelLength; 
-		genotype.setPerformanceValue(fitness);
+		if (genotype != null) genotype.setPerformanceValue(fitness);
 		return fitness;
 	}
 	
-	private int[] runNormalRound(ScannerAgent agent, String levelOptions){
+	protected int[] runNormalRound(ScannerAgent agent, String levelOptions){
 		Environment environment = new MarioEnvironment();
 		environment.setAgent(agent);
 		environment.reset(levelOptions);

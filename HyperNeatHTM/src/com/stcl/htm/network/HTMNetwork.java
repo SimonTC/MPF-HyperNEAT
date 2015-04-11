@@ -22,11 +22,11 @@ public class HTMNetwork  implements Activator {
 	private String name;
 	private double reward;
 	
-	HTMNetwork(){
+	public HTMNetwork(){
 		this.network = new Network();
 	}
 	
-	HTMNetwork(Network network){
+	public HTMNetwork(Network network){
 		this.network = network;
 	}
 		
