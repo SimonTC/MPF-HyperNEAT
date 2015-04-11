@@ -3,6 +3,7 @@ package com.stcl.htm.experiments.mario;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
@@ -18,6 +19,8 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 
+	private static Logger logger = Logger.getLogger(MarioFitnessFunction.class);
+	
 	private static final long serialVersionUID = 1L;
 	protected Random rand;
 	protected String[] levelParameters;
@@ -95,14 +98,22 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
+		
+		logger.debug("Start evaluation on thread " + threadIndex);
+		long start_time = System.currentTimeMillis();
+		
 		HTMNetwork brain = (HTMNetwork) activator;
 		
-		double fitness = runEvaluation(brain, false);
+		double fitness = runEvaluation(brain, false, threadIndex);
 		if (genotype != null) genotype.setPerformanceValue(fitness);
+		
+		long end_time = System.currentTimeMillis();
+		
+		logger.debug("End evaluation on thread " + threadIndex + " Runtime: " + (end_time - start_time));
 		return fitness;
 	}
 	
-	protected double runEvaluation(HTMNetwork brain, boolean printInfo){
+	protected double runEvaluation(HTMNetwork brain, boolean printInfo, int threadIndex){
 		loadActionMatrix(brain);
 		
 		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
@@ -120,6 +131,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		brain.getNetwork().getActionNode().setExplorationChance(0.0);
 		brain.getNetwork().setLearning(false);
 		int travelDistance = 0;
+
 		for (int level = 0; level < numEvaluationLevels; level++){
 			if(printInfo) System.out.println("Starting evaluation level " + level + "/" + numLevels);
 			String levelParams = levelParameters[rand.nextInt(levelParameters.length)];
@@ -146,7 +158,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 			int[] ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];
 			double reward = distanceNow - distanceBefore;
-			reward = reward - 0.5; //Punish it for not moving
+			//reward = reward - 0.5; //Punish it for not moving
 			agent.giveReward(reward);
 			agent.integrateObservation(environment);
 			action = agent.getAction();
