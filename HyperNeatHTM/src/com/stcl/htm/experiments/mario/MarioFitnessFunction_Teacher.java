@@ -16,7 +16,7 @@ import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
-public class MarioFitnessFunction extends HyperNEATFitnessFunction {
+public class MarioFitnessFunction_Teacher extends HyperNEATFitnessFunction {
 
 	private static final long serialVersionUID = 4426806925845602500L;
 	protected Random rand;
