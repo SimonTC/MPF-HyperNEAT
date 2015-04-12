@@ -106,9 +106,11 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					Node n;
 					if (sz == 0){
 						//Create node without any children
-						n = new Sensor(nextFreeID, sz, 1);
+						n = new Sensor(nextFreeID, sx, sy, sz);
+						Sensor s = (Sensor) n;
+						s.initialize(1);
 						//System.out.println("Added sensor with id " + n.getID());
-						brainNetwork.addSensor((Sensor) n);
+						brainNetwork.addNode(n);
 						nodes[sz][sy][sx] = n;
 						nextFreeID++;
 					} else {
@@ -128,8 +130,8 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							int actionMapSize = props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2);
 							UnitNode unitnode = (UnitNode) n;
 							unitnode.setID(nextFreeID++);
-							unitnode.initializeUnit(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, actionMapSize * actionMapSize);
-							brainNetwork.addUnitNode(unitnode, sz);
+							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, actionMapSize * actionMapSize);
+							brainNetwork.addNode(unitnode);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
 						}
 						
@@ -158,8 +160,10 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							//Test if coordinates are within bounds
 							Node parent = nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]];
 							if (parent == null){
-								int layer = parentCoordinates[0];
-								parent = new UnitNode(-1, layer); //We don't give it its final id yet
+								int z = parentCoordinates[0];
+								int y = parentCoordinates[1];
+								int x = parentCoordinates[2];
+								parent = new UnitNode(-1, x, y, z); //We don't give it its final id yet
 								nodes[parentCoordinates[0]][parentCoordinates[1]][parentCoordinates[2]] = parent;
 							}							
 							parent.addChild(n);
@@ -172,13 +176,14 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		
 		if (useActions){
 			int actionVectorLength = props.getIntProperty(HTM_ACTION_VECTOR_LENGTH_KEY,3);
-			Sensor actionSensor = new Sensor(nextFreeID++, 0, actionVectorLength);
+			Sensor actionSensor = new Sensor(nextFreeID++, -1,-1,0); //The action sensor isn't really part of the sensor layer so we give it negative coordinates
+			actionSensor.initialize(actionVectorLength);
 			ActionNode actionNode = new ActionNode(nextFreeID++);
 			actionNode.initialize(rand.getRand(), actionVectorLength, props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2), 0.1, explorationChance); //TODO: Use parameters
 			actionSensor.setParent(actionNode);
 			actionNode.addChild(actionSensor);
-			brainNetwork.setActionNode(actionNode);
-			brainNetwork.addSensor(actionSensor);
+			brainNetwork.addNode(actionNode);
+			brainNetwork.addNode(actionSensor);
 		}
 
 		if (createNewPhenotype) {
