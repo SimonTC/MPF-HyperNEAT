@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
-import vikrasim.agents.MPFAgent;
 import ch.idsia.benchmark.mario.environments.Environment;
 import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 
@@ -30,6 +29,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	private int numEvaluationLevels = 5;
 	private int levelLength = 256;
 	private ArrayList<SimpleMatrix> actions;
+	private int receptiveFieldSize = 5; //TODO: Parameter
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -54,7 +54,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		String flatNoBlock = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String flatBlocks = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String withGaps = "-vis off -lb on -lca off -lco on -lde off -le off -lf off -lg on -lhs off -ltb off";
-		String base = flatBlocks + " -ld " + difficulty + " -ll " + levelLength;
+		String base = flatBlocks + " -ld " + difficulty + " -ll " + levelLength + " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
 		//String base = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on -ll " + levelLength;
 		//String base = "-vis off -ld 2 -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
 		//String base = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
@@ -118,7 +118,8 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	protected double runEvaluation(HTMNetwork brain, boolean printInfo, int threadIndex){
 		loadActionMatrix(brain);
 		
-		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		//MPFAgent agent = new ScannerAgent("MPF Agent", brain, 1, 1, 7, 7);
+		MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
 		
 		//Training
 		brain.getNetwork().getActionNode().setExplorationChance(0.05);
@@ -146,7 +147,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 		return fitness;
 	}
 	
-	protected int[] runNormalRound(ScannerAgent agent, String levelOptions){
+	protected int[] runNormalRound(MPFAgent agent, String levelOptions){
 		Environment environment = new MarioEnvironment();
 		environment.setAgent(agent);
 		environment.reset(levelOptions);

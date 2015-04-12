@@ -47,7 +47,9 @@ public class Simulator extends MarioFitnessFunction{
 		HTMNetwork brain = (HTMNetwork) activator;
 		double fitness = super.runEvaluation(brain, true, 1);
 		
-		//Change all level parmeters to be visual
+		System.out.println("Fitness: " + fitness);
+		
+		//Change all level parameters to be visual
 		for (int i = 0; i < levelParameters.length; i++){
 			String s = levelParameters[i];
 			s = s.replace("-vis off", "-vis on");
@@ -58,7 +60,8 @@ public class Simulator extends MarioFitnessFunction{
 		int levelID = rand.nextInt(levelParameters.length);
 		String parameter = levelParameters[levelID];
 		
-		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		//ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
 		
 		//Run one level
 		runNormalRound(agent, parameter);

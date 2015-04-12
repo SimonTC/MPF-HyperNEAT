@@ -6,13 +6,12 @@ import com.stcl.htm.network.HTMNetwork;
 
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
 
-public class EnvironmentAgent extends BasicMarioAIAgent {
-	private HTMNetwork brain;
-	private double reward;
+public class EnvironmentAgent extends MPFAgent {
 	
-	public EnvironmentAgent(String s, HTMNetwork brain) {
-		super(s);
-		this.brain = brain;
+	public EnvironmentAgent(String s, HTMNetwork brain, int zLevelEnemies, int zLevelScene) {
+		super(s, brain);
+		this.zLevelEnemies = zLevelEnemies;
+		this.zLevelScene = zLevelScene;
 	}
 
 	@Override
@@ -50,34 +49,14 @@ public class EnvironmentAgent extends BasicMarioAIAgent {
 	}
 	
 	private SimpleMatrix collectInputs(){
-		return null;
+		SimpleMatrix m = new SimpleMatrix(levelScene.length, levelScene[0].length);
+		for (int row = 0; row < levelScene.length; row++){
+			for (int col = 0; col < levelScene[row].length; col++){
+				m.set(row, col, levelScene[row][col]);
+			}
+		}
+		return m;
 	}
 	
-	public HTMNetwork getNetwork(){
-		return brain; 
-	}
-	
-	public void setAction(boolean[] action){
-		this.action = action;
-	}
-	
-	public void giveReward(double reward){
-		this.reward = reward;
-	}
-	
-	protected boolean convertToBoolean(double value) {
-		if (value < 0.5)
-			return false;
-		return true;
-	}
-	
-	protected byte convertBooleanToByte(Boolean b) {
-		if (b)
-			return 1;
-		return 0;
-	}
 
-	public void setExplorationChance(double chance){
-		brain.getNetwork().getActionNode().setExplorationChance(chance);
-	}
 }

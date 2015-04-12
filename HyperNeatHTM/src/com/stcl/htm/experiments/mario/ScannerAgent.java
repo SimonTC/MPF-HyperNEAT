@@ -16,16 +16,14 @@ import com.stcl.htm.network.HTMNetwork;
 
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
 
-public class ScannerAgent extends BasicMarioAIAgent{
+public class ScannerAgent extends MPFAgent{
 
-	private HTMNetwork brain;
 	private ArrayList<MasterScanner> scanners;
 	int scannerLength;
 	int scannerHeight;
-	private double reward;
 	
 	public ScannerAgent(String s, HTMNetwork brain, int zLevelEnemies, int zLevelScene, int scannerLength, int scannerHeight) {
-		super(s);
+		super(s, brain);
 		this.brain = brain;
 		this.zLevelEnemies = zLevelEnemies;
 		this.zLevelScene = zLevelScene;
