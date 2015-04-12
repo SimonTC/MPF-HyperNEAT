@@ -45,7 +45,7 @@ public class Simulator extends MarioFitnessFunction{
 	@Override
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		HTMNetwork brain = (HTMNetwork) activator;
-		double fitness = super.runEvaluation(brain, true);
+		double fitness = super.runEvaluation(brain, true, 1);
 		
 		//Change all level parmeters to be visual
 		for (int i = 0; i < levelParameters.length; i++){
@@ -57,6 +57,8 @@ public class Simulator extends MarioFitnessFunction{
 		//Choose random level to visualize
 		int levelID = rand.nextInt(levelParameters.length);
 		String parameter = levelParameters[levelID];
+		
+		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
 		
 		//Run one level
 		runNormalRound(agent, parameter);

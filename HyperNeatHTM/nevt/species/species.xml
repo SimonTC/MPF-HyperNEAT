@@ -1,10 +1,10 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="./graphSpeciesRefresh.xsl" ?>
+<?xml-stylesheet type="text/xsl" href="./graphSpecies.xsl" ?>
 <!DOCTYPE run SYSTEM "../run.dtd">
-<run name="mario" timedatestamp="[20150411 16:51:25 - 20150411 16:58:33]" >
+<run name="mario" timedatestamp="[20150412 01:56:17 - 20150412 02:25:32]" >
 <search-parameters>
-<population-size>10</population-size>
-<generations>200</generations>
+<population-size>30</population-size>
+<generations>100</generations>
 </search-parameters>
 <generation id="1" >
 <fitness>
@@ -29,10 +29,50 @@
 <champ>34</champ>
 <max>36</max>
 <min>34</min>
-<avg>34.36363636363637</avg>
+<avg>34.29032258064516</avg>
 </complexity>
 <species id="1">
-<chromosome id="1083" fitness="0.212109375" />
+<chromosome id="1099" fitness="0.3203125" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -61,14 +101,54 @@
 </fitness>
 <complexity>
 <champ>34</champ>
-<max>34</max>
-<min>34</min>
-<avg>34.0</avg>
+<max>38</max>
+<min>33</min>
+<avg>34.62068965517241</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1175" fitness="0.5" />
+<chromosome id="1222" fitness="0.24427083333333333" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -97,12 +177,68 @@
 </fitness>
 <complexity>
 <champ>34</champ>
-<max>36</max>
-<min>34</min>
-<avg>34.54545454545455</avg>
+<max>40</max>
+<min>33</min>
+<avg>35.03448275862069</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1175" fitness="0.258203125" />
+<chromosome id="1266" fitness="0.5088541666666667" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="5" >
@@ -112,17 +248,53 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>34</champ>
-<max>34</max>
-<min>34</min>
-<avg>34.0</avg>
+<champ>35</champ>
+<max>41</max>
+<min>32</min>
+<avg>35.225806451612904</avg>
 </complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
 <species id="1">
-<chromosome id="1184" fitness="0.5" />
+<chromosome id="1266" fitness="0.05625" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -149,12 +321,72 @@
 </fitness>
 <complexity>
 <champ>34</champ>
-<max>36</max>
-<min>34</min>
-<avg>34.72727272727273</avg>
+<max>43</max>
+<min>33</min>
+<avg>36.44827586206897</avg>
 </complexity>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1184" fitness="0.5" />
+<chromosome id="1345" fitness="0.09244791666666667" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="7" >
@@ -164,13 +396,51 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>36</champ>
-<max>38</max>
+<champ>34</champ>
+<max>44</max>
 <min>34</min>
-<avg>36.18181818181818</avg>
+<avg>37.55172413793103</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1184" fitness="0.35390625" />
+<chromosome id="1405" fitness="0.4080729166666666" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -198,19 +468,55 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>36</champ>
-<max>38</max>
-<min>36</min>
-<avg>37.44444444444444</avg>
+<champ>39</champ>
+<max>45</max>
+<min>34</min>
+<avg>39.55172413793103</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="0">
 </species>
+<species id="1">
+<chromosome id="1439" fitness="0.12890625" />
+</species>
 <species id="0">
 </species>
-<species id="1">
-<chromosome id="1219" fitness="0.5" />
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -234,13 +540,51 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>36</champ>
-<max>40</max>
+<champ>37</champ>
+<max>47</max>
 <min>36</min>
-<avg>37.72727272727273</avg>
+<avg>41.06896551724138</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1219" fitness="0.488671875" />
+<chromosome id="1493" fitness="0.23645833333333333" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -266,15 +610,49 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>36</champ>
-<max>36</max>
+<champ>37</champ>
+<max>44</max>
 <min>36</min>
-<avg>36.0</avg>
+<avg>40.758620689655174</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1280" fitness="0.26875" />
+<chromosome id="1529" fitness="0.24973958333333335" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -302,13 +680,69 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>38</champ>
-<max>38</max>
-<min>35</min>
-<avg>36.90909090909091</avg>
+<champ>37</champ>
+<max>46</max>
+<min>37</min>
+<avg>40.724137931034484</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1280" fitness="0.27734375" />
+<chromosome id="1577" fitness="0.16666666666666666" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="12" >
@@ -319,14 +753,46 @@
 </fitness>
 <complexity>
 <champ>38</champ>
-<max>38</max>
-<min>38</min>
-<avg>38.0</avg>
+<max>48</max>
+<min>37</min>
+<avg>41.903225806451616</avg>
 </complexity>
+<species id="1">
+<chromosome id="1637" fitness="0.32864583333333336" />
+</species>
 <species id="0">
 </species>
-<species id="1">
-<chromosome id="1294" fitness="0.5" />
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -355,12 +821,72 @@
 </fitness>
 <complexity>
 <champ>38</champ>
-<max>39</max>
-<min>34</min>
-<avg>37.72727272727273</avg>
+<max>46</max>
+<min>36</min>
+<avg>41.89655172413793</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1294" fitness="0.217578125" />
+<chromosome id="1679" fitness="0.4934895833333333" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="14" >
@@ -370,19 +896,51 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>38</champ>
-<max>38</max>
-<min>38</min>
-<avg>38.0</avg>
+<champ>44</champ>
+<max>47</max>
+<min>36</min>
+<avg>42.935483870967744</avg>
 </complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
 <species id="1">
-<chromosome id="1306" fitness="0.405078125" />
+<chromosome id="1679" fitness="0.07395833333333333" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -406,13 +964,67 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>38</champ>
-<max>39</max>
-<min>37</min>
-<avg>38.27272727272727</avg>
+<champ>40</champ>
+<max>46</max>
+<min>36</min>
+<avg>40.689655172413794</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1306" fitness="0.472265625" />
+<chromosome id="1780" fitness="0.23020833333333335" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="16" >
@@ -422,13 +1034,37 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>40</champ>
-<max>41</max>
-<min>38</min>
-<avg>39.54545454545455</avg>
+<champ>42</champ>
+<max>44</max>
+<min>36</min>
+<avg>40.89655172413793</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1306" fitness="0.238671875" />
+<chromosome id="1823" fitness="0.31015624999999997" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -458,17 +1094,49 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>40</champ>
-<max>41</max>
-<min>39</min>
-<avg>39.77777777777778</avg>
+<champ>42</champ>
+<max>45</max>
+<min>36</min>
+<avg>41.93103448275862</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="0">
 </species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1344" fitness="0.36171875" />
+<chromosome id="1847" fitness="0.47760416666666666" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -494,15 +1162,35 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>40</champ>
-<max>40</max>
-<min>40</min>
-<avg>40.0</avg>
+<champ>39</champ>
+<max>47</max>
+<min>38</min>
+<avg>43.172413793103445</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1355" fitness="0.2609375" />
+<chromosome id="1888" fitness="0.16979166666666667" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -526,13 +1214,51 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>42</champ>
-<max>42</max>
-<min>40</min>
-<avg>41.09090909090909</avg>
+<champ>39</champ>
+<max>48</max>
+<min>38</min>
+<avg>43.0</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1355" fitness="0.344140625" />
+<chromosome id="1929" fitness="0.9835937499999999" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="20" >
@@ -542,15 +1268,39 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>41</champ>
-<max>43</max>
-<min>41</min>
-<avg>41.55555555555556</avg>
+<champ>46</champ>
+<max>47</max>
+<min>39</min>
+<avg>42.58064516129032</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1367" fitness="0.209375" />
+<chromosome id="1929" fitness="0.09114583333333333" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -578,15 +1328,30 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>43</champ>
-<max>43</max>
-<min>41</min>
-<avg>41.888888888888886</avg>
+<champ>40</champ>
+<max>47</max>
+<min>39</min>
+<avg>43.63333333333333</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1383" fitness="0.3046875" />
+<chromosome id="2012" fitness="0.25078125" />
+</species>
+<species id="1">
+<chromosome id="2028" fitness="0.196875" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -610,15 +1375,45 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>43</champ>
-<max>44</max>
-<min>41</min>
-<avg>42.77777777777778</avg>
+<champ>42</champ>
+<max>48</max>
+<min>40</min>
+<avg>43.89655172413793</avg>
 </complexity>
 <species id="0">
 </species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1389" fitness="0.33125" />
+<chromosome id="2068" fitness="0.25234375000000003" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -642,15 +1437,19 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>45</champ>
-<max>45</max>
-<min>41</min>
-<avg>43.44444444444444</avg>
+<champ>42</champ>
+<max>49</max>
+<min>40</min>
+<avg>44.75</avg>
 </complexity>
 <species id="0">
 </species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1397" fitness="0.389453125" />
+<chromosome id="2109" fitness="0.17239583333333333" />
 </species>
 <species id="0">
 </species>
@@ -658,11 +1457,8 @@
 </species>
 <species id="0">
 </species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
+<species id="1">
+<chromosome id="2105" fitness="0.17135416666666667" />
 </species>
 <species id="0">
 </species>
@@ -674,15 +1470,37 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>45</champ>
-<max>45</max>
-<min>43</min>
-<avg>43.333333333333336</avg>
+<champ>42</champ>
+<max>51</max>
+<min>42</min>
+<avg>46.172413793103445</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1415" fitness="0.483984375" />
+<chromosome id="2149" fitness="0.44114583333333335" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -706,19 +1524,26 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>43</champ>
-<max>45</max>
+<champ>44</champ>
+<max>52</max>
 <min>42</min>
-<avg>43.72727272727273</avg>
+<avg>47.166666666666664</avg>
 </complexity>
 <species id="1">
-<chromosome id="1415" fitness="0.244140625" />
+<chromosome id="2149" fitness="0.32526041666666666" />
+</species>
+<species id="1">
+<chromosome id="2168" fitness="0.19062500000000002" />
 </species>
 <species id="0">
 </species>
 <species id="0">
 </species>
-<species id="0">
+<species id="1">
+<chromosome id="2191" fitness="0.18932291666666667" />
+</species>
+<species id="1">
+<chromosome id="2174" fitness="0.27057291666666666" />
 </species>
 <species id="0">
 </species>
@@ -738,15 +1563,41 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>43</champ>
-<max>43</max>
-<min>43</min>
-<avg>43.0</avg>
+<champ>44</champ>
+<max>50</max>
+<min>40</min>
+<avg>46.7037037037037</avg>
 </complexity>
 <species id="0">
 </species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1445" fitness="0.0921875" />
+<chromosome id="2219" fitness="1.0" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -775,12 +1626,28 @@
 </fitness>
 <complexity>
 <champ>44</champ>
-<max>45</max>
+<max>52</max>
 <min>43</min>
-<avg>43.72727272727273</avg>
+<avg>47.54838709677419</avg>
 </complexity>
+<species id="0">
+</species>
+<species id="0">
+</species>
 <species id="1">
-<chromosome id="1445" fitness="0.41953125" />
+<chromosome id="2219" fitness="0.6531250000000001" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="28" >
@@ -791,18 +1658,17 @@
 </fitness>
 <complexity>
 <champ>44</champ>
-<max>44</max>
+<max>53</max>
 <min>44</min>
-<avg>44.0</avg>
+<avg>48.833333333333336</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1456" fitness="0.200390625" />
+<chromosome id="2219" fitness="0.8588541666666667" />
 </species>
-<species id="0">
-</species>
-<species id="0">
+<species id="1">
+<chromosome id="2289" fitness="0.31093750000000003" />
 </species>
 <species id="0">
 </species>
@@ -827,12 +1693,33 @@
 </fitness>
 <complexity>
 <champ>44</champ>
-<max>46</max>
+<max>53</max>
 <min>44</min>
-<avg>45.09090909090909</avg>
+<avg>49.53333333333333</avg>
 </complexity>
 <species id="1">
-<chromosome id="1456" fitness="0.341015625" />
+<chromosome id="2219" fitness="0.46848958333333335" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="2333" fitness="0.20130208333333333" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="30" >
@@ -843,14 +1730,27 @@
 </fitness>
 <complexity>
 <champ>44</champ>
-<max>44</max>
-<min>44</min>
-<avg>44.0</avg>
+<max>54</max>
+<min>43</min>
+<avg>50.6</avg>
 </complexity>
+<species id="1">
+<chromosome id="2219" fitness="1.0" />
+</species>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1467" fitness="0.07265625" />
+<chromosome id="2386" fitness="0.19140625" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 <species id="0">
 </species>
@@ -878,13 +1778,29 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>45</champ>
-<max>45</max>
-<min>43</min>
-<avg>44.36363636363637</avg>
+<champ>44</champ>
+<max>56</max>
+<min>44</min>
+<avg>51.310344827586206</avg>
 </complexity>
 <species id="1">
-<chromosome id="1467" fitness="0.376953125" />
+<chromosome id="2219" fitness="0.9911458333333334" />
+</species>
+<species id="1">
+<chromosome id="2396" fitness="0.3528645833333333" />
+</species>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="2400" fitness="0.309375" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
 </species>
 </generation>
 <generation id="32" >
@@ -894,29 +1810,26 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>44</champ>
-<max>45</max>
-<min>43</min>
-<avg>43.77777777777778</avg>
+<champ>55</champ>
+<max>57</max>
+<min>40</min>
+<avg>51.464285714285715</avg>
 </complexity>
+<species id="1">
+<chromosome id="2219" fitness="0.66171875" />
+</species>
+<species id="0">
+</species>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1477" fitness="0.31015625" />
+<chromosome id="2465" fitness="0.31927083333333334" />
 </species>
-<species id="0">
+<species id="1">
+<chromosome id="2453" fitness="0.51328125" />
 </species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
+<species id="1">
+<chromosome id="2452" fitness="0.29453124999999997" />
 </species>
 <species id="0">
 </species>
@@ -928,25 +1841,22 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>45</champ>
-<max>45</max>
-<min>43</min>
-<avg>44.44444444444444</avg>
+<champ>40</champ>
+<max>56</max>
+<min>40</min>
+<avg>49.6</avg>
 </complexity>
-<species id="0">
-</species>
-<species id="0">
+<species id="1">
+<chromosome id="2481" fitness="1.0" />
 </species>
 <species id="1">
-<chromosome id="1489" fitness="0.299609375" />
+<chromosome id="2483" fitness="0.5546875" />
 </species>
-<species id="0">
+<species id="1">
+<chromosome id="2453" fitness="0.6432291666666666" />
 </species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
+<species id="1">
+<chromosome id="2488" fitness="0.49635416666666665" />
 </species>
 <species id="0">
 </species>
@@ -960,27 +1870,21 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>47</champ>
-<max>47</max>
-<min>45</min>
-<avg>46.0</avg>
+<champ>41</champ>
+<max>56</max>
+<min>40</min>
+<avg>48.51724137931034</avg>
 </complexity>
+<species id="1">
+<chromosome id="2481" fitness="0.5325520833333334" />
+</species>
+<species id="1">
+<chromosome id="2483" fitness="0.6653645833333334" />
+</species>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1502" fitness="0.21953125" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
+<chromosome id="2488" fitness="0.38125000000000003" />
 </species>
 <species id="0">
 </species>
@@ -992,23 +1896,19 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>46</champ>
-<max>48</max>
-<min>44</min>
-<avg>46.333333333333336</avg>
+<champ>56</champ>
+<max>57</max>
+<min>41</min>
+<avg>48.96774193548387</avg>
 </complexity>
-<species id="0">
+<species id="1">
+<chromosome id="2574" fitness="0.3559895833333333" />
 </species>
 <species id="1">
-<chromosome id="1519" fitness="0.26875" />
+<chromosome id="2483" fitness="0.07526041666666666" />
 </species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
+<species id="1">
+<chromosome id="2562" fitness="0.4075520833333333" />
 </species>
 <species id="0">
 </species>
@@ -1024,647 +1924,22 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>47</champ>
-<max>48</max>
-<min>46</min>
-<avg>47.0</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1525" fitness="0.0125" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="37" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>49</champ>
-<max>49</max>
-<min>47</min>
-<avg>48.22222222222222</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1538" fitness="0.18046875" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="38" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>49</champ>
-<max>49</max>
-<min>49</min>
-<avg>49.0</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1544" fitness="0.276171875" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="39" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>50</champ>
-<max>51</max>
-<min>48</min>
-<avg>49.72727272727273</avg>
-</complexity>
-<species id="1">
-<chromosome id="1544" fitness="0.418359375" />
-</species>
-</generation>
-<generation id="40" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>50</champ>
-<max>52</max>
-<min>50</min>
-<avg>50.77777777777778</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1559" fitness="0.21171875" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="41" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>52</champ>
-<max>52</max>
-<min>50</min>
-<avg>51.666666666666664</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1574" fitness="0.40390625" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="42" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>53</champ>
-<max>54</max>
-<min>52</min>
-<avg>53.0</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1591" fitness="0.302734375" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="43" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>53</champ>
-<max>55</max>
-<min>52</min>
-<avg>53.55555555555556</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1604" fitness="0.25234375" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="44" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>57</champ>
-<max>57</max>
-<min>53</min>
-<avg>55.111111111111114</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1613" fitness="0.367578125" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="45" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>57</champ>
-<max>57</max>
-<min>54</min>
-<avg>55.44444444444444</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1625" fitness="0.4171875" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="46" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>56</champ>
-<max>58</max>
-<min>55</min>
-<avg>56.54545454545455</avg>
-</complexity>
-<species id="1">
-<chromosome id="1625" fitness="0.15" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="47" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>56</champ>
-<max>56</max>
-<min>56</min>
-<avg>56.0</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1652" fitness="0.316015625" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="48" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>57</champ>
-<max>58</max>
-<min>51</min>
-<avg>56.18181818181818</avg>
-</complexity>
-<species id="1">
-<chromosome id="1652" fitness="0.05703125" />
-</species>
-</generation>
-<generation id="49" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>59</champ>
+<champ>58</champ>
 <max>59</max>
-<min>57</min>
-<avg>57.888888888888886</avg>
+<min>43</min>
+<avg>54.07142857142857</avg>
 </complexity>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1668" fitness="0.3296875" />
+<chromosome id="2601" fitness="0.9934895833333334" />
 </species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="50" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>60</champ>
-<max>60</max>
-<min>58</min>
-<avg>59.111111111111114</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1682" fitness="0.39375" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="51" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>60</champ>
-<max>62</max>
-<min>60</min>
-<avg>60.77777777777778</avg>
-</complexity>
 <species id="0">
 </species>
 <species id="0">
 </species>
 <species id="1">
-<chromosome id="1693" fitness="0.25546875" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="52" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>62</champ>
-<max>62</max>
-<min>60</min>
-<avg>61.55555555555556</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1714" fitness="0.428125" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="53" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>62</champ>
-<max>63</max>
-<min>62</min>
-<avg>62.55555555555556</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1728" fitness="0.359375" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="54" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>62</champ>
-<max>65</max>
-<min>57</min>
-<avg>62.77777777777778</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1743" fitness="0.45625" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="55" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>65</champ>
-<max>65</max>
-<min>62</min>
-<avg>63.45454545454545</avg>
-</complexity>
-<species id="1">
-<chromosome id="1743" fitness="0.14140625" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="56" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>65</champ>
-<max>65</max>
-<min>60</min>
-<avg>64.0</avg>
-</complexity>
-<species id="0">
-</species>
-<species id="1">
-<chromosome id="1766" fitness="0.5" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
+<chromosome id="2596" fitness="0.49921875" />
 </species>
 <species id="0">
 </species>

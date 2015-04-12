@@ -21,7 +21,8 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	private Random rand;
 	private int numLevels = 10; //TODO: Take from parameter
 	private int difficulty = 2; //TODO: Should grow the better the agents are
-	private int numTrainingLevels = 5;
+	private int numTrainingLevels = 10;
+	private int numEvaluationLevels = 5;
 	private int levelLength = 256;
 	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
@@ -58,12 +59,12 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		levels = new ArrayList<String[]>();
 		levels.add(createLevels(flatNoBlock));
 		levels.add(createLevels(flatBlocks));
-		levels.add(createLevels(withCoins));
+		//levels.add(createLevels(withCoins));
 		levels.add(createLevels(withGaps));
-		levels.add(createLevels(deadEnds));
-		levels.add(createLevels(withTubes));
-		levels.add(createLevels(withFrozenEnemies));
-		levels.add(createLevels(everything));
+		//levels.add(createLevels(deadEnds));
+		//levels.add(createLevels(withTubes));
+		//levels.add(createLevels(withFrozenEnemies));
+		//levels.add(createLevels(everything));
 
 	}
 	
@@ -138,13 +139,13 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 			brain.getNetwork().getActionNode().setExplorationChance(0.0);
 			brain.getNetwork().setLearning(false);
 			int travelDistance = 0;
-			for (int level = 0; level < numLevels; level++){
-				String levelParams = levelParameters[level];
+			for (int level = 0; level < numEvaluationLevels; level++){
+				String levelParams = levelParameters[rand.nextInt(levelParameters.length)];
 				int[] ev = runNormalRound(agent, levelParams);
 				travelDistance += ev[0];
 			}
 			
-			double fitness = travelDistance / (double) numLevels;
+			double fitness = travelDistance / (double) numEvaluationLevels;
 			fitness = fitness / (double) levelLength; 
 			totalFitness += fitness;
 			

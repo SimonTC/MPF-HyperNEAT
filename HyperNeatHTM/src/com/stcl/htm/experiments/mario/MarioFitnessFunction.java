@@ -52,7 +52,9 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 	private void createLevels(){
 		levelParameters = new String[numLevels];
 		String flatNoBlock = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
-		String base = flatNoBlock + " -ld " + difficulty + " -ll " + levelLength;
+		String flatBlocks = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
+		String withGaps = "-vis off -lb on -lca off -lco on -lde off -le off -lf off -lg on -lhs off -ltb off";
+		String base = flatBlocks + " -ld " + difficulty + " -ll " + levelLength;
 		//String base = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on -ll " + levelLength;
 		//String base = "-vis off -ld 2 -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
 		//String base = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
@@ -139,7 +141,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 			travelDistance += ev[0];
 		}
 		
-		double fitness = travelDistance / (double) numLevels;
+		double fitness = travelDistance / (double) numEvaluationLevels;
 		fitness = fitness / (double) levelLength; 
 		return fitness;
 	}
@@ -158,7 +160,7 @@ public class MarioFitnessFunction extends HyperNEATFitnessFunction {
 			int[] ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];
 			double reward = distanceNow - distanceBefore;
-			//reward = reward - 0.5; //Punish it for not moving
+			reward = reward - 0.5; //Punish it for not moving
 			agent.giveReward(reward);
 			agent.integrateObservation(environment);
 			action = agent.getAction();
