@@ -1,6 +1,7 @@
 package com.stcl.htm.network;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.ejml.simple.SimpleMatrix;
@@ -10,8 +11,10 @@ import stcl.algo.brain.nodes.Sensor;
 
 import com.anji.integration.Activator;
 
-public class HTMNetwork  implements Activator {
-	
+public class HTMNetwork  implements Activator, Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private Network network;
 	
 	/**
