@@ -61,7 +61,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		difficulty = props.getIntProperty(KEY_LEVEL_DIFFICULTY, 2);
 		numTrainingLevels = props.getIntProperty(KEY_LEVEL_NUM_TRAINING, 10);
 		numEvaluationLevels = props.getIntProperty(KEY_LEVEL_NUM_EVALUATION,5);
-		receptiveFieldSize = props.getIntProperty(KEY_LEVEL_RECEPTIVE_FIELD_SIZE,9);
+		receptiveFieldSize = props.getIntProperty(KEY_LEVEL_RECEPTIVE_FIELD_SIZE,18);
 		Random levelRand = new Random(levelRandSeed);
 		trainingSet = createLevelSet(levelRand, numTrainingLevels);
 		evaluationSet = createLevelSet(levelRand, numEvaluationLevels);
@@ -103,7 +103,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		String s = base + " -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
 			 String param = s + " -ls " + levelRand.nextInt(Integer.MAX_VALUE) + 
-					 " -ld " + difficulty + " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
+					 " -ld " + difficulty ;//+ " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
 			levelParameters[i] = param;
 		}
 		return levelParameters;
