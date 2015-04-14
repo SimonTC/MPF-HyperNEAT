@@ -22,7 +22,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	private static final String KEY_LEVEL_NUM_EVALUATION = "mario.level.num.evaluation";
 	private static final String KEY_LEVEL_DIFFICULTY = "mario.level.difficulty";
 	private static final String KEY_LEVEL_RECEPTIVE_FIELD_SIZE = "mario.level.receptive.field.size";
-	private static final String KEY_AGENT = "mario.agent";
+	private static final String KEY_AGENT_TYPE = "mario.agent.type";
 	
 	private static Logger logger = Logger.getLogger(MarioFitnessFunction_Incremental.class);
 	private static final long serialVersionUID = 1L;
@@ -162,7 +162,14 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	}
 	
 	protected MPFAgent createAgent(HTMNetwork brain){
-		MPFAgent agent = (MPFAgent) props.singletonObjectProperty(KEY_AGENT);
+		String agentType = props.getProperty(KEY_AGENT_TYPE);
+		MPFAgent agent = null;
+		if (agentType.equalsIgnoreCase("ScannerAgent")){
+			agent = new ScannerAgent();
+		} else if (agentType.equalsIgnoreCase("EnvironmentAgent")){
+			agent = new EnvironmentAgent();
+		}
+		agent.init(props);
 		agent.setBrain(brain);
 		//MPFAgent agent = new ScannerAgent("MPF Agent", brain, 1, 1, 7, 7);
 		//MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
