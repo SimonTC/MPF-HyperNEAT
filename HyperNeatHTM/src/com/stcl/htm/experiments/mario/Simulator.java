@@ -14,7 +14,7 @@ import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
-public class Simulator extends MarioFitnessFunction{
+public class Simulator extends MarioFitnessFunction_Incremental{
 
 	Random rand = new Random(1234);
 	
@@ -45,10 +45,12 @@ public class Simulator extends MarioFitnessFunction{
 	@Override
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		HTMNetwork brain = (HTMNetwork) activator;
-		double fitness = super.runEvaluation(brain, true, 1);
+		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		double fitness = super.runEvaluation(agent, true, 1);
 		
 		System.out.println("Fitness: " + fitness);
 		
+		/*
 		//Change all level parameters to be visual
 		for (int i = 0; i < levelParameters.length; i++){
 			String s = levelParameters[i];
@@ -59,11 +61,13 @@ public class Simulator extends MarioFitnessFunction{
 		//Choose random level to visualize
 		int levelID = rand.nextInt(levelParameters.length);
 		String parameter = levelParameters[levelID];
-		
-		//ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
-		MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
+		*/
+
+		//MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
 		
 		//Run one level
+		String parameter = levels.get(levels.size()-1)[0]; 
+		parameter = parameter.replace("-vis off", "-vis on");
 		runNormalRound(agent, parameter);
 		
 		return fitness;

@@ -3,10 +3,10 @@ package com.stcl.htm.experiments.mario;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
-import vikrasim.agents.MPFAgent;
 import ch.idsia.benchmark.mario.environments.Environment;
 import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 
@@ -17,7 +17,8 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
 public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
-
+	private static Logger logger = Logger.getLogger(MarioFitnessFunction_Incremental.class);
+	private static final long serialVersionUID = 1L;
 	private Random rand;
 	private int numLevels = 10; //TODO: Take from parameter
 	private int difficulty = 2; //TODO: Should grow the better the agents are
@@ -26,7 +27,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	private int levelLength = 256;
 	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
-	private ArrayList<String[]> levels;
+	protected ArrayList<String[]> levels;
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -42,11 +43,12 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	
 	@Override
 	public void initialiseEvaluation() {
-		createTrainingSet();
+		levels = createTrainingSet();
 		createActionMatrix();
 	}
 	
-	private void createTrainingSet(){
+	protected ArrayList<String[]> createTrainingSet(){
+		ArrayList<String[]> set = new ArrayList<String[]>();
 		String flatNoBlock = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String flatBlocks = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String withCoins = "-vis off -lb on -lca off -lco on -lde off -le off -lf off -lg off -lhs off -ltb off";
@@ -56,23 +58,24 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		String withFrozenEnemies = "-vis off -lb on -lca off -lco on -lde on -le on -lf off -lg on -lhs off -ltb on -fc on";
 		String everything = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on";
 		
-		levels = new ArrayList<String[]>();
-		levels.add(createLevels(flatNoBlock));
-		levels.add(createLevels(flatBlocks));
-		//levels.add(createLevels(withCoins));
-		levels.add(createLevels(withGaps));
-		//levels.add(createLevels(deadEnds));
-		//levels.add(createLevels(withTubes));
-		//levels.add(createLevels(withFrozenEnemies));
-		//levels.add(createLevels(everything));
+		set = new ArrayList<String[]>();
+		set.add(createLevels(flatNoBlock));
+		set.add(createLevels(flatBlocks));
+		//set.add(createLevels(withCoins));
+		set.add(createLevels(withGaps));
+		//set.add(createLevels(deadEnds));
+		//set.add(createLevels(withTubes));
+		//set.add(createLevels(withFrozenEnemies));
+		//set.add(createLevels(everything));
+		return set;
 
 	}
 	
-	private String[] createLevels(String base){
+	protected String[] createLevels(String base){
 		String[] levelParameters = new String[numLevels];
 		String s = base + " -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
-			 String param = s + " -ls " + rand.nextInt(100);
+			 String param = s + " -ls " + rand.nextInt(100) + " -ld " + difficulty;
 			levelParameters[i] = param;
 		}
 		return levelParameters;
@@ -113,11 +116,32 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
+		
+		logger.debug("Start evaluation on thread " + threadIndex);
+		long start_time = System.currentTimeMillis();
+		
 		HTMNetwork brain = (HTMNetwork) activator;
 		
-		loadActionMatrix(brain);
+		MPFAgent agent = createAgent(brain);
 		
-		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		double fitness = runEvaluation(agent, false, threadIndex);
+		if (genotype != null) genotype.setPerformanceValue(fitness);
+		
+		long end_time = System.currentTimeMillis();
+		
+		logger.debug("End evaluation on thread " + threadIndex + " Runtime: " + (end_time - start_time));
+		return fitness;
+	}
+	
+	protected MPFAgent createAgent(HTMNetwork brain){
+		MPFAgent agent = new ScannerAgent("MPF Agent", brain, 1, 1, 7, 7);
+		//MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
+		return agent;
+	}
+	
+	protected double runEvaluation(MPFAgent agent, boolean printInfo, int threadIndex){
+		HTMNetwork brain = agent.brain;
+		loadActionMatrix(brain);
 		
 		boolean hasLearnedLevel = true;
 		double totalFitness = 0;
@@ -152,10 +176,9 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 			if (equals(fitness, 1)) hasLearnedLevel = true;			
 		}
 		totalFitness = totalFitness / (double) levels.size();
-		genotype.setPerformanceValue(totalFitness);
 		return totalFitness;
 	}
-	
+		
 	private boolean equals(double a, double b){
 		double e = 0.0001;
 		if (a < b - e) return false;
@@ -163,7 +186,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		return true;
 	}
 	
-	private int[] runNormalRound(ScannerAgent agent, String levelOptions){
+	protected int[] runNormalRound(MPFAgent agent, String levelOptions){
 		Environment environment = new MarioEnvironment();
 		environment.setAgent(agent);
 		environment.reset(levelOptions);
@@ -172,7 +195,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		int distanceNow = 0;
 		int distanceBefore = 0;
 		boolean[] action = null;
-		while (!environment.isLevelFinished()) {			
+		while (!environment.isLevelFinished()) {	
 			environment.tick(); // Execute one tick in the game //STC
 			int[] ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];
@@ -188,5 +211,4 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		int[] ev = environment.getEvaluationInfoAsInts();
 		return ev;
 	}
-
 }
