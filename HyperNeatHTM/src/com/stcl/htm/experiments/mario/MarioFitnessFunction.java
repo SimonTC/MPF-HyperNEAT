@@ -19,23 +19,22 @@ import com.stcl.htm.network.HTMNetwork;
 public class MarioFitnessFunction extends MarioFitnessFunction_Incremental {
 	
 	private static final long serialVersionUID = 1L;
-	private int difficulty = 2; //TODO: Should grow the better the agents are
 	private int levelLength = 256;
 	private int receptiveFieldSize = 5; //TODO: Parameter
 
 	
 	
 	@Override
-	protected ArrayList<String[]> createTrainingSet(){
+	protected ArrayList<String[]> createLevelSet(Random levelRand, int numLevels){
 		ArrayList<String[]> set = new ArrayList<String[]>();
 		String flatNoBlock = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String flatBlocks = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String withGaps = "-vis off -lb on -lca off -lco on -lde off -le off -lf off -lg on -lhs off -ltb off";
-		String base = flatBlocks + " -ld " + difficulty + " -ll " + levelLength + " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
+		String base = flatBlocks + " -ll " + levelLength + " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
 		//String base = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on -ll " + levelLength;
 		//String base = "-vis off -ld 2 -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
 		//String base = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off -ll " + levelLength;
-		set.add(createLevels(base));
+		set.add(createLevels(base,levelRand, numLevels));
 		return set;
 	}
 	

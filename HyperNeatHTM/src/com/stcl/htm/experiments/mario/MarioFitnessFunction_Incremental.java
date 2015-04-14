@@ -17,17 +17,20 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
 public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
+	private static final String LEVEL_RAND_KEY = "level.rand.key";
+	private static final String LEVEL_NUM_TRAINING = "level.num.training";
+	private static final String LEVEL_NUM_EVALUATION = "level.num.evaluation";
+	private static final String LEVEL_DIFFICULTY = "level.difficulty";
 	private static Logger logger = Logger.getLogger(MarioFitnessFunction_Incremental.class);
 	private static final long serialVersionUID = 1L;
 	private Random rand;
-	private int numLevels = 10; //TODO: Take from parameter
-	private int difficulty = 2; //TODO: Should grow the better the agents are
-	private int numTrainingLevels = 10;
-	private int numEvaluationLevels = 5;
+	private int difficulty;
+	private int numTrainingLevels;
+	private int numEvaluationLevels;
 	private int levelLength = 256;
 	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
-	protected ArrayList<String[]> levels;
+	protected ArrayList<String[]> trainingSet, evaluationSet;
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -39,15 +42,30 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		Randomizer randomizer = new Randomizer();
 		randomizer.init(props);
 		rand = randomizer.getRand();
+		
 	}
 	
 	@Override
 	public void initialiseEvaluation() {
-		levels = createTrainingSet();
+		long levelRandSeed = 0;
+		try{
+			levelRandSeed = props.getLongProperty(LEVEL_RAND_KEY);
+		} catch (IllegalArgumentException e){
+			levelRandSeed = rand.nextLong();
+			props.setProperty(LEVEL_RAND_KEY, "" +levelRandSeed);
+		}
+		
+		difficulty = props.getIntProperty(LEVEL_DIFFICULTY, 2);
+		numTrainingLevels = props.getIntProperty(LEVEL_NUM_TRAINING, 10);
+		numEvaluationLevels = props.getIntProperty(LEVEL_NUM_EVALUATION,5);
+		
+		Random levelRand = new Random(levelRandSeed);
+		trainingSet = createLevelSet(levelRand, numTrainingLevels);
+		evaluationSet = createLevelSet(levelRand, numEvaluationLevels);
 		createActionMatrix();
 	}
 	
-	protected ArrayList<String[]> createTrainingSet(){
+	protected ArrayList<String[]> createLevelSet(Random levelRand, int numLevels){
 		ArrayList<String[]> set = new ArrayList<String[]>();
 		String flatNoBlock = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 		String flatBlocks = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
@@ -59,23 +77,29 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		String everything = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on";
 		
 		set = new ArrayList<String[]>();
-		set.add(createLevels(flatNoBlock));
-		set.add(createLevels(flatBlocks));
-		//set.add(createLevels(withCoins));
-		set.add(createLevels(withGaps));
-		//set.add(createLevels(deadEnds));
-		//set.add(createLevels(withTubes));
-		//set.add(createLevels(withFrozenEnemies));
-		//set.add(createLevels(everything));
+		set.add(createLevels(flatNoBlock,levelRand, numLevels));
+		set.add(createLevels(flatBlocks,levelRand, numLevels));
+		//set.add(createLevels(withCoins,levelRand, numLevels));
+		set.add(createLevels(withGaps,levelRand, numLevels));
+		//set.add(createLevels(deadEnds,levelRand, numLevels));
+		//set.add(createLevels(withTubes,levelRand, numLevels));
+		//set.add(createLevels(withFrozenEnemies,levelRand, numLevels));
+		//set.add(createLevels(everything,levelRand, numLevels));
 		return set;
 
 	}
 	
-	protected String[] createLevels(String base){
+	/**
+	 * 
+	 * @param base
+	 * @param levelRand
+	 * @return
+	 */
+	protected String[] createLevels(String base, Random levelRand, int numLevels){
 		String[] levelParameters = new String[numLevels];
 		String s = base + " -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
-			 String param = s + " -ls " + rand.nextInt(100) + " -ld " + difficulty;
+			 String param = s + " -ls " + levelRand.nextInt(Integer.MAX_VALUE) + " -ld " + difficulty;
 			levelParameters[i] = param;
 		}
 		return levelParameters;
@@ -145,8 +169,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		
 		boolean hasLearnedLevel = true;
 		double totalFitness = 0;
-		for (int leveltype = 0; leveltype < levels.size() && hasLearnedLevel; leveltype++){
-			String[] levelParameters = levels.get(leveltype);
+		for (int leveltype = 0; leveltype < trainingSet.size() && hasLearnedLevel; leveltype++){
 			hasLearnedLevel = false;
 		
 			//Training
@@ -154,7 +177,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 			brain.getNetwork().setLearning(true);
 			brain.getNetwork().getActionNode().setExplorationChance(0.05);
 			for (int level = 0; level < numTrainingLevels; level++){
-				String levelParams = levelParameters[rand.nextInt(levelParameters.length)];
+				String levelParams = trainingSet.get(leveltype)[level];
 				runNormalRound(agent, levelParams);
 			}
 			
@@ -164,7 +187,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 			brain.getNetwork().setLearning(false);
 			int travelDistance = 0;
 			for (int level = 0; level < numEvaluationLevels; level++){
-				String levelParams = levelParameters[rand.nextInt(levelParameters.length)];
+				String levelParams = evaluationSet.get(leveltype)[level];
 				int[] ev = runNormalRound(agent, levelParams);
 				travelDistance += ev[0];
 			}
@@ -175,7 +198,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 			
 			if (equals(fitness, 1)) hasLearnedLevel = true;			
 		}
-		totalFitness = totalFitness / (double) levels.size();
+		totalFitness = totalFitness / (double) trainingSet.size();
 		return totalFitness;
 	}
 		
