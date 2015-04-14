@@ -103,7 +103,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		String s = base + " -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
 			 String param = s + " -ls " + levelRand.nextInt(Integer.MAX_VALUE) + 
-					 " -ld " + difficulty ;//+ " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
+					 " -ld " + difficulty + " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
 			levelParameters[i] = param;
 		}
 		return levelParameters;
