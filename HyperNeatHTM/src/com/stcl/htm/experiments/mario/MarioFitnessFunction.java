@@ -20,9 +20,7 @@ public class MarioFitnessFunction extends MarioFitnessFunction_Incremental {
 	
 	private static final long serialVersionUID = 1L;
 	private int levelLength = 256;
-	private int receptiveFieldSize = 5; //TODO: Parameter
-
-	
+	private int receptiveFieldSize = 5; //TODO: Parameter	
 	
 	@Override
 	protected ArrayList<String[]> createLevelSet(Random levelRand, int numLevels){
@@ -37,8 +35,4 @@ public class MarioFitnessFunction extends MarioFitnessFunction_Incremental {
 		set.add(createLevels(base,levelRand, numLevels));
 		return set;
 	}
-	
-	
-
-
 }

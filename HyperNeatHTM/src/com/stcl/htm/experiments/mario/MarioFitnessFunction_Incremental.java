@@ -17,10 +17,13 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
 public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
-	private static final String LEVEL_RAND_KEY = "level.rand.key";
-	private static final String LEVEL_NUM_TRAINING = "level.num.training";
-	private static final String LEVEL_NUM_EVALUATION = "level.num.evaluation";
-	private static final String LEVEL_DIFFICULTY = "level.difficulty";
+	private static final String KEY_LEVEL_RAND = "mario.level.rand.key";
+	private static final String KEY_LEVEL_NUM_TRAINING = "mario.level.num.training";
+	private static final String KEY_LEVEL_NUM_EVALUATION = "mario.level.num.evaluation";
+	private static final String KEY_LEVEL_DIFFICULTY = "mario.level.difficulty";
+	private static final String KEY_LEVEL_RECEPTIVE_FIELD_SIZE = "mario.level.receptive.field.size";
+	private static final String KEY_AGENT = "mario.agent";
+	
 	private static Logger logger = Logger.getLogger(MarioFitnessFunction_Incremental.class);
 	private static final long serialVersionUID = 1L;
 	private Random rand;
@@ -28,9 +31,9 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	private int numTrainingLevels;
 	private int numEvaluationLevels;
 	private int levelLength = 256;
-	private String agentName = "Scanner";
 	private ArrayList<SimpleMatrix> actions;
 	protected ArrayList<String[]> trainingSet, evaluationSet;
+	protected int receptiveFieldSize;
 
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -49,16 +52,16 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	public void initialiseEvaluation() {
 		long levelRandSeed = 0;
 		try{
-			levelRandSeed = props.getLongProperty(LEVEL_RAND_KEY);
+			levelRandSeed = props.getLongProperty(KEY_LEVEL_RAND);
 		} catch (IllegalArgumentException e){
 			levelRandSeed = rand.nextLong();
-			props.setProperty(LEVEL_RAND_KEY, "" +levelRandSeed);
+			props.setProperty(KEY_LEVEL_RAND, "" +levelRandSeed);
 		}
 		
-		difficulty = props.getIntProperty(LEVEL_DIFFICULTY, 2);
-		numTrainingLevels = props.getIntProperty(LEVEL_NUM_TRAINING, 10);
-		numEvaluationLevels = props.getIntProperty(LEVEL_NUM_EVALUATION,5);
-		
+		difficulty = props.getIntProperty(KEY_LEVEL_DIFFICULTY, 2);
+		numTrainingLevels = props.getIntProperty(KEY_LEVEL_NUM_TRAINING, 10);
+		numEvaluationLevels = props.getIntProperty(KEY_LEVEL_NUM_EVALUATION,5);
+		receptiveFieldSize = props.getIntProperty(KEY_LEVEL_RECEPTIVE_FIELD_SIZE,9);
 		Random levelRand = new Random(levelRandSeed);
 		trainingSet = createLevelSet(levelRand, numTrainingLevels);
 		evaluationSet = createLevelSet(levelRand, numEvaluationLevels);
@@ -99,7 +102,8 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		String[] levelParameters = new String[numLevels];
 		String s = base + " -ll " + levelLength;
 		for (int i = 0; i < numLevels; i++){
-			 String param = s + " -ls " + levelRand.nextInt(Integer.MAX_VALUE) + " -ld " + difficulty;
+			 String param = s + " -ls " + levelRand.nextInt(Integer.MAX_VALUE) + 
+					 " -ld " + difficulty + " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize;
 			levelParameters[i] = param;
 		}
 		return levelParameters;
@@ -158,7 +162,9 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	}
 	
 	protected MPFAgent createAgent(HTMNetwork brain){
-		MPFAgent agent = new ScannerAgent("MPF Agent", brain, 1, 1, 7, 7);
+		MPFAgent agent = (MPFAgent) props.singletonObjectProperty(KEY_AGENT);
+		agent.setBrain(brain);
+		//MPFAgent agent = new ScannerAgent("MPF Agent", brain, 1, 1, 7, 7);
 		//MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
 		return agent;
 	}

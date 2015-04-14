@@ -12,27 +12,40 @@ import vikrasim.agents.scanners.gapScanner;
 import vikrasim.agents.scanners.MasterScanner.Dir;
 import vikrasim.agents.scanners.MasterScanner.ScannerType;
 
+import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
 
 public class ScannerAgent extends MPFAgent{
-
+	
+	public static final String KEY_AGENT_SCANNER_LENGTH = "mario.agent.scanner.length";
+	public static final String KEY_AGENT_SCANNER_HEIGHT = "mario.agent.scanner.heigth";
+	
 	private ArrayList<MasterScanner> scanners;
 	int scannerLength;
 	int scannerHeight;
 	
 	public ScannerAgent(String s, HTMNetwork brain, int zLevelEnemies, int zLevelScene, int scannerLength, int scannerHeight) {
-		super(s, brain);
-		this.brain = brain;
-		this.zLevelEnemies = zLevelEnemies;
-		this.zLevelScene = zLevelScene;
+		super(s, brain, zLevelEnemies, zLevelScene);
 		
 		this.scannerHeight = scannerHeight;
 		this.scannerLength = scannerLength;
 		
 		addScanners(scannerLength, scannerHeight);
 
+	}
+	
+	public ScannerAgent(){
+		super();
+	}
+	
+	@Override
+	public void init(Properties props){
+		super.init(props);
+		this.scannerHeight = props.getIntProperty(KEY_AGENT_SCANNER_HEIGHT, 7);
+		this.scannerLength = props.getIntProperty(KEY_AGENT_SCANNER_LENGTH, 7);
+		addScanners(scannerLength, scannerHeight);
 	}
 	
 	private void addScanners(int length, int height) {

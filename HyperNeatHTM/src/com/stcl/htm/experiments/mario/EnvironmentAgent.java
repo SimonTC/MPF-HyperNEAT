@@ -2,6 +2,7 @@ package com.stcl.htm.experiments.mario;
 
 import org.ejml.simple.SimpleMatrix;
 
+import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
 import ch.idsia.agents.controllers.BasicMarioAIAgent;
@@ -9,9 +10,16 @@ import ch.idsia.agents.controllers.BasicMarioAIAgent;
 public class EnvironmentAgent extends MPFAgent {
 	
 	public EnvironmentAgent(String s, HTMNetwork brain, int zLevelEnemies, int zLevelScene) {
-		super(s, brain);
-		this.zLevelEnemies = zLevelEnemies;
-		this.zLevelScene = zLevelScene;
+		super(s, brain, zLevelEnemies, zLevelScene);
+	}
+	
+	public EnvironmentAgent(){
+		super();
+	}
+	
+	@Override
+	public void init(Properties props) {
+		super.init(props);		
 	}
 
 	@Override
@@ -57,6 +65,8 @@ public class EnvironmentAgent extends MPFAgent {
 		}
 		return m;
 	}
+
+	
 	
 
 }
