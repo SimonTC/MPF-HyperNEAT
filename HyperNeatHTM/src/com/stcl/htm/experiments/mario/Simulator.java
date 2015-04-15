@@ -45,28 +45,13 @@ public class Simulator extends MarioFitnessFunction_Incremental{
 	@Override
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		HTMNetwork brain = (HTMNetwork) activator;
-		ScannerAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		MPFAgent agent = createAgent(brain);
 		double fitness = super.runEvaluation(agent, true, 1);
 		
 		System.out.println("Fitness: " + fitness);
 		
-		/*
-		//Change all level parameters to be visual
-		for (int i = 0; i < levelParameters.length; i++){
-			String s = levelParameters[i];
-			s = s.replace("-vis off", "-vis on");
-			levelParameters[i] = s;
-		}
-		
-		//Choose random level to visualize
-		int levelID = rand.nextInt(levelParameters.length);
-		String parameter = levelParameters[levelID];
-		*/
-
-		//MPFAgent agent = new EnvironmentAgent("Environment", brain,2,2);
-		
 		//Run one level
-		String parameter = levels.get(levels.size()-1)[0]; 
+		String parameter = evaluationSet.get(evaluationSet.size()-1)[0]; 
 		parameter = parameter.replace("-vis off", "-vis on");
 		runNormalRound(agent, parameter);
 		
