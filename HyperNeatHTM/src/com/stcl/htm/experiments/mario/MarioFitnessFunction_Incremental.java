@@ -28,7 +28,7 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 	private static final long serialVersionUID = 1L;
 	private Random rand;
 	private int difficulty;
-	private int numTrainingLevels;
+	protected int numTrainingLevels;
 	private int numEvaluationLevels;
 	private int levelLength = 256;
 	private ArrayList<SimpleMatrix> actions;
@@ -186,27 +186,10 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 			hasLearnedLevel = false;
 		
 			//Training
-			brain.reset();
-			brain.getNetwork().setLearning(true);
-			brain.getNetwork().getActionNode().setExplorationChance(0.05);
-			for (int level = 0; level < numTrainingLevels; level++){
-				String levelParams = trainingSet.get(leveltype)[level];
-				runNormalRound(agent, levelParams);
-			}
+			runTrainingRound(agent, leveltype);
 			
 			//Evaluation
-			brain.reset();
-			brain.getNetwork().getActionNode().setExplorationChance(0.0);
-			brain.getNetwork().setLearning(false);
-			int travelDistance = 0;
-			for (int level = 0; level < numEvaluationLevels; level++){
-				String levelParams = evaluationSet.get(leveltype)[level];
-				int[] ev = runNormalRound(agent, levelParams);
-				travelDistance += ev[0];
-			}
-			
-			double fitness = travelDistance / (double) numEvaluationLevels;
-			fitness = fitness / (double) levelLength; 
+			double fitness = runEvaluationRound(agent, leveltype);
 			totalFitness += fitness;
 			
 			if (equals(fitness, 1)) hasLearnedLevel = true;			
@@ -220,6 +203,34 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		if (a < b - e) return false;
 		if (a > b + e) return false;
 		return true;
+	}
+	
+	protected void runTrainingRound(MPFAgent agent, int leveltype){
+		HTMNetwork brain = agent.brain;
+		brain.reset();
+		brain.getNetwork().setLearning(true);
+		brain.getNetwork().getActionNode().setExplorationChance(0.05);
+		for (int level = 0; level < numTrainingLevels; level++){
+			String levelParams = trainingSet.get(leveltype)[level];
+			runNormalRound(agent, levelParams);
+		}
+	}
+	
+	protected double runEvaluationRound(MPFAgent agent, int leveltype){
+		HTMNetwork brain = agent.brain;
+		brain.reset();
+		brain.getNetwork().getActionNode().setExplorationChance(0.0);
+		brain.getNetwork().setLearning(false);
+		int travelDistance = 0;
+		for (int level = 0; level < numEvaluationLevels; level++){
+			String levelParams = evaluationSet.get(leveltype)[level];
+			int[] ev = runNormalRound(agent, levelParams);
+			travelDistance += ev[0];
+		}
+		
+		double fitness = travelDistance / (double) numEvaluationLevels;
+		fitness = fitness / (double) levelLength; 
+		return fitness;
 	}
 	
 	protected int[] runNormalRound(MPFAgent agent, String levelOptions){
