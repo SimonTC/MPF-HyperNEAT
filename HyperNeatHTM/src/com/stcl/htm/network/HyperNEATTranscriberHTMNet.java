@@ -1,5 +1,8 @@
 package com.stcl.htm.network;
 
+import java.util.HashMap;
+import java.util.TreeMap;
+
 import org.apache.log4j.Logger;
 import org.jgapcustomised.*;
 
@@ -35,6 +38,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	
 	public static final String HTM_ACTION_VECTOR_LENGTH_KEY = "htm.action.inputlenght";
 	public static final String HTM_ACTION_GROUP_MAPSIZE_KEY = "htm.action.mapsize";
+	public static final String HTM_ACTION_VOTER_INFLUENCE_EVOLVE = "htm.action.voter.influence.evolve";
 
 	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
 	
@@ -97,6 +101,8 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		for (int l = 0; l < depth; l++){
 			nodes[l] = new Node[height[l]][width[l]];
 		}
+		
+		TreeMap<Integer, Double> votingInfluences = new TreeMap<Integer, Double>();
 
 		// query CPPN for substrate connections and node parameters
 		for (int sz = 0; sz < depth; sz++) { //Node in top layer doesn't have any parent
@@ -127,11 +133,14 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
 							int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
 							int markovOrder = (int) Math.round(cppn.getRangedNeuronParam(0, 2));
+							double votingInfluence = (double) cppn.getRangedNeuronParam(0, 3);
 							int actionMapSize = props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2);
 							UnitNode unitnode = (UnitNode) n;
-							unitnode.setID(nextFreeID++);
+							int id = nextFreeID++;
+							unitnode.setID(id);
 							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, actionMapSize * actionMapSize);
 							brainNetwork.addNode(unitnode);
+							votingInfluences.put(id, votingInfluence);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
 						}
 						
@@ -184,6 +193,10 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 			actionNode.addChild(actionSensor);
 			brainNetwork.addNode(actionNode);
 			brainNetwork.addNode(actionSensor);
+			if (props.getBooleanProperty(HTM_ACTION_VOTER_INFLUENCE_EVOLVE, false)){
+				actionNode.setInfluenceMap(votingInfluences);
+				actionNode.setUpdateVoterInfluence(false);
+			}
 		}
 
 		if (createNewPhenotype) {
