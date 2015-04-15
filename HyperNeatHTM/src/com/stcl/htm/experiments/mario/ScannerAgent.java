@@ -20,7 +20,7 @@ import ch.idsia.agents.controllers.BasicMarioAIAgent;
 public class ScannerAgent extends MPFAgent{
 	
 	public static final String KEY_AGENT_SCANNER_LENGTH = "mario.agent.scanner.length";
-	public static final String KEY_AGENT_SCANNER_HEIGHT = "mario.agent.scanner.heigth";
+	public static final String KEY_AGENT_SCANNER_HEIGHT = "mario.agent.scanner.height";
 	
 	private ArrayList<MasterScanner> scanners;
 	int scannerLength;
