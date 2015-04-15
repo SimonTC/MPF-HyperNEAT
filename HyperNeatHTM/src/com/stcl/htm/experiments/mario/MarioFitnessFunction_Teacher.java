@@ -24,6 +24,11 @@ public class MarioFitnessFunction_Teacher extends MarioFitnessFunction_Increment
 			String levelParams = trainingSet.get(leveltype)[level];
 			runTeachingRound(agent, levelParams, teacher);
 		}
+		
+		for (int level = 0; level < numTrainingLevels; level++){
+			String levelParams = trainingSet.get(leveltype)[level];
+			runNormalRound(agent, levelParams);
+		}
 	}
 	
 	protected int[] runTeachingRound(MPFAgent agent, String levelOptions, GapAgent teacher){
