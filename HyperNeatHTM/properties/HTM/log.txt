@@ -1,0 +1,216 @@
+INFO  Properties: output.prefix == null []
+INFO  Output directory is mario/1429111361647/.
+INFO  Performance results will be written to mario/1429111361647/results-[performance|fitness].
+INFO  Properties: num.runs == 1
+INFO  
+
+--- START RUN: 1 of 1 (0%) ---------------------------------------
+
+
+INFO  Properties: persist.enable == false
+INFO  Properties: fitness_function.class == com.stcl.htm.experiments.mario.MarioFitnessFunction_Teacher
+INFO  Properties: random.seed == null [1429111361692]
+INFO  Properties: fitness.function.multi.addingsub == null [false]
+INFO  Properties: performance.target == 1.0
+INFO  Properties: performance.target.type == higher
+INFO  Properties: performance.target.average == 5
+INFO  Properties: fitness.min_threads == null [0]
+INFO  Properties: fitness.max_threads == 0
+INFO  Using 8 threads for transcription and evaluation.
+INFO  Properties: minion.hosts == null [null]
+INFO  Properties: fitness.function.multi.weighting == null [1.0]
+INFO  Number of objectives is 1.
+INFO  Normalised fitness function weightings: [1.0]
+INFO  Properties: minion.instance == null [false]
+INFO  Properties: fitness.function.performance.force.fitness == null [false]
+INFO  Properties: fitness.hyperneat.scale.performance == 0.95
+INFO  Properties: fitness.hyperneat.scale.times == 0
+INFO  Properties: fitness.hyperneat.scale.factor == 0
+INFO  Properties: fitness.hyperneat.scale.recordintermediateperformance == true
+INFO  Properties: ann.hyperneat.width == 18,10,10,10,1
+INFO  Properties: ann.hyperneat.height == 1,10,10,10,1
+INFO  Properties: id.file == ./db/id.xml
+INFO  Properties: recurrent == disallowed
+INFO  Properties: survival.rate == 0.3
+INFO  Properties: crossover.proportion == 0.5
+INFO  Properties: selector.roulette == false
+INFO  Properties: selector.class == null [auto]
+INFO  Using com.anji.integration.SimpleSelector as the NaturalSelector.
+INFO  Properties: selector.elitism.proportion == 0.1
+INFO  Properties: selector.elitism.min.to.select == 1
+INFO  Properties: selector.elitism.min.specie.size == 5
+INFO  Properties: selector.speciated.fitness == true
+INFO  Properties: selector.max.stagnant.generations == 99999
+INFO  Properties: selector.min.generations == null [10]
+INFO  Properties: crossover.mutate.probability == null [1.0]
+INFO  Properties: remove.connection.mutation.rate == 0.05
+INFO  Properties: remove.connection.max.weight == 1
+INFO  Properties: remove.connection.strategy == null [skewed]
+INFO  Properties: weight.mutation.rate == 0.3
+INFO  Properties: weight.mutation.std.dev == 1
+INFO  Properties: weight.mutation.std.dev.initial == null [1.0]
+INFO  Properties: topology.mutation.classic == true
+INFO  Properties: add.connection.mutation.rate == 0.8
+INFO  Properties: add.neuron.mutation.rate == 0.2
+INFO  Properties: popul.size == 30
+INFO  Properties: initial.topology.activation == random
+INFO  Properties: initial.topology.activation.random.allowed == sigmoid, gaussian, sine, absolute, linear, clamped-linear, sign
+INFO  Properties: initial.topology.activation.random.probabilities == null [null]
+INFO  Properties: initial.topology.activation.input == linear
+INFO  Properties: initial.topology.activation.output == sigmoid
+INFO  Properties: neat.id.file == ./db/neatid.xml
+INFO  Properties: stimulus.size == null [3]
+INFO  Properties: initial.topology.num.hidden.neurons == 0
+INFO  Properties: response.size == null [3]
+INFO  Properties: initial.topology.fully.connected == true
+INFO  Properties: weight.max == 3
+INFO  Properties: weight.min == null [-3.0]
+INFO  Properties: chrom.compat.excess.coeff == 2.0
+INFO  Properties: chrom.compat.disjoint.coeff == 2.0
+INFO  Properties: chrom.compat.common.coeff == 1.0
+INFO  Properties: chrom.compat.normalise == null [false]
+INFO  Properties: chrom.compat.mismatch_use_values == null [false]
+INFO  Properties: speciation.threshold == 1.9
+INFO  Properties: speciation.threshold.min == null [0.0]
+INFO  Properties: speciation.threshold.max == null [1.7976931348623157E308]
+INFO  Properties: speciation.target == 4
+INFO  Properties: output.dir == mario/1429111361647/
+INFO  Properties: ann.transcriber.class == com.stcl.htm.network.HyperNEATTranscriberHTMNet
+INFO  Properties: ann.transcriber.connection.weight.max == 1
+INFO  Properties: ann.transcriber.connection.weight.min == 0
+INFO  Properties: ann.transcriber.neuron.model.params == sizespatial, sizetemporal, markovOrder, voteInfluence
+INFO  Properties: ann.transcriber.neuron.model.params.max == 10,10,5,1
+INFO  Properties: ann.transcriber.neuron.model.params.min == 2,0,1,0
+INFO  Properties: ann.transcriber.neuron.model.params.expression.threshold == null [0.0, 0.0, 0.0, 0.0]
+INFO  Properties: ann.transcriber.neuron.model.params.classes == null [0]
+INFO  Properties: ann.hyperneat.useinputlayerencoding == false
+WARN  Separate neuron and synapse model parameter outputs per layer are not currently supported, forcing ann.hyperneat.useinputlayerencoding to true.
+INFO  Properties: ann.hyperneat.feedforward == true
+INFO  Properties: ann.hyperneat.enablebias == false
+INFO  Properties: ann.hyperneat.includedelta == false
+INFO  Properties: ann.hyperneat.includeangle == false
+INFO  Properties: ann.hyperneat.connection.expression.threshold == null [0.2]
+INFO  Properties: ann.hyperneat.connection.range == null [-1]
+INFO  Properties: ann.hyperneat.leo == null [false]
+INFO  Properties: ann.hyperneat.leo.threshold == null [0.0]
+INFO  Properties: ann.hyperneat.leo.threshold.factordistance == null [false]
+INFO  Properties: ann.hyperneat.leo.threshold.directionalfactor == null [1.0, 1.0, 1.0]
+INFO  Properties: ann.hyperneat.neo == null [false]
+INFO  Properties: ann.hyperneat.neo.threshold == null [0.0]
+INFO  Properties: ann.hyperneat.range.x == null [null]
+INFO  Properties: ann.hyperneat.range.y == null [null]
+INFO  Properties: ann.hyperneat.range.z == null [null]
+INFO  Properties: bias.via.input == null [true]
+INFO  CPPN: Added bias, sx, sy, tx, ty inputs.
+INFO  CPPN: Added tz input.
+INFO  CPPN: Added 1 weight output(s).
+INFO  CPPN: Added 1 x 4 = 4 neuron parameter outputs (number of neuron model types times number of parameters).
+INFO  CPPN input/output size: 6/5
+INFO  Properties: recurrent.cycles == 1
+INFO  Properties: hyperneat.cppn.initial == null [null]
+INFO  Properties: output.prefix == null []
+INFO  Properties: visuals.enable == null [false]
+INFO  Properties: isminion == null [false]
+INFO  Properties: persistence.class == com.anji.persistence.FilePersistence
+INFO  Properties: persist.load.genotype == false
+INFO  Properties: num.generations == 100
+INFO  Properties: log.pergenerations == 1
+INFO  Properties: log.champ.tostring == 1
+INFO  Properties: log.champ.toimage == 1
+INFO  Properties: run.name == mario
+INFO  Properties: hibernate.enable == null [true]
+INFO  Properties: logging.enable == null [true]
+INFO  Properties: presentation.generate == true
+INFO  Properties: presentation.dir == ./nevt
+INFO  Properties: speciation.class == null [com.anji.neat.SpeciationStrategyOriginal]
+INFO  Properties: log.species_history == null [false]
+INFO  Properties: mario.level.rand.key == null [null]
+INFO  Properties: mario.level.difficulty == 2
+INFO  Properties: mario.level.num.training == 20
+INFO  Properties: mario.level.num.evaluation == 10
+INFO  Properties: mario.level.receptive.field.size == 19
+INFO  Properties: htm.action.mapsize == 4
+INFO  Properties: htm.action.inputlenght == 6
+INFO  Properties: htm.action.voter.influence.evolve == true
+INFO  Properties: mario.agent.type == ScannerAgent
+INFO  Properties: mario.agent.zlevel.enemies == 2
+INFO  Properties: mario.agent.zlevel.scene == 2
+INFO  Properties: mario.agent.scanner.height == 7
+INFO  Properties: mario.agent.scanner.length == 7
+INFO  Properties: mario.teacher.file == gapTeacher
+INFO  Parallel: default thread count set to 8
+INFO  Gen	Fittest  	F0Mari	Perfor	BestPrf  	F0Mari	Perfor	ZPC	ZFC	SC	NS	ES	SCT	SS	SA    	SNBP	GS      	Time	ETA      	Mem
+INFO  0 	     1082	0.5655	0.5655	     1082	0.5655	0.5655	0	0	30	30	0	1.9	0/1	0/1	0	40/41/43	59.175	0 01:38:38	345MB
+INFO  1 	     1207	0.5238	0.5238	     1207	0.5238	0.5238	0	0	31	30	29	1.9	0/1	0/1	1	40/41/44	51.664	0 01:36:24	367MB
+INFO  2 	     1261	0.5749	0.5749	     1261	0.5749	0.5749	0	0	29	28	30	1.9	0/1	0/1	1	40/41/45	54.993	0 01:34:52	392MB
+INFO  3 	     1314	0.4629	0.4629	     1314	0.4629	0.4629	0	0	29	28	28	1.9	0/1	0/1	1	41/42/45	47.955	0 01:32:16	811MB
+INFO  4 	     1374	0.5966	0.5966	     1374	0.5966	0.5966	0	0	29	28	28	3.1	0/1	0/1	1	41/41/46	36.795	0 01:28:04	489MB
+INFO  5 	     1402	0.5590	0.5590	     1402	0.5590	0.5590	0	0	28	27	28	3.1	0/1	0/1	1	41/42/47	45.351	0 01:25:37	291MB
+INFO  6 	     1437	0.6245	0.6245	     1437	0.6245	0.6245	0	0	26	24	26	3.1	0/1	0/1	1	40/45/49	46.308	0 01:23:30	69MB
+INFO  7 	     1476	0.5650	0.5650	     1476	0.5650	0.5650	0	0	29	28	25	3.1	0/1	0/1	1	40/44/50	38.914	0 01:20:23	382MB
+INFO  8 	     1520	0.6339	0.6339	     1520	0.6339	0.6339	0	0	29	28	28	5.0	0/1	0/1	1	42/45/48	51.040	0 01:19:23	666MB
+INFO  9 	     1560	0.5698	0.5698	     1560	0.5698	0.5698	0	0	28	25	26	5.0	0/1	0/1	1	44/46/49	55.542	0 01:19:06	311MB
+INFO  10 	     1599	0.5591	0.5591	     1599	0.5591	0.5591	0	0	29	28	27	5.0	0/1	0/1	1	45/47/51	61.568	0 01:19:38	394MB
+INFO  11 	     1641	0.5964	0.5964	     1641	0.5964	0.5964	0	0	29	28	28	5.0	0/1	0/1	1	46/48/51	48.009	0 01:18:00	227MB
+INFO  12 	     1680	0.6091	0.6091	     1680	0.6091	0.6091	0	0	29	26	26	8.2	0/1	0/1	2	45/47/51	57.016	0 01:17:47	401MB
+INFO  13 	     1721	0.5980	0.5980	     1721	0.5980	0.5980	0	0	25	18	22	8.2	0/1	0/1	1	47/49/53	53.236	0 01:16:55	178MB
+INFO  14 	     1748	0.5871	0.5871	     1748	0.5871	0.5871	0	0	27	24	22	8.2	0/1	0/1	1	48/50/54	47.405	0 01:15:14	126MB
+INFO  15 	     1806	0.7129	0.7129	     1806	0.7129	0.7129	0	0	28	23	22	8.2	0/2	0/2	1	49/51/54	52.015	0 01:14:17	178MB
+INFO  16 	     1840	0.6495	0.6495	     1840	0.6495	0.6495	0	0	27	21	22	12.8	0/2	0/2	1	49/52/55	75.003	0 01:16:34	230MB
+INFO  17 	     1840	0.7591	0.7591	     1840	0.7591	0.7591	0	0	17	11	21	12.8	0/5	0/2	2	49/53/55	66.005	0 01:17:14	81MB
+INFO  18 	     1920	0.6495	0.6495	     1920	0.6495	0.6495	0	0	22	17	12	12.8	0/5	0/2	2	52/54/57	76.532	0 01:19:07	436MB
+INFO  19 	     1993	0.6495	0.6495	     1993	0.6495	0.6495	0	0	14	11	19	12.8	0/11	0/2	1	53/55/58	84.969	0 01:21:49	290MB
+INFO  Gen	Fittest  	F0Mari	Perfor	BestPrf  	F0Mari	Perfor	ZPC	ZFC	SC	NS	ES	SCT	SS	SA    	SNBP	GS      	Time	ETA      	Mem
+INFO  20 	     2043	0.6495	0.6495	     2043	0.6495	0.6495	0	0	24	21	11	19.3	0/11	0/2	1	53/56/59	88.839	0 01:24:34	559MB
+INFO  21 	     2085	0.6517	0.6517	     2085	0.6517	0.6517	0	0	11	0	13	19.3	0/11	0/2	4	54/57/60	90.554	0 01:27:05	594MB
+INFO  22 	     2077	0.6405	0.6405	     2077	0.6405	0.6405	0	0	17	11	5	19.3	0/3	0/2	2	55/58/61	89.248	0 01:28:59	464MB
+INFO  23 	     2155	0.6495	0.6495	     2155	0.6495	0.6495	0	0	21	18	14	19.3	0/3	0/3	1	55/58/61	92.972	0 01:31:00	197MB
+INFO  24 	     2176	0.6495	0.6495	     2172	0.6495	0.6495	0	0	15	10	16	24.6	0/6	0/3	3	54/59/63	121.708	0 01:36:15	174MB
+INFO  25 	     2226	0.6230	0.6230	     2226	0.6230	0.6230	0	0	11	4	8	24.6	0/6	0/3	3	56/60/63	127.476	0 01:41:25	139MB
+INFO  26 	     2252	0.6490	0.6490	     2252	0.6490	0.6490	0	0	14	8	5	24.6	0/5	0/2	3	59/62/65	142.083	0 01:47:35	205MB
+INFO  27 	     2253	0.7129	0.7129	     2253	0.7129	0.7129	0	0	7	1	8	24.6	0/7	0/2	4	60/63/66	99.109	0 01:47:34	236MB
+INFO  28 	     2253	0.6578	0.6578	     2253	0.6578	0.6578	0	0	14	10	3	30.7	0/6	0/3	1	59/62/65	137.811	0 01:52:02	578MB
+INFO  29 	     2330	0.6556	0.6556	     2330	0.6556	0.6556	0	0	6	1	9	30.7	0/9	0/4	3	61/63/66	192.186	0 02:02:10	203MB
+INFO  30 	     2253	0.6574	0.6574	     2253	0.6574	0.6574	0	0	8	3	1	30.7	0/11	0/5	3	61/63/67	187.643	0 02:10:18	655MB
+INFO  31 	     2421	0.7404	0.7404	     2421	0.7404	0.7404	0	0	10	4	2	30.7	0/7	0/5	5	61/64/68	203.388	0 02:18:59	283MB
+INFO  32 	     2421	0.7148	0.7148	     2421	0.7148	0.7148	0	0	11	8	7	36.1	0/8	0/4	2	60/63/69	202.008	0 02:26:10	298MB
+INFO  33 	     2497	0.7147	0.7147	     2497	0.7147	0.7147	0	0	9	4	6	36.1	0/9	0/4	3	61/63/67	172.246	0 02:28:51	215MB
+INFO  34 	     2526	0.7293	0.7293	     2526	0.7293	0.7293	0	0	8	2	3	36.1	0/8	0/4	4	61/64/69	92.217	0 02:22:06	506MB
+INFO  35 	     2549	0.6495	0.6495	     2549	0.6495	0.6495	0	0	8	2	2	36.1	0/7	0/4	4	61/65/70	101.701	0 02:16:58	303MB
+INFO  36 	     2549	0.6551	0.6551	     2549	0.6551	0.6551	0	0	7	2	3	38.8	0/7	0/3	2	61/64/70	90.179	0 02:11:00	128MB
+INFO  37 	     2588	0.7397	0.7397	     2588	0.7397	0.7397	0	0	5	0	2	38.8	2/9	2/4	3	61/65/71	76.792	0 02:04:07	304MB
+INFO  38 	     2635	0.6499	0.6499	     2635	0.6499	0.6499	0	0	9	5	1	38.8	0/7	0/5	0	62/65/71	102.299	0 02:00:30	264MB
+INFO  39 	     2682	0.6495	0.6495	     2667	0.6495	0.6495	0	0	10	4	3	38.8	0/8	0/5	2	64/66/73	111.835	0 01:58:05	543MB
+INFO  Gen	Fittest  	F0Mari	Perfor	BestPrf  	F0Mari	Perfor	ZPC	ZFC	SC	NS	ES	SCT	SS	SA    	SNBP	GS      	Time	ETA      	Mem
+INFO  40 	     2696	0.7284	0.7284	     2696	0.7284	0.7284	0	0	8	2	4	42.7	0/8	0/5	5	64/66/68	88.484	0 01:53:22	132MB
+INFO  41 	     2721	0.6492	0.6492	     2721	0.6492	0.6492	0	1	6	1	3	42.7	0/14	0/5	4	64/66/69	109.916	0 01:51:09	402MB
+INFO  42 	     2765	0.7173	0.7173	     2765	0.7173	0.7173	0	0	5	3	4	42.7	0/12	0/3	1	65/67/70	110.533	0 01:49:01	101MB
+INFO  43 	     2828	0.7134	0.7134	     2828	0.7134	0.7134	0	0	6	2	1	42.7	0/14	0/4	1	59/67/72	124.839	0 01:48:17	942MB
+INFO  44 	     2858	0.6495	0.6495	     2858	0.6495	0.6495	0	0	9	5	2	48.0	0/8	0/5	1	58/67/72	121.091	0 01:47:03	463MB
+INFO  45 	     2864	0.7099	0.7099	     2864	0.7099	0.7099	0	0	9	3	3	48.0	0/7	0/6	3	61/69/74	118.549	0 01:45:29	923MB
+INFO  46 	     2954	0.7109	0.7109	     2954	0.7109	0.7109	0	0	8	1	2	48.0	0/11	0/6	3	69/71/74	111.490	0 01:43:15	320MB
+INFO  47 	     2993	0.7285	0.7285	     2993	0.7285	0.7285	0	0	7	2	3	48.0	0/11	0/2	3	69/71/74	97.076	0 01:39:47	879MB
+INFO  48 	     3025	0.6495	0.6495	     3011	0.6495	0.6495	0	0	7	2	2	51.6	0/11	0/3	3	69/71/75	109.171	0 01:37:34	219MB
+INFO  49 	     3071	0.6531	0.6531	     3071	0.6531	0.6531	0	0	7	1	1	51.6	0/8	0/3	3	69/71/74	139.652	0 01:38:00	701MB
+INFO  50 	     3086	0.7191	0.7191	     3086	0.7191	0.7191	0	0	5	0	2	51.6	0/13	0/3	3	70/73/76	125.519	0 01:36:55	144MB
+INFO  51 	     3123	0.6492	0.6492	     3123	0.6492	0.6492	0	0	3	0	2	51.6	8/11	3/4	0	72/74/77	138.622	0 01:36:48	506MB
+INFO  52 	     3160	0.7281	0.7281	     3160	0.7281	0.7281	0	0	5	2	0	52.9	0/13	0/5	1	72/74/76	146.161	0 01:37:03	168MB
+INFO  53 	     3190	0.6495	0.6495	     3190	0.6495	0.6495	0	0	5	1	1	52.9	0/10	0/6	1	72/75/78	166.474	0 01:38:34	285MB
+INFO  54 	     3241	0.7276	0.7276	     3241	0.7276	0.7276	0	0	7	3	1	52.9	0/9	0/7	2	73/76/79	144.862	0 01:37:55	204MB
+INFO  55 	     3274	0.7125	0.7125	     3274	0.7125	0.7125	0	0	7	3	3	52.9	0/8	0/8	1	74/77/80	124.243	0 01:35:32	1136MB
+INFO  56 	     3274	0.7189	0.7189	     3274	0.7189	0.7189	0	0	6	0	1	55.5	3/14	1/9	3	74/76/78	118.422	0 01:32:45	268MB
+INFO  57 	     3350	0.7257	0.7257	     3350	0.7257	0.7257	0	0	4	1	3	55.5	0/12	0/10	0	73/76/79	112.964	0 01:29:41	441MB
+INFO  58 	     3388	0.6577	0.6577	     3388	0.6577	0.6577	0	0	5	1	0	55.5	0/16	0/10	1	73/76/79	139.685	0 01:28:37	226MB
+INFO  59 	     3432	0.7191	0.7191	     3432	0.7191	0.7191	0	0	5	1	1	55.5	0/16	0/4	3	74/77/80	118.711	0 01:25:58	290MB
+INFO  Gen	Fittest  	F0Mari	Perfor	BestPrf  	F0Mari	Perfor	ZPC	ZFC	SC	NS	ES	SCT	SS	SA    	SNBP	GS      	Time	ETA      	Mem
+INFO  60 	     3472	0.7148	0.7148	     3472	0.7148	0.7148	0	0	5	1	1	56.9	0/10	0/5	2	74/78/81	140.111	0 01:24:49	558MB
+INFO  61 	     3507	0.7678	0.7678	     3507	0.7678	0.7678	0	0	5	1	1	56.9	0/7	0/6	1	75/79/83	127.014	0 01:22:41	176MB
+INFO  62 	     3534	0.7096	0.7096	     3534	0.7096	0.7096	0	0	5	0	0	56.9	5/9	1/6	2	75/80/84	136.903	0 01:21:11	98MB
+INFO  63 	     3534	0.6495	0.6495	     3534	0.6495	0.6495	0	0	6	2	1	56.9	0/10	0/5	0	76/80/84	131.105	0 01:19:13	453MB
+INFO  64 	     3603	0.7113	0.7113	     3603	0.7113	0.7113	0	0	5	0	1	58.3	5/8	1/6	3	77/81/84	146.376	0 01:18:09	533MB
+INFO  65 	     3616	0.6495	0.6495	     3616	0.6495	0.6495	0	0	7	2	0	58.3	0/9	0/6	1	78/81/85	114.995	0 01:15:06	738MB
+INFO  66 	     3616	0.6495	0.6495	     3616	0.6495	0.6495	0	0	5	0	2	58.3	5/7	1/7	2	78/81/86	129.297	0 01:12:59	448MB
+INFO  67 	     3728	0.7276	0.7276	     3728	0.7276	0.7276	0	0	5	1	1	58.3	0/9	0/8	3	74/81/88	120.016	0 01:10:21	587MB
+INFO  68 	     3772	0.7253	0.7253	     3772	0.7253	0.7253	0	0	5	0	0	59.8	5/10	1/9	3	74/81/87	129.344	0 01:08:18	745MB
+INFO  69 	     3801	0.7206	0.7206	     3801	0.7206	0.7206	0	0	5	1	1	59.8	0/15	0/9	2	75/83/87	130.398	0 01:06:17	507MB
+INFO  70 	     3852	0.6495	0.6495	     3810	0.6495	0.6495	0	0	6	2	1	59.8	0/8	0/6	1	76/83/87	144.702	0 01:04:58	363MB
