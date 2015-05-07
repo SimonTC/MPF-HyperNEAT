@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="lib/Mario/testng-6.8.7.jar"/>
 	<classpathentry kind="lib" path="lib/Mario/Mario_Full_Clean.jar"/>
 	<classpathentry kind="lib" path="lib/Mario/JNEAT.jar"/>
+	<classpathentry kind="lib" path="lib/SARSA.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
