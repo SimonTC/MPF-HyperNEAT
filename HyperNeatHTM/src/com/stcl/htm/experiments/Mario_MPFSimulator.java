@@ -32,7 +32,7 @@ public class Mario_MPFSimulator {
 		String everything = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on";
 
 		// Write parameters to use in simulation
-		String learningOptions = withGaps;
+		String learningOptions = flatBlocks;
 		// options = options + " -ls 2 -ld 2 -z on";
 		System.out.print(learningOptions);
 
@@ -107,23 +107,33 @@ public class Mario_MPFSimulator {
 		double stepPoint = 1.0 / 256.0;
 		int distanceNow = 0;
 		int distanceBefore = 0;
-		boolean[] action = null;
+		boolean[] action = {false,false,false,false,false,false};
 		int count = 0;
 		while (!environment.isLevelFinished()) {			
 			increaseCount();
+			
+			environment.performAction(action);
 			environment.tick(); // Execute one tick in the game //STC
-			int[] ev = environment.getEvaluationInfoAsInts();
-			distanceNow = ev[0];
 			if (count % 3 == 0){
-				double reward = distanceNow - distanceBefore;
-				reward = reward * stepPoint - stepPoint;
+				int[] ev = environment.getEvaluationInfoAsInts();
+				distanceNow = ev[0];
+				double reward = 0;
+				if (ev[8] == 0){
+					reward = -1;
+				} else if (ev[8] == 1){
+					reward = 1;
+				} else {
+					reward = distanceNow - distanceBefore;
+					reward = reward * stepPoint - stepPoint;
+				}
+				
 				double internalReward = reward;//calculateInternaleward(reward);
 				agent.giveReward(internalReward);
 				agent.integrateObservation(environment);
 				action = agent.getAction();
 				distanceBefore = distanceNow;
 			}
-			environment.performAction(action);	
+
 			count++;
 		}
 		
