@@ -14,7 +14,7 @@ import vikrasim.agents.MasterAgent;
 import ch.idsia.benchmark.mario.environments.Environment;
 import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 
-public class Mario_MPFSimulator {
+public class CopyOfMario_MPFSimulator {
 
 	static ArrayList<SimpleMatrix> actions;
 	private static boolean writeInfo = false;
@@ -69,13 +69,12 @@ public class Mario_MPFSimulator {
 		
 		//Run training
 		agentBrain.setUsePrediction(true);
-		int trainingEpisodes = 100;
+		int trainingEpisodes = 50;
 		for (int i = 0; i < trainingEpisodes; i++){
-			int levelSeed = 1;
 			if (writeInfo)agentBrain.openFiles(true);
 			//learningOptions = learningOptions.replace("-vis off", "-vis on");
 			agentBrain.getActionNode().setExplorationChance(1 - (double)i / trainingEpisodes);
-			int[] results = runNormalRound(agentMPF, learningOptions + " -ls " + levelSeed + " -ld 2");
+			int[] results = runNormalRound(agentMPF, learningOptions + " -ls " + i + " -ld 2");
 			
 			//agentBrain.newEpisode(calculateInternaleward(lastReward));
 			agentBrain.newEpisode();
@@ -84,7 +83,7 @@ public class Mario_MPFSimulator {
 			//agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
 			if (writeInfo)agentBrain.closeFiles();
 		}
-		agentBrain.setLearning(false);
+		
 		agentBrain.getActionNode().setExplorationChance(0);
 		learningOptions = learningOptions.replace("-vis off", "-vis on");
 		learningOptions = learningOptions + " -ls 5 -ld 2 -z on";
@@ -94,61 +93,46 @@ public class Mario_MPFSimulator {
 	}
 	
 	private static int[] runNormalRound(MPFAgent agent, String levelOptions){
+		Environment environment = new MarioEnvironment();
+		environment.reset(levelOptions);
 		double stepPoint = 1.0 / 256.0;
 		int distanceNow = 0;
 		int distanceBefore = 0;
-		
-		Environment environment = new MarioEnvironment();
-		environment.reset(levelOptions);
-		
-		agent.giveReward(0);
-		agent.integrateObservation(environment);
 		boolean[] action = {false,false,false,false,false,false}; //Choose random action
-		environment.performAction(action);	
-		environment.tick(); // Execute one tick in the game //STC
-		action = agent.getAction();
-		
 		int count = 0;
 		boolean[] nextAction = action;
-		int[] ev = null;
 		while (!environment.isLevelFinished()) {			
+			increaseCount();
+			double reward = distanceNow - distanceBefore;
+			reward = reward * stepPoint - stepPoint;
+			double internalReward = reward - 0.001;//calculateInternaleward(reward);
+			agent.giveReward(internalReward);
+			agent.integrateObservation(environment);
+			nextAction = agent.getAction();
 			environment.performAction(action);	
-			environment.tick(); // Execute one tick in the game //STC
-			if (count % 3 == 0){
-				ev = environment.getEvaluationInfoAsInts();
-				distanceNow = ev[0];
-				double reward = calculateReward(ev, distanceNow, distanceBefore);
-				agent.giveReward(reward);
-				agent.integrateObservation(environment);
-				action = agent.getAction();
-				//System.out.println("Distance moved: " + (distanceNow - distanceBefore) + " Reward: " + reward);
+			environment.tick(); // Execute one tick in the game //STC			
+			int[] ev = environment.getEvaluationInfoAsInts();
+			if (distanceNow > distanceBefore){
 				distanceBefore = distanceNow;
 			}
+			distanceNow = ev[0];
+			action = nextAction;
 			count++;
-			
 		}
 		
+		int[] ev = environment.getEvaluationInfoAsInts();
+		double lastReward = 0;
+		int marioStatus = ev[8];
+		if (marioStatus == 0) lastReward = -1; //Dead
+		if (marioStatus == 1) lastReward = 1; //Won
+		if (marioStatus == 2) lastReward = 0; //Time out
+
+		agent.giveReward(lastReward);
+		agent.integrateObservation(environment);
+		nextAction = agent.getAction();
+		
+		
 		return ev;
-	}
-	
-	private static double calculateReward(int[] environment, int distanceNow, int distanceBefore){
-		double reward = 0;
-		/*
-		int marioStatus = environment[8];
-		if (marioStatus == 0){
-			reward = -1; //Dead
-		} else if (marioStatus == 1){
-			reward = 1; //Won
-		*/
-		if (distanceNow == 256){
-			reward = 10;
-		} else {		
-			//Give reward based on how far Mario has moved
-			double stepPoint = 0.001;// 1.0 / 256.0;
-			reward = distanceNow - distanceBefore;
-			reward = reward * stepPoint - 0.001;
-		}
-		return reward;
 	}
 	
 	private static int[] runLearningRound(MPFAgent pupil, MasterAgent teacher, String levelOptions){
