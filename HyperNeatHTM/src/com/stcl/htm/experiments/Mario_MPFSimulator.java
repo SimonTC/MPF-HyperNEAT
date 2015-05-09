@@ -32,7 +32,7 @@ public class Mario_MPFSimulator {
 		String everything = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on";
 
 		// Write parameters to use in simulation
-		String learningOptions = flatNoBlock;
+		String learningOptions = flatBlocks;
 		// options = options + " -ls 2 -ld 2 -z on";
 		System.out.print(learningOptions);
 
@@ -48,12 +48,12 @@ public class Mario_MPFSimulator {
 		if (writeInfo) agentBrain.initializeWriters(outputFile, false);
 		if (writeInfo)agentBrain.closeFiles();
 		//Run 5 learning rounds
-		
+		/*
 		agentBrain.setUsePrediction(true);
 		agentBrain.getActionNode().printActionModels();
 		System.out.println();
 		counter = 0;
-		/*
+		
 		for (int i = 0; i < 10; i++){
 			if (writeInfo)agentBrain.openFiles(true);
 			System.out.println("Starting learning run " + i);
@@ -71,7 +71,7 @@ public class Mario_MPFSimulator {
 		agentBrain.setUsePrediction(true);
 		int trainingEpisodes = 100;
 		for (int i = 0; i < trainingEpisodes; i++){
-			int levelSeed = 1;
+			int levelSeed = 5;
 			if (writeInfo)agentBrain.openFiles(true);
 			//learningOptions = learningOptions.replace("-vis off", "-vis on");
 			agentBrain.getActionNode().setExplorationChance(1 - (double)i / trainingEpisodes);
