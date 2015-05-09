@@ -238,24 +238,52 @@ public class MarioFitnessFunction_Incremental extends HyperNEATFitnessFunction {
 		environment.setAgent(agent);
 		environment.reset(levelOptions);
 		
+		//Initial observation and reward giving
+		agent.giveReward(0);
+		agent.integrateObservation(environment);
+		boolean[] action = {false,false,false,false,false,false}; //Choose random action
+		environment.performAction(action);	
+		environment.tick(); // Execute one tick in the game //STC
+		action = agent.getAction();
+		
 		
 		int distanceNow = 0;
 		int distanceBefore = 0;
-		boolean[] action = null;
 		while (!environment.isLevelFinished()) {	
-			environment.tick(); // Execute one tick in the game //STC
-			int[] ev = environment.getEvaluationInfoAsInts();
+			environment.performAction(action);	
+			environment.tick(); // Execute one tick in the game //STC			
+			int[]ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];
-			double reward = distanceNow - distanceBefore;
-			reward = reward - 0.5; //Punish it for not moving
+			double reward = calculateReward(ev, distanceNow, distanceBefore);
 			agent.giveReward(reward);
 			agent.integrateObservation(environment);
 			action = agent.getAction();
-			distanceBefore = distanceNow;
-			environment.performAction(action);				
+			distanceBefore = distanceNow;	
 		}
+		
+		agent.newEpisode();
 		
 		int[] ev = environment.getEvaluationInfoAsInts();
 		return ev;
+	}
+	
+	private static double calculateReward(int[] environment, int distanceNow, int distanceBefore){
+		double reward = 0;
+		/*
+		int marioStatus = environment[8];
+		if (marioStatus == 0){
+			reward = -1; //Dead
+		} else if (marioStatus == 1){
+			reward = 1; //Won
+		*/
+		if (distanceNow == 256){
+			reward = 1;
+		} else {		
+			//Give reward based on how far Mario has moved
+			double stepPoint = 0.001;// 1.0 / 256.0;
+			reward = distanceNow - distanceBefore;
+			reward = reward * stepPoint - 0.001;
+		}
+		return reward;
 	}
 }

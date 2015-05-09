@@ -60,5 +60,9 @@ public abstract class MPFAgent extends BasicMarioAIAgent implements Configurable
 	public void setBrain(HTMNetwork brain){
 		this.brain = brain;
 	}
+	
+	public void newEpisode(){
+		brain.getNetwork().newEpisode();
+	}
 
 }
