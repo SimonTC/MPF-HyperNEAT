@@ -138,7 +138,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							UnitNode unitnode = (UnitNode) n;
 							int id = nextFreeID++;
 							unitnode.setID(id);
-							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, actionMapSize * actionMapSize);
+							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, actionMapSize * actionMapSize, true);
 							brainNetwork.addNode(unitnode);
 							votingInfluences.put(id, votingInfluence);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
