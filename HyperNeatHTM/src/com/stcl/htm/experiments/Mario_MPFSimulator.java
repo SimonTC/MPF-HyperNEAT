@@ -32,7 +32,7 @@ public class Mario_MPFSimulator {
 		String everything = "-vis off -lb on -lca on -lco on -lde on -lf off -lg on -lhs on -ltb on";
 
 		// Write parameters to use in simulation
-		String learningOptions = flatBlocks;
+		String learningOptions = flatNoBlock;
 		// options = options + " -ls 2 -ld 2 -z on";
 		System.out.print(learningOptions);
 
@@ -41,34 +41,55 @@ public class Mario_MPFSimulator {
 		String file = "D:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
 		MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
 		agentGAP.createBrain();
-		MPFAgent agentMPF = new MPFAgent("MPF", 1, 1, 7, 7, new Random(1234));
+		MPFAgent agentMPF = new MPFAgent("MPF", 1, 1, 7, 7, new Random(1234), true);
 		Network_DataCollector agentBrain = agentMPF.getNetwork();
 		createActionMatrix();
 		loadActionMatrix(agentBrain);
 		if (writeInfo) agentBrain.initializeWriters(outputFile, false);
 		if (writeInfo)agentBrain.closeFiles();
 		//Run 5 learning rounds
-		/*
-		agentBrain.setUsePrediction(true);
-		agentBrain.getActionNode().printActionModels();
-		System.out.println();
-		counter = 0;
 		
-		for (int i = 0; i < 10; i++){
+		agentBrain.setUsePrediction(true);
+		
+		System.out.println();
+		System.out.println("Model weigths before learning in unit: " + agentBrain.getUnitNodes().get(0).getID());
+		
+		agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
+		System.out.println();
+
+		counter = 0;
+		//learningOptions = learningOptions.replace("-vis off", "-vis on");
+		for (int i = 0; i < 100; i++){
+			//writeInfo = (i % 10 == 0) ;
 			if (writeInfo)agentBrain.openFiles(true);
 			System.out.println("Starting learning run " + i);
-			int[] results = runLearningRound(agentMPF, agentGAP, learningOptions);
+			int[] results = runLearningRound(agentMPF, learningOptions, agentGAP);
+			System.out.println("Distance traveled: " + results[0]);
 			agentBrain.newEpisode();
 			//agentBrain.newEpisode(calculateInternaleward(10));
 			if (writeInfo)agentBrain.closeFiles();
 		}
 		
-		agentBrain.getActionNode().printActionModels();
+		//agentBrain.getActionNode().printActionModels();
+		System.out.println();
+		System.out.println("Model weigths after learning:");
 		agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
-		*/
+		System.out.println();
 		
+		agentBrain.setLearning(false);
+		agentBrain.getActionNode().setExplorationChance(0);
+		//learningOptions = learningOptions.replace("-vis off", "-vis on");
+		learningOptions = learningOptions + " -ls 5 -ld 2 -z on";
+		int[] results = runNormalRound(agentMPF, learningOptions);
+		System.out.println("Evaluation");
+		System.out.println("Distance traveled: " + results[0]);
+		System.exit(0);
+		
+		/*
+		//learningOptions = learningOptions.replace("-vis on", "-vis off");
 		//Run training
 		agentBrain.setUsePrediction(true);
+		
 		int trainingEpisodes = 100;
 		for (int i = 0; i < trainingEpisodes; i++){
 			int levelSeed = 5;
@@ -84,12 +105,21 @@ public class Mario_MPFSimulator {
 			//agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
 			if (writeInfo)agentBrain.closeFiles();
 		}
+		
+		System.out.println();
+		System.out.println("Model weigths after training:");
+		agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
+		System.out.println();
+		
 		agentBrain.setLearning(false);
 		agentBrain.getActionNode().setExplorationChance(0);
-		learningOptions = learningOptions.replace("-vis off", "-vis on");
+		//learningOptions = learningOptions.replace("-vis off", "-vis on");
 		learningOptions = learningOptions + " -ls 5 -ld 2 -z on";
-		runNormalRound(agentMPF, learningOptions);
+		int[] results = runNormalRound(agentMPF, learningOptions);
+		System.out.println("Evaluation");
+		System.out.println("Distance traveled: " + results[0]);
 		System.exit(0);
+		*/
 		agentBrain.closeFiles();
 	}
 	
@@ -114,7 +144,7 @@ public class Mario_MPFSimulator {
 		while (!environment.isLevelFinished()) {			
 			environment.performAction(action);	
 			environment.tick(); // Execute one tick in the game //STC
-			if (count % 3 == 0){
+			if (count % 1 == 0){
 				ev = environment.getEvaluationInfoAsInts();
 				distanceNow = ev[0];
 				double reward = calculateReward(ev, distanceNow, distanceBefore);
@@ -128,6 +158,33 @@ public class Mario_MPFSimulator {
 			
 		}
 		
+		return ev;
+	}
+	
+	private static int[] runLearningRound(MPFAgent agent, String levelOptions, MasterAgent teacher){
+		Environment environment = new MarioEnvironment();
+		environment.setAgent(teacher);
+		environment.reset(levelOptions);		
+		
+		int distanceNow = 0;
+		int distanceBefore = 0;
+		boolean[] action = null;
+		while (!environment.isLevelFinished()) {	
+			environment.tick(); // Execute one tick in the game //STC
+			int[] ev = environment.getEvaluationInfoAsInts();
+			distanceNow = ev[0];
+			double reward = calculateReward(ev, distanceNow, distanceBefore);
+			agent.giveReward(reward);
+			teacher.integrateObservation(environment);
+			agent.integrateObservation(environment);
+			agent.getAction();
+			action = teacher.getAction();
+			agent.setAction(action);
+			distanceBefore = distanceNow;
+			environment.performAction(action);				
+		}
+		
+		int[] ev = environment.getEvaluationInfoAsInts();
 		return ev;
 	}
 	
@@ -151,6 +208,9 @@ public class Mario_MPFSimulator {
 		return reward;
 	}
 	
+	
+	
+	/*
 	private static int[] runLearningRound(MPFAgent pupil, MasterAgent teacher, String levelOptions){
 		Environment environment = new MarioEnvironment();
 		environment.reset(levelOptions);
@@ -190,7 +250,7 @@ public class Mario_MPFSimulator {
 	
 		return ev;
 	}
-
+*/
 	
 	private static double externalRewardNow, externalRewardBefore, internalRewardBefore;
 	private static double calculateInternaleward(double externalReward){

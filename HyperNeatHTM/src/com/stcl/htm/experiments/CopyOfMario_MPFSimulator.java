@@ -41,7 +41,7 @@ public class CopyOfMario_MPFSimulator {
 		String file = "D:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
 		MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
 		agentGAP.createBrain();
-		MPFAgent agentMPF = new MPFAgent("MPF", 1, 1, 7, 7, new Random(1234));
+		MPFAgent agentMPF = new MPFAgent("MPF", 1, 1, 7, 7, new Random(1234), true);
 		Network_DataCollector agentBrain = agentMPF.getNetwork();
 		createActionMatrix();
 		loadActionMatrix(agentBrain);
