@@ -39,8 +39,8 @@ public class Mario_MPFSimulator {
 		String outputFile = "D:/Users/Simon/Documents/Experiments/HTM/mario/No_Evo";
 		// Create new agent
 		String file = "D:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
-		MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
-		agentGAP.createBrain();
+		//MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
+		//agentGAP.createBrain();
 		MPFAgent agentMPF = new MPFAgent("MPF", 1, 1, 7, 7, new Random(1234), true);
 		Network_DataCollector agentBrain = agentMPF.getNetwork();
 		createActionMatrix();
@@ -56,7 +56,7 @@ public class Mario_MPFSimulator {
 		
 		agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
 		System.out.println();
-
+/*
 		counter = 0;
 		//learningOptions = learningOptions.replace("-vis off", "-vis on");
 		for (int i = 0; i < 100; i++){
@@ -75,7 +75,8 @@ public class Mario_MPFSimulator {
 		System.out.println("Model weigths after learning:");
 		agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
 		System.out.println();
-		
+		*/
+		/*
 		agentBrain.setLearning(false);
 		agentBrain.getActionNode().setExplorationChance(0);
 		//learningOptions = learningOptions.replace("-vis off", "-vis on");
@@ -84,13 +85,13 @@ public class Mario_MPFSimulator {
 		System.out.println("Evaluation");
 		System.out.println("Distance traveled: " + results[0]);
 		System.exit(0);
+		*/
 		
-		/*
 		//learningOptions = learningOptions.replace("-vis on", "-vis off");
 		//Run training
 		agentBrain.setUsePrediction(true);
 		
-		int trainingEpisodes = 100;
+		int trainingEpisodes = 500;
 		for (int i = 0; i < trainingEpisodes; i++){
 			int levelSeed = 5;
 			if (writeInfo)agentBrain.openFiles(true);
@@ -119,7 +120,7 @@ public class Mario_MPFSimulator {
 		System.out.println("Evaluation");
 		System.out.println("Distance traveled: " + results[0]);
 		System.exit(0);
-		*/
+		
 		agentBrain.closeFiles();
 	}
 	
@@ -130,18 +131,13 @@ public class Mario_MPFSimulator {
 		
 		Environment environment = new MarioEnvironment();
 		environment.reset(levelOptions);
-		
-		agent.giveReward(0);
-		agent.integrateObservation(environment);
+
 		boolean[] action = {false,false,false,false,false,false}; //Choose random action
-		environment.performAction(action);	
-		environment.tick(); // Execute one tick in the game //STC
-		action = agent.getAction();
 		
 		int count = 0;
 		boolean[] nextAction = action;
 		int[] ev = null;
-		while (!environment.isLevelFinished()) {			
+		do {			
 			environment.performAction(action);	
 			environment.tick(); // Execute one tick in the game //STC
 			if (count % 1 == 0){
@@ -153,10 +149,10 @@ public class Mario_MPFSimulator {
 				action = agent.getAction();
 				//System.out.println("Distance moved: " + (distanceNow - distanceBefore) + " Reward: " + reward);
 				distanceBefore = distanceNow;
-			}
+			} 
 			count++;
 			
-		}
+		} while (!environment.isLevelFinished());
 		
 		return ev;
 	}
