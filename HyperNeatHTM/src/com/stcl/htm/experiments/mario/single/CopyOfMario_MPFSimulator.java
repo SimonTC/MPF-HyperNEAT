@@ -1,4 +1,4 @@
-package com.stcl.htm.experiments;
+package com.stcl.htm.experiments.mario.single;
 
 import java.io.IOException;
 import java.util.ArrayList;

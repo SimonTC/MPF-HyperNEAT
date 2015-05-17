@@ -48,7 +48,7 @@ public class HTMNetwork  implements Activator, Serializable {
 	 */
 	public void setInput(double[] stimuli){
 		ArrayList<Sensor> sensors = network.getSensors();
-		
+		 
 		for (int i = 0; i < stimuli.length; i++){
 			Sensor s = sensors.get(i);
 			s.setInput(stimuli[i]);

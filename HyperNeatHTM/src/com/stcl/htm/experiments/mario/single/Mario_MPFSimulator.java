@@ -1,4 +1,4 @@
-package com.stcl.htm.experiments;
+package com.stcl.htm.experiments.mario.single;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,12 +39,14 @@ public class Mario_MPFSimulator {
 		String outputFile = "D:/Users/Simon/Documents/Experiments/HTM/mario/No_Evo";
 		// Create new agent
 		String file = "D:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
-		//MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
-		//agentGAP.createBrain();
+		MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
+		agentGAP.createBrain();
 		MPFAgent agentMPF = new MPFAgent("MPF", 1, 1, 7, 7, new Random(1234), true);
 		Network_DataCollector agentBrain = agentMPF.getNetwork();
 		createActionMatrix();
 		loadActionMatrix(agentBrain);
+		
+		
 		if (writeInfo) agentBrain.initializeWriters(outputFile, false);
 		if (writeInfo)agentBrain.closeFiles();
 		//Run 5 learning rounds
@@ -56,9 +58,9 @@ public class Mario_MPFSimulator {
 		
 		agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
 		System.out.println();
-/*
+
 		counter = 0;
-		//learningOptions = learningOptions.replace("-vis off", "-vis on");
+		learningOptions = learningOptions.replace("-vis off", "-vis on");
 		for (int i = 0; i < 100; i++){
 			//writeInfo = (i % 10 == 0) ;
 			if (writeInfo)agentBrain.openFiles(true);
@@ -75,18 +77,18 @@ public class Mario_MPFSimulator {
 		System.out.println("Model weigths after learning:");
 		agentBrain.getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
 		System.out.println();
-		*/
-		/*
+		
+		
 		agentBrain.setLearning(false);
 		agentBrain.getActionNode().setExplorationChance(0);
-		//learningOptions = learningOptions.replace("-vis off", "-vis on");
-		learningOptions = learningOptions + " -ls 5 -ld 2 -z on";
+		learningOptions = learningOptions.replace("-vis off", "-vis on");
+		//learningOptions = learningOptions + " -ls 5 -ld 2 -z on";
 		int[] results = runNormalRound(agentMPF, learningOptions);
 		System.out.println("Evaluation");
 		System.out.println("Distance traveled: " + results[0]);
 		System.exit(0);
-		*/
 		
+		/*
 		//learningOptions = learningOptions.replace("-vis on", "-vis off");
 		//Run training
 		agentBrain.setUsePrediction(true);
@@ -120,7 +122,7 @@ public class Mario_MPFSimulator {
 		System.out.println("Evaluation");
 		System.out.println("Distance traveled: " + results[0]);
 		System.exit(0);
-		
+		*/
 		agentBrain.closeFiles();
 	}
 	
@@ -293,8 +295,7 @@ public class Mario_MPFSimulator {
 		for (double[][] dataMatrix : actionData){
 			SimpleMatrix m = new SimpleMatrix(dataMatrix);
 			actions.add(m);
-		}
-		
+		}		
 	}
 	
 	private static void increaseCount(){
