@@ -8,6 +8,7 @@ import org.ejml.simple.SimpleMatrix;
 import ch.idsia.benchmark.mario.environments.Environment;
 import ch.idsia.benchmark.mario.environments.MarioEnvironment;
 
+import com.stcl.htm.experiments.mario.EnvironmentAgent;
 import com.stcl.htm.experiments.mario.MPFAgent;
 import com.stcl.htm.experiments.mario.ScannerAgent;
 import com.stcl.htm.network.HTMNetwork;
@@ -28,6 +29,8 @@ public class Mario_Reactionary {
 	private Random rand = new Random(1234);
 	private MasterAgent teacher;
 	private MPFAgent agent;
+	
+	private int receptiveFieldSize = 19; //Set to 19 when using the scanner agent
 
 	String flatNoBlock = "-vis off -lb off -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
 	String flatBlocks = "-vis off -lb on -lca off -lco off -lde off -le off -lf off -lg off -lhs off -ltb off";
@@ -46,16 +49,28 @@ public class Mario_Reactionary {
 	}
 	
 	public void run(){
-		String learningOptions = flatNoBlock;
+		String learningOptions = flatNoBlock + " -rfw " + receptiveFieldSize + " -rfh " + receptiveFieldSize+  " -ls 2";
 		setup(false);
+		
 		System.out.println("Starting teaching");
 		doTeaching(teacher, agent, 100, 0, learningOptions);
 		System.out.println();
+		
+		System.out.println("Q-Matrix:");
+		agent.getNetwork().getNetwork().getUnitNodes().get(0).getUnit().getDecider().printQMatrix();
+		System.out.println();
+		
+		System.out.println("Model weights:");
+		agent.getNetwork().getNetwork().getUnitNodes().get(0).getUnit().getSpatialPooler().printModelWeigths();
+		System.out.println();
+		
 		System.out.println("Starting training");
 		//doTraining(agent, 100, 0, learningOptions);
 		System.out.println();
+		
 		System.out.println("Starting evaluation");
-		doEvaluation(agent, 100, 0, learningOptions);
+		learningOptions = learningOptions.replace("-vis off", "-vis on");
+		doEvaluation(agent, 1, 0, learningOptions);
 		
 	}
 	
@@ -68,7 +83,6 @@ public class Mario_Reactionary {
 			if (writeInfo)agentBrain.openFiles(true);
 			int[] results = runRound(pupil, learningOptions, teacher);
 			System.out.println("Teaching run " + i + " - Distance traveled: " + results[0]);
-			pupil.newEpisode(); 
 			if (writeInfo)agentBrain.closeFiles();
 		}
 	}
@@ -83,7 +97,6 @@ public class Mario_Reactionary {
 			if (writeInfo)agentBrain.openFiles(true);
 			int[] results = runRound(pupil, learningOptions, null);
 			System.out.println("Training run " + i + " - Distance traveled: " + results[0]);
-			pupil.newEpisode(); 
 			if (writeInfo)agentBrain.closeFiles();
 		}
 	}
@@ -99,7 +112,6 @@ public class Mario_Reactionary {
 			if (writeInfo)agentBrain.openFiles(true);
 			int[] results = runRound(pupil, learningOptions, null);
 			System.out.println("Evaluation run " + i + " - Distance traveled: " + results[0]);
-			pupil.newEpisode(); 
 			if (writeInfo)agentBrain.closeFiles();
 		}
 	}
@@ -113,15 +125,32 @@ public class Mario_Reactionary {
 		}
 		
 		environment.reset(levelOptions);		
-		
+		double reward = 0;
 		int distanceNow = 0;
 		int distanceBefore = 0;
 		boolean[] action = null;
 		while (!environment.isLevelFinished()) {	
+			int[] ev = environment.getEvaluationInfoAsInts();
+			distanceNow = ev[0];
+			reward = calculateReward(ev, distanceNow, distanceBefore);
+			agent.giveReward(reward);
+			if (teacher != null) teacher.integrateObservation(environment);
+			agent.integrateObservation(environment);
+			action = agent.getAction();
+			if (teacher != null) {
+				action = teacher.getAction();
+				agent.setAction(action);
+			} 			
+			environment.performAction(action);	
+			environment.tick(); // Execute one tick in the game //STC
+			
+			distanceBefore = distanceNow;
+			
+			/*
 			environment.tick(); // Execute one tick in the game //STC
 			int[] ev = environment.getEvaluationInfoAsInts();
 			distanceNow = ev[0];
-			double reward = calculateReward(ev, distanceNow, distanceBefore);
+			reward = calculateReward(ev, distanceNow, distanceBefore);
 			agent.giveReward(reward);
 			if (teacher != null) teacher.integrateObservation(environment);
 			agent.integrateObservation(environment);
@@ -131,10 +160,17 @@ public class Mario_Reactionary {
 				agent.setAction(action);
 			} 			
 			distanceBefore = distanceNow;
-			environment.performAction(action);				
+			environment.performAction(action);		
+			*/		
 		}
 		
 		int[] ev = environment.getEvaluationInfoAsInts();
+		distanceNow = ev[0];
+		reward = calculateReward(ev, distanceNow, distanceBefore);
+		agent.giveReward(reward);
+		agent.integrateObservation(environment);
+		action = agent.getAction();
+		agent.newEpisode();
 		return ev;
 	}
 	
@@ -172,9 +208,10 @@ public class Mario_Reactionary {
 	}
 	
 	private MPFAgent createPupil(){
-		Network_DataCollector network = buildNetwork(6, 18, true);
+		Network_DataCollector network = buildNetwork(6, (int) Math.pow(receptiveFieldSize, 2), true);
 		HTMNetwork brain = new HTMNetwork(network);
-		MPFAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		//MPFAgent agent = new ScannerAgent("Scanner", brain, 1, 1, 7, 7);
+		MPFAgent agent = new EnvironmentAgent("Environment", brain, 2, 2);
 		return agent;
 		
 	}
@@ -209,7 +246,7 @@ public class Mario_Reactionary {
 		int spatialMapSize_input = 5;
 		int temporalMapSize_input = 3;
 		int markovOrder_input = 3;
-		inputPooler.initialize(rand, inputLength, spatialMapSize_input, temporalMapSize_input, 0.1, markovOrder_input, numActions, offlineLearning);
+		inputPooler.initialize(rand, inputLength, spatialMapSize_input, temporalMapSize_input, markovOrder_input, numActions, offlineLearning);
 	
 		//Combiner
 		
@@ -217,14 +254,14 @@ public class Mario_Reactionary {
 		int spatialMapSize_combiner = 5;
 		int temporalMapSize_combiner = 3;
 		int markovOrder_combiner = 3;
-		combiner.initialize(rand, ffInputLength_combiner, spatialMapSize_combiner, temporalMapSize_combiner, 0.1, markovOrder_combiner, numActions, offlineLearning);
+		combiner.initialize(rand, ffInputLength_combiner, spatialMapSize_combiner, temporalMapSize_combiner,  markovOrder_combiner, numActions, offlineLearning);
 	
 		//top node
 		int ffInputLength_top = combiner.getFeedforwardOutputVectorLength();
 		int spatialMapSize_top = 5;
 		int temporalMapSize_top = 3;
 		int markovOrder_top = 3;
-		topNode.initialize(rand, ffInputLength_top, spatialMapSize_top, temporalMapSize_top, 0.1, markovOrder_top, numActions, offlineLearning);
+		topNode.initialize(rand, ffInputLength_top, spatialMapSize_top, temporalMapSize_top,  markovOrder_top, numActions, offlineLearning);
 		
 		//Create input sensors
 		int id = 5;
