@@ -39,6 +39,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	public static final String HTM_ACTION_VECTOR_LENGTH_KEY = "htm.action.inputlenght";
 	public static final String HTM_ACTION_GROUP_MAPSIZE_KEY = "htm.action.mapsize";
 	public static final String HTM_ACTION_VOTER_INFLUENCE_EVOLVE = "htm.action.voter.influence.evolve";
+	public static final String HTM_ACTION_DECIDER_BATCH_TRAINING = "htm.action.devider.batch.training";
 
 	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
 	
@@ -138,7 +139,8 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							UnitNode unitnode = (UnitNode) n;
 							int id = nextFreeID++;
 							unitnode.setID(id);
-							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, initialPredictionLearningRate, markovOrder, actionMapSize * actionMapSize, true);
+							//TODO: Move offline learning to parameter file
+							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, markovOrder, actionMapSize * actionMapSize, props.getBooleanProperty(HTM_ACTION_DECIDER_BATCH_TRAINING, false));
 							brainNetwork.addNode(unitnode);
 							votingInfluences.put(id, votingInfluence);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
