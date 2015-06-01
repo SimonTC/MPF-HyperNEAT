@@ -5,6 +5,7 @@ import java.util.Random;
 import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
+import stcl.algo.brain.Network;
 import stcl.algo.util.Orthogonalizer;
 
 import com.anji.integration.Activator;
@@ -18,6 +19,8 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	public static final String RPS_LEARNING_ITERATIONS_KEY = "rps.learning.iterations";
 	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
 	public static final String RPS_EVALUATION_ITERATIONS_KEY = "rps.evaluation.iterations";
+	public static final String RPS_SEQUENCES_NUMBER_KEY = "rps.sequences.number";
+	public static final String RPS_SEQUENCES_ITERATIONS_KEY = "rps.sequences.iterations";
 
 	private SimpleMatrix[] sequence, possibleInputs;
 	private int[] labelSequence;
@@ -26,8 +29,9 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	private int learningIterations;
 	private int trainingIterations;
 	private int evaluationIterations;
+	private int numDifferentSequences;
+	private int numIterationsPerSequence;
 	private Random rand;
-	private Properties props;
 	
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -36,13 +40,14 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	 */
 	public void init(Properties props) {
 		super.init(props);
-		this.props = props;
 		Randomizer randomizer = new Randomizer();
 		randomizer.init(props);
 		rand = randomizer.getRand();
 		learningIterations = props.getIntProperty(RPS_LEARNING_ITERATIONS_KEY, 100);
 		trainingIterations = props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY, 1000);
 		evaluationIterations = props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY, 100);
+		numDifferentSequences = props.getIntProperty(RPS_SEQUENCES_NUMBER_KEY, 1);
+		numIterationsPerSequence = props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY, 10);
 	}
 	
 	@Override
@@ -54,20 +59,34 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		HTMNetwork brain = (HTMNetwork) activator;
-		//Show good and bad actions
-		runLearning(learningIterations, brain);
-		
-		//Let it train
-		runExperiment(trainingIterations, brain);
-		
-		//Evaluate
-		brain.getNetwork().getActionNode().setExplorationChance(0);
-		brain.getNetwork().setLearning(false);
-		brain.reset();
-		double[] scores = runExperiment(evaluationIterations, brain);
-		double fitness = scores[1];
-		genotype.setPerformanceValue(fitness);
-		return fitness;
+		String initializationString = brain.getNetwork().toString();
+		double totalFitness = 0;
+		for (int sequence = 0; sequence < numDifferentSequences; sequence++){
+			double sequenceFitness = 0;
+			for (int sequenceIteration = 0; sequenceIteration < numIterationsPerSequence; sequenceIteration++){
+				Network network = new Network();
+				network.initialize(initializationString, rand);
+				brain.setNetwork(network);
+				//Show good and bad actions
+				runLearning(learningIterations, brain);
+				brain.reset();
+				
+				//Let it train
+				runExperiment(trainingIterations, brain);
+				
+				//Evaluate
+				brain.getNetwork().getActionNode().setExplorationChance(0);
+				brain.getNetwork().setLearning(false);
+				brain.reset();
+				double[] scores = runExperiment(evaluationIterations, brain);
+				double fitness = scores[1];
+				sequenceFitness += fitness;
+			}
+			totalFitness += (sequenceFitness / (double)numIterationsPerSequence);
+		}
+		double avgFitness = totalFitness / (double)numDifferentSequences;
+		genotype.setPerformanceValue(avgFitness);
+		return avgFitness;
 	}
 	
 	private double[] runExperiment(int maxIterations, HTMNetwork activator){
