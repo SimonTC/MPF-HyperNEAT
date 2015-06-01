@@ -246,7 +246,7 @@ public class Mario_Reactionary {
 		int spatialMapSize_input = 5;
 		int temporalMapSize_input = 3;
 		int markovOrder_input = 3;
-		inputPooler.initialize(rand, inputLength, spatialMapSize_input, temporalMapSize_input, markovOrder_input, numActions, offlineLearning);
+		inputPooler.initialize(rand, inputLength, spatialMapSize_input, temporalMapSize_input, markovOrder_input, numActions, true,true,offlineLearning);
 	
 		//Combiner
 		
@@ -254,14 +254,14 @@ public class Mario_Reactionary {
 		int spatialMapSize_combiner = 5;
 		int temporalMapSize_combiner = 3;
 		int markovOrder_combiner = 3;
-		combiner.initialize(rand, ffInputLength_combiner, spatialMapSize_combiner, temporalMapSize_combiner,  markovOrder_combiner, numActions, offlineLearning);
+		combiner.initialize(rand, ffInputLength_combiner, spatialMapSize_combiner, temporalMapSize_combiner,  markovOrder_combiner, numActions, true,true,offlineLearning);
 	
 		//top node
 		int ffInputLength_top = combiner.getFeedforwardOutputVectorLength();
 		int spatialMapSize_top = 5;
 		int temporalMapSize_top = 3;
 		int markovOrder_top = 3;
-		topNode.initialize(rand, ffInputLength_top, spatialMapSize_top, temporalMapSize_top,  markovOrder_top, numActions, offlineLearning);
+		topNode.initialize(rand, ffInputLength_top, spatialMapSize_top, temporalMapSize_top,  markovOrder_top, numActions, true,true,offlineLearning);
 		
 		//Create input sensors
 		int id = 5;
