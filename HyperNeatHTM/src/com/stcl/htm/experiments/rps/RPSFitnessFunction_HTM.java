@@ -80,17 +80,23 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 			//Get input			
 			SimpleMatrix input = new SimpleMatrix(sequence[curInput]);
 			
-			//Calculate prediction error
-			SimpleMatrix diff = input.minus(prediction);
-			double predictionError = diff.normF();	
+			double predictionError = 0;
+			if (i > 0){ //First prediction will always be wrong so we don't count it
+				SimpleMatrix diff = input.minus(prediction);
+				predictionError = diff.normF();	
+				if (predictionError > 0.1) predictionError = 1; //TODO: Maybe change threshold of error	
+			}
 			totalPredictionError += predictionError;
-			
 			SimpleMatrix actionThisTimestep = actionNextTimeStep;
 			double rewardForBeingInCurrentState = externalReward;
 			  
 						
 			//Calculate reward
-			externalReward = calculateReward(actionThisTimestep, curInput);
+			if ( i > 0){ //First action is always wrong so don't punish
+				externalReward = calculateReward(actionThisTimestep, curInput);
+			} else {
+				externalReward = 1;
+			}
 			totalGameScore += externalReward;			
 			
 			//Give inputs to brain
