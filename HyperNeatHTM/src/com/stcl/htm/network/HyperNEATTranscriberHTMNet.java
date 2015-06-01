@@ -1,6 +1,7 @@
 package com.stcl.htm.network;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -38,8 +39,9 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	
 	public static final String HTM_ACTION_VECTOR_LENGTH_KEY = "htm.action.inputlenght";
 	public static final String HTM_ACTION_GROUP_MAPSIZE_KEY = "htm.action.mapsize";
-	public static final String HTM_ACTION_VOTER_INFLUENCE_EVOLVE = "htm.action.voter.influence.evolve";
-	public static final String HTM_ACTION_DECIDER_BATCH_TRAINING = "htm.action.devider.batch.training";
+	public static final String HTM_ACTION_VOTER_INFLUENCE_EVOLVE_KEY = "htm.action.voter.influence.evolve";
+	public static final String HTM_ACTION_DECIDER_BATCH_TRAINING_KEY = "htm.action.decider.batch.training";
+	public static final String HTM_ACTION_DECIDER_REACTIONARY_KEY = "htm.action.decider.reactionary";
 
 	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
 	
@@ -139,8 +141,10 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							UnitNode unitnode = (UnitNode) n;
 							int id = nextFreeID++;
 							unitnode.setID(id);
-							//TODO: Move offline learning to parameter file
-							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, markovOrder, actionMapSize * actionMapSize, props.getBooleanProperty(HTM_ACTION_DECIDER_BATCH_TRAINING, false));
+							boolean batchTraining = props.getBooleanProperty(HTM_ACTION_DECIDER_BATCH_TRAINING_KEY, false);
+							boolean usePrediction = true; //TODO: Is this used? ALso move to property file
+							boolean reactionary = props.getBooleanProperty(HTM_ACTION_DECIDER_REACTIONARY_KEY, false);
+							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, markovOrder, actionMapSize * actionMapSize, usePrediction, reactionary, batchTraining);
 							brainNetwork.addNode(unitnode);
 							votingInfluences.put(id, votingInfluence);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
@@ -195,7 +199,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 			actionNode.addChild(actionSensor);
 			brainNetwork.addNode(actionNode);
 			brainNetwork.addNode(actionSensor);
-			if (props.getBooleanProperty(HTM_ACTION_VOTER_INFLUENCE_EVOLVE, false)){
+			if (props.getBooleanProperty(HTM_ACTION_VOTER_INFLUENCE_EVOLVE_KEY, false)){
 				actionNode.setInfluenceMap(votingInfluences);
 				actionNode.setUpdateVoterInfluence(false);
 			}
