@@ -87,8 +87,10 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		HTMNetwork brain = (HTMNetwork) activator;
 		String initializationString = brain.getNetwork().toString();
 		double totalFitness = 0;
+		double totalPrediction = 0;
 		for (int sequenceID = 0; sequenceID < numDifferentSequences; sequenceID++){
 			double sequenceFitness = 0;
+			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			for (int sequenceIteration = 0; sequenceIteration < numIterationsPerSequence; sequenceIteration++){
 				Network network = new Network();
@@ -107,12 +109,17 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 				brain.reset();
 				double[] scores = runExperiment(evaluationIterations, brain, curSequence);
 				double fitness = scores[1];
+				double prediction = scores[0];
 				sequenceFitness += fitness;
+				sequencePrediction += prediction;
 			}
 			totalFitness += (sequenceFitness / (double)numIterationsPerSequence);
+			totalPrediction += (sequencePrediction / (double)numIterationsPerSequence);
 		}
 		double avgFitness = totalFitness / (double)numDifferentSequences;
-		genotype.setPerformanceValue(avgFitness);
+		double avgPrediction = totalPrediction / (double)numDifferentSequences;
+		genotype.setPerformanceValue(avgPrediction);
+		genotype.setFitnessValue(avgFitness);
 		return avgFitness;
 	}
 	
@@ -175,8 +182,9 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		
 		double avgPredictionError = totalPredictionError / (double) maxIterations;
 		double avgScore = totalGameScore / (double) maxIterations;
+		double predictionError = 1 - avgPredictionError;
 		
-		double[] result = {avgPredictionError, avgScore};
+		double[] result = {predictionError, avgScore};
 		return result;
 	}
 	
