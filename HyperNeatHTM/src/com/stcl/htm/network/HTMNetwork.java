@@ -23,7 +23,9 @@ public class HTMNetwork  implements Activator, Serializable {
 	public final static String XML_TAG = "HTM network";
 	
 	private String name;
-	private double reward;
+	private double reward; 
+	
+	
 	
 	public HTMNetwork(){
 		this.network = new Network();
