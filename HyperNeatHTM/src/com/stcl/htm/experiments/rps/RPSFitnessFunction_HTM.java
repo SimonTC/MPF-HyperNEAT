@@ -12,6 +12,7 @@ import com.anji.integration.Activator;
 import com.anji.util.Randomizer;
 import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
 import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
@@ -21,10 +22,14 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	public static final String RPS_EVALUATION_ITERATIONS_KEY = "rps.evaluation.iterations";
 	public static final String RPS_SEQUENCES_NUMBER_KEY = "rps.sequences.number";
 	public static final String RPS_SEQUENCES_ITERATIONS_KEY = "rps.sequences.iterations";
+	public static final String RPS_SEQUENCES_LEVELS_KEY = "rps.sequences.levels";
+	public static final String RPS_SEQUENCES_BLOCKLENGTH_MIN = "rps.sequences.blocklength.min";
+	public static final String RPS_SEQUENCES_BLOCKLENGTH_MAX = "rps.sequences.blocklength.max";
+	public static final String RPS_SEQUENCES_ALPHABET_SIZE = "rps.sequences.alphabet.size";
+	public static final String RPS_SEQUENCES_RAND_SEED_KEY = "rps.sequences.rand.seed";
 
-	private SimpleMatrix[] sequence, possibleInputs;
-	private int[] labelSequence;
-	private int[] lblCounter;
+	private SimpleMatrix[] possibleInputs;
+	private int[][] sequences;
 	private SimpleMatrix rewardMatrix;
 	private int learningIterations;
 	private int trainingIterations;
@@ -48,6 +53,27 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		evaluationIterations = props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY, 100);
 		numDifferentSequences = props.getIntProperty(RPS_SEQUENCES_NUMBER_KEY, 1);
 		numIterationsPerSequence = props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY, 10);
+		
+		//Create sequences
+		long sequenceSeed = 0;
+		try{
+			sequenceSeed = props.getLongProperty(RPS_SEQUENCES_RAND_SEED_KEY);
+		} catch (IllegalArgumentException e){
+			sequenceSeed = rand.nextLong();
+			props.setProperty(RPS_SEQUENCES_RAND_SEED_KEY, "" +sequenceSeed);
+		}
+		
+		int sequenceLevels = props.getIntProperty(RPS_SEQUENCES_LEVELS_KEY);
+		int blockLengthMin = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MIN);
+		int blockLengthMax = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX);
+		int alphabetSize = props.getIntProperty(RPS_SEQUENCES_ALPHABET_SIZE, 3); //Currently not in use
+		Random sequenceRand = new Random(sequenceSeed);
+		SequenceBuilder builder = new SequenceBuilder();
+		sequences = new int[numDifferentSequences][];
+		for ( int i = 0; i < numDifferentSequences; i++){
+			sequences[i] = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
+		}
+		
 	}
 	
 	@Override
@@ -61,8 +87,9 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		HTMNetwork brain = (HTMNetwork) activator;
 		String initializationString = brain.getNetwork().toString();
 		double totalFitness = 0;
-		for (int sequence = 0; sequence < numDifferentSequences; sequence++){
+		for (int sequenceID = 0; sequenceID < numDifferentSequences; sequenceID++){
 			double sequenceFitness = 0;
+			int[] curSequence = sequences[sequenceID];
 			for (int sequenceIteration = 0; sequenceIteration < numIterationsPerSequence; sequenceIteration++){
 				Network network = new Network();
 				network.initialize(initializationString, rand);
@@ -72,13 +99,13 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 				brain.reset();
 				
 				//Let it train
-				runExperiment(trainingIterations, brain);
+				runExperiment(trainingIterations, brain, curSequence);
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0);
 				brain.getNetwork().setLearning(false);
 				brain.reset();
-				double[] scores = runExperiment(evaluationIterations, brain);
+				double[] scores = runExperiment(evaluationIterations, brain, curSequence);
 				double fitness = scores[1];
 				sequenceFitness += fitness;
 			}
@@ -89,7 +116,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		return avgFitness;
 	}
 	
-	private double[] runExperiment(int maxIterations, HTMNetwork activator){
+	private double[] runExperiment(int maxIterations, HTMNetwork activator, int[] sequence){
 		int curInput = 0;
 		double externalReward = 0;
 		
@@ -97,7 +124,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		SimpleMatrix actionNextTimeStep = new SimpleMatrix(tmp); //m(t)
 		//SimpleMatrix actionAfterNext = new SimpleMatrix(tmp); //m(t+2)
 
-		SimpleMatrix prediction = sequence[0];
+		SimpleMatrix prediction = possibleInputs[0];
 		
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
@@ -106,7 +133,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 			//if (i % 500 == 0) System.out.println("Iteration: " + i);
 			
 			//Get input			
-			SimpleMatrix input = new SimpleMatrix(sequence[curInput]);
+			SimpleMatrix input = new SimpleMatrix(possibleInputs[sequence[curInput]]);
 			
 			double predictionError = 0;
 			if (i > 0){ //First prediction will always be wrong so we don't count it
@@ -121,7 +148,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 						
 			//Calculate reward
 			if ( i > 0){ //First action is always wrong so don't punish
-				externalReward = calculateReward(actionThisTimestep, curInput);
+				externalReward = calculateReward(actionThisTimestep, sequence[curInput]);
 			} else {
 				externalReward = 1;
 			}
@@ -153,7 +180,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		return result;
 	}
 	
-	private double calculateReward(SimpleMatrix action, int inputLabel){
+	private double calculateReward(SimpleMatrix action, int inputID){
 		int actionID = -1;
 		double maxValue = Double.NEGATIVE_INFINITY;
 		for (int j = 0; j < action.getNumElements(); j++){
@@ -163,7 +190,6 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 				actionID = j;
 			}
 		}
-		int inputID = labelSequence[inputLabel];
 		double result = reward(inputID, actionID);
 		return result;
 	}
@@ -192,7 +218,6 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		int[][] neutralExamples = {{0,0},{1,1},{2,2}};
 		
 		double externalReward = 0;
-		SimpleMatrix prediction = sequence[0];
 		
 		double[][] tmp = {{1,0,0}};
 		SimpleMatrix actionNow = new SimpleMatrix(tmp);
@@ -293,16 +318,10 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		};
 		
 		SimpleMatrix scissors = new SimpleMatrix(scissorsData);		
-		
-		SimpleMatrix[] tmp = {rock, paper, paper, scissors, paper, paper, scissors, rock};
-		SimpleMatrix[] tmp2 = {rock, paper, scissors};
-		int[] lbl = {0,1,1,2,1,1,2,0};
-		int[] lbl_counter = {1,2,2,0,2,2,0,1};
-		
-		lblCounter = lbl_counter;
-		labelSequence = lbl;
-		sequence = tmp;		
-		possibleInputs = tmp2;
+
+		SimpleMatrix[] tmp = {rock, paper, scissors};
+
+		possibleInputs = tmp;
 	}
 	
 	private void createRewardMatrix_Scaled(){
