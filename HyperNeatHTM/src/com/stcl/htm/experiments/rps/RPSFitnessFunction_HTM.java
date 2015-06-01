@@ -14,15 +14,20 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
+	
+	public static final String RPS_LEARNING_ITERATIONS_KEY = "rps.learning.iterations";
+	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
+	public static final String RPS_EVALUATION_ITERATIONS_KEY = "rps.evaluation.iterations";
 
 	private SimpleMatrix[] sequence, possibleInputs;
 	private int[] labelSequence;
 	private int[] lblCounter;
 	private SimpleMatrix rewardMatrix;
-	private int learningIterations = 100;
-	private int trainingIterations = 1000;
-	private int evaluationIterations = 100;
+	private int learningIterations;
+	private int trainingIterations;
+	private int evaluationIterations;
 	private Random rand;
+	private Properties props;
 	
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -31,9 +36,13 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	 */
 	public void init(Properties props) {
 		super.init(props);
+		this.props = props;
 		Randomizer randomizer = new Randomizer();
 		randomizer.init(props);
 		rand = randomizer.getRand();
+		learningIterations = props.getIntProperty(RPS_LEARNING_ITERATIONS_KEY, 100);
+		trainingIterations = props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY, 1000);
+		evaluationIterations = props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY, 100);
 	}
 	
 	@Override
