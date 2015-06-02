@@ -79,8 +79,8 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	@Override
 	public void initialiseEvaluation() {
 		createInputs();
-		//createRewardMatrix();
-		createRewardMatrix_Scaled();
+		createRewardMatrix();
+		//createRewardMatrix_Scaled();
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
@@ -182,9 +182,13 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		
 		double avgPredictionError = totalPredictionError / (double) maxIterations;
 		double avgScore = totalGameScore / (double) maxIterations;
-		double predictionError = 1 - avgPredictionError;
+		double predictionSuccess = 1 - avgPredictionError;
 		
-		double[] result = {predictionError, avgScore};
+		//Scores can't be less than zero as the evolutionary algorithm can't work with that
+		if (avgScore < 0) avgScore = 0;
+		if (predictionSuccess < 0) predictionSuccess = 0;
+		
+		double[] result = {predictionSuccess, avgScore};
 		return result;
 	}
 	
