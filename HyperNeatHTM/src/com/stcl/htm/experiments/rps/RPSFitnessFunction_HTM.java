@@ -85,7 +85,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		HTMNetwork brain = (HTMNetwork) activator;
-		String initializationString = brain.getNetwork().toString();
+		String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		for (int sequenceID = 0; sequenceID < numDifferentSequences; sequenceID++){
