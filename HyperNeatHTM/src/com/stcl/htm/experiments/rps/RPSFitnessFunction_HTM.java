@@ -97,10 +97,12 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 				network.initialize(initializationString, rand);
 				brain.setNetwork(network);
 				//Show good and bad actions
+				brain.getNetwork().setUsePrediction(false);
 				runLearning(learningIterations, brain);
 				brain.reset();
 				
 				//Let it train
+				brain.getNetwork().setUsePrediction(true);
 				runExperiment(trainingIterations, brain, curSequence);
 				
 				//Evaluate
