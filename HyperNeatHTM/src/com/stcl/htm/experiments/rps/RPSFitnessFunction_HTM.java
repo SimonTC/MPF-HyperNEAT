@@ -2,6 +2,7 @@ package com.stcl.htm.experiments.rps;
 
 import java.util.Random;
 
+import org.apache.log4j.Logger;
 import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
@@ -10,6 +11,7 @@ import stcl.algo.util.Orthogonalizer;
 
 import com.anji.integration.Activator;
 import com.anji.util.Randomizer;
+import com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT;
 import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
@@ -28,6 +30,8 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	public static final String RPS_SEQUENCES_ALPHABET_SIZE = "rps.sequences.alphabet.size";
 	public static final String RPS_SEQUENCES_RAND_SEED_KEY = "rps.sequences.rand.seed";
 
+	private static Logger logger = Logger.getLogger(RPSFitnessFunction_HTM.class);
+	
 	private SimpleMatrix[] possibleInputs;
 	private int[][] sequences;
 	private SimpleMatrix rewardMatrix;
@@ -84,6 +88,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
+		logger.info("Beginning evaluation of genotype " + genotype.getId() + " on thread " + threadIndex);
 		HTMNetwork brain = (HTMNetwork) activator;
 		String initializationString = brain.toString();
 		long seed = rand.nextLong();
@@ -124,6 +129,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		double avgPrediction = totalPrediction / (double)numDifferentSequences;
 		genotype.setPerformanceValue(avgPrediction);
 		genotype.setFitnessValue(avgFitness);
+		logger.info("Ending evaluation of genotype " + genotype.getId() + " on thread " + threadIndex);
 		return avgFitness;
 	}
 	
