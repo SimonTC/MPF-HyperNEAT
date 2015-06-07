@@ -1,10 +1,10 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="./graphSpeciesRefresh.xsl" ?>
 <!DOCTYPE run SYSTEM "../run.dtd">
-<run name="rps" timedatestamp="[20150601 14:13:52 - 20150601 14:15:11]" >
+<run name="rps_pc" timedatestamp="[20150607 13:06:39 - 20150607 13:26:20]" >
 <search-parameters>
-<population-size>30</population-size>
-<generations>100</generations>
+<population-size>50</population-size>
+<generations>200</generations>
 </search-parameters>
 <generation id="1" >
 <fitness>
@@ -29,10 +29,10 @@
 <champ>41</champ>
 <max>43</max>
 <min>40</min>
-<avg>41.12903225806452</avg>
+<avg>41.11764705882353</avg>
 </complexity>
 <species id="1">
-<chromosome id="1097" fitness="0.8775000000000001" />
+<chromosome id="1086" fitness="0.15640000000000004" />
 </species>
 <species id="0">
 </species>
@@ -92,62 +92,6 @@
 </species>
 <species id="0">
 </species>
-</generation>
-<generation id="3" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>41</champ>
-<max>43</max>
-<min>39</min>
-<avg>41.12903225806452</avg>
-</complexity>
-<species id="1">
-<chromosome id="1097" fitness="0.773" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
 <species id="0">
 </species>
 <species id="0">
@@ -168,44 +112,8 @@
 </species>
 <species id="0">
 </species>
-</generation>
-<generation id="4" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>41</champ>
-<max>41</max>
-<min>41</min>
-<avg>41.0</avg>
-</complexity>
 <species id="0">
 </species>
-<species id="1">
-<chromosome id="1287" fitness="0.7885000000000001" />
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
 <species id="0">
 </species>
 <species id="0">
@@ -223,42 +131,6 @@
 <species id="0">
 </species>
 <species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-<species id="0">
-</species>
-</generation>
-<generation id="5" >
-<fitness>
-<max>1.0</max>
-<min>0.0</min>
-<avg>0</avg>
-</fitness>
-<complexity>
-<champ>41</champ>
-<max>43</max>
-<min>40</min>
-<avg>41.483870967741936</avg>
-</complexity>
-<species id="1">
-<chromosome id="1287" fitness="0.8084999999999999" />
 </species>
 </generation>
 </run>
