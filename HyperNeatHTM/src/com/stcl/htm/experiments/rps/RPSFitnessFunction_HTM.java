@@ -29,6 +29,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	public static final String RPS_SEQUENCES_BLOCKLENGTH_MAX = "rps.sequences.blocklength.max";
 	public static final String RPS_SEQUENCES_ALPHABET_SIZE = "rps.sequences.alphabet.size";
 	public static final String RPS_SEQUENCES_RAND_SEED_KEY = "rps.sequences.rand.seed";
+	public static final String RPS_LOG_EVALUATION_TIME_KEY = "rps.log.evaluation.time";
 
 	private static Logger logger = Logger.getLogger(RPSFitnessFunction_HTM.class);
 	
@@ -41,6 +42,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	private int numDifferentSequences;
 	private int numIterationsPerSequence;
 	private Random rand;
+	private boolean logTime;
 	
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -57,6 +59,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		evaluationIterations = props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY, 100);
 		numDifferentSequences = props.getIntProperty(RPS_SEQUENCES_NUMBER_KEY, 1);
 		numIterationsPerSequence = props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY, 10);
+		logTime = props.getBooleanProperty(RPS_LOG_EVALUATION_TIME_KEY, false);
 		
 		//Create sequences
 		long sequenceSeed = 0;
@@ -88,7 +91,8 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
-		logger.info("Beginning evaluation of genotype " + genotype.getId() + " on thread " + threadIndex);
+		if (logTime) logger.info("Beginning evaluation of genotype " + genotype.getId() + " on thread " + threadIndex);
+		long start = System.currentTimeMillis();
 		HTMNetwork brain = (HTMNetwork) activator;
 		String initializationString = brain.toString();
 		long seed = rand.nextLong();
@@ -129,7 +133,8 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		double avgPrediction = totalPrediction / (double)numDifferentSequences;
 		genotype.setPerformanceValue(avgPrediction);
 		genotype.setFitnessValue(avgFitness);
-		logger.info("Ending evaluation of genotype " + genotype.getId() + " on thread " + threadIndex);
+		double duration = (System.currentTimeMillis() - start) / 1000d;
+		if (logTime) logger.info("Ending evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " Duration: " + duration);
 		return avgFitness;
 	}
 	
