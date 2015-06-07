@@ -35,15 +35,35 @@ public class RPS {
 			int numDifferentSequences,
 			int numIterationsPerSequence){
 		
-		this.possibleInputs = possibleInputs;
-		this.sequences = sequences;
-		this.rewardMatrix = rewardMatrix;
+		this.possibleInputs = copyPossibleInputs(possibleInputs);
+		this.sequences = copySequences(sequences);
+		this.rewardMatrix = new SimpleMatrix(rewardMatrix);
 		this.learningIterations = learningIterations;
 		this.trainingIterations = trainingIterations;
 		this.evaluationIterations = evaluationIterations;
 		this.numDifferentSequences = numDifferentSequences;
 		this.numIterationsPerSequence = numIterationsPerSequence;
 		this.randSeed = randSeed;
+	}
+	
+	private SimpleMatrix[] copyPossibleInputs(SimpleMatrix[] arr){
+		SimpleMatrix[] result = new SimpleMatrix[arr.length];
+		for (int i = 0; i < arr.length; i++){
+			SimpleMatrix m = new SimpleMatrix(arr[i]);
+			result[i] = m;
+		}
+		return result;
+	}
+	
+	private int[][] copySequences(int[][] arr){
+		int[][] result = new int[arr.length][];
+		for (int i = 0; i < result.length; i++){
+			result[i] = new int[arr[i].length];
+			for (int j = 0; j < arr[i].length; j++){
+				result[i][j] = arr[i][j];
+			}
+		}
+		return result;
 	}
 
 	public double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
