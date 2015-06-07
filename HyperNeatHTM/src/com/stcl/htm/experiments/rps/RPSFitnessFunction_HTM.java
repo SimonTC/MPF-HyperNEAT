@@ -91,7 +91,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
-		if (logTime) logger.info("Beginning evaluation of genotype " + genotype.getId() + " on thread " + threadIndex);
+		//if (logTime) logger.info("Beginning evaluation of genotype " + genotype.getId() + " on thread " + threadIndex);
 		long start = System.currentTimeMillis();
 		HTMNetwork brain = (HTMNetwork) activator;
 		String initializationString = brain.toString();
@@ -134,7 +134,8 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		genotype.setPerformanceValue(avgPrediction);
 		genotype.setFitnessValue(avgFitness);
 		double duration = (System.currentTimeMillis() - start) / 1000d;
-		if (logTime) logger.info("Ending evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " Duration: " + duration);
+		//if (logTime) logger.info("Ending evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " Duration: " + duration);
+		if (logTime) logger.info("Evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " took: " + duration + " seconds");
 		return avgFitness;
 	}
 	
