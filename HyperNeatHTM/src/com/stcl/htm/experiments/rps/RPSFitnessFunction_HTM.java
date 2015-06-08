@@ -33,16 +33,16 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 
 	private static Logger logger = Logger.getLogger(RPSFitnessFunction_HTM.class);
 	
-	private SimpleMatrix[] possibleInputs;
-	private int[][] sequences;
-	private SimpleMatrix rewardMatrix;
-	private int learningIterations;
-	private int trainingIterations;
-	private int evaluationIterations;
-	private int numDifferentSequences;
-	private int numIterationsPerSequence;
-	private Random rand;
-	private boolean logTime;
+	protected SimpleMatrix[] possibleInputs;
+	protected int[][] sequences;
+	protected SimpleMatrix rewardMatrix;
+	protected int learningIterations;
+	protected int trainingIterations;
+	protected int evaluationIterations;
+	protected int numDifferentSequences;
+	protected int numIterationsPerSequence;
+	protected Random rand;
+	protected boolean logTime;
 	
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.

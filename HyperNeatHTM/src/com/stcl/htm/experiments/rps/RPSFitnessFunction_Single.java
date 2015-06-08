@@ -1,0 +1,49 @@
+package com.stcl.htm.experiments.rps;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.jgapcustomised.Chromosome;
+
+import stcl.algo.brain.Network;
+
+import com.anji.integration.Activator;
+import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.network.HTMNetwork;
+
+public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
+
+	public static void main(String[] args) throws IOException {
+		String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636/0";
+		String propsFileName = experimentRun + "/run.properties";
+		String genomeFile = experimentRun + "/best_performing-final-13879.txt";;
+		Properties props = new Properties(propsFileName);
+		RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
+		eval.init(props);
+		
+		double[][] result = eval.evaluate(genomeFile);
+		
+		for (int i = 0; i < result.length; i++){
+			String s = "Sequence " + i + ": ";
+			for (int j = 0; j < result[i].length; j++){
+				s += result[i][j] + "  ";
+			}
+			System.out.println(s);
+		}
+		
+
+	}
+	
+
+	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
+		RPS eval = new RPS(possibleInputs, sequences, rewardMatrix, rand.nextLong(), learningIterations, trainingIterations, evaluationIterations, numDifferentSequences, numIterationsPerSequence);
+		
+		Network brain = new Network(genomeFile, rand);
+		HTMNetwork network = new HTMNetwork(brain);
+		
+		double[][] result = eval.evaluate(network);		
+
+		return result;
+	}
+
+}
