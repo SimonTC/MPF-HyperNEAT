@@ -17,11 +17,19 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 		String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636/0";
 		String propsFileName = experimentRun + "/run.properties";
 		String genomeFile = experimentRun + "/best_performing-final-13879.txt";;
-		Properties props = new Properties(propsFileName);
+
 		RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
-		eval.init(props);
+		eval.run(propsFileName, genomeFile);
 		
-		double[][] result = eval.evaluate(genomeFile);
+		System.exit(0);
+	}
+	
+	public void run(String propsFileName, String genomeFile) throws IOException{
+		Properties props = new Properties(propsFileName);
+		
+		this.init(props);
+		
+		double[][] result = this.evaluate(genomeFile);
 		
 		for (int i = 0; i < result.length; i++){
 			String s = "Sequence " + i + ": ";
@@ -34,8 +42,6 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 			double avg = total / (double) result[i].length;
 			System.out.println(s + "  Avg: " + avg);
 		}
-		
-
 	}
 	
 
