@@ -70,7 +70,6 @@ public class RPS {
 		rand = new Random(randSeed);
 		HTMNetwork brain = (HTMNetwork) activator;
 		String initializationString = brain.toString();
-		long seed = rand.nextLong();
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		for (int sequenceID = 0; sequenceID < numDifferentSequences; sequenceID++){
@@ -79,7 +78,7 @@ public class RPS {
 			int[] curSequence = sequences[sequenceID];
 			for (int sequenceIteration = 0; sequenceIteration < numIterationsPerSequence; sequenceIteration++){
 				Network network = new Network();
-				network.initialize(initializationString, new Random(seed));
+				network.initialize(initializationString, rand);
 				brain.setNetwork(network);
 				//Show good and bad actions
 				/*
@@ -109,6 +108,42 @@ public class RPS {
 		genotype.setPerformanceValue(avgPrediction);
 		genotype.setFitnessValue(avgFitness);
 		return avgFitness;
+		
+	}
+	
+	public double[][] evaluate(HTMNetwork brain) {
+		rand = new Random(randSeed);
+		String initializationString = brain.toString();
+		double[][] result = new double[numDifferentSequences][numIterationsPerSequence];
+		for (int sequenceID = 0; sequenceID < numDifferentSequences; sequenceID++){
+			System.out.println("Starting on sequence " + sequenceID);
+			int[] curSequence = sequences[sequenceID];
+			for (int sequenceIteration = 0; sequenceIteration < numIterationsPerSequence; sequenceIteration++){
+				System.out.println("Starting on iteration " + sequenceIteration);
+				Network network = new Network();
+				network.initialize(initializationString, rand);
+				brain.setNetwork(network);
+				//Show good and bad actions
+				/*
+				brain.getNetwork().setUsePrediction(false);
+				runLearning(learningIterations, brain);
+				brain.reset();
+				*/
+				//Let it train
+				brain.getNetwork().setUsePrediction(true);
+				runExperiment(trainingIterations, brain, curSequence);
+				
+				//Evaluate
+				brain.getNetwork().getActionNode().setExplorationChance(0);
+				brain.getNetwork().setLearning(false);
+				brain.reset();
+				double[] scores = runExperiment(evaluationIterations, brain, curSequence);
+				double fitness = scores[1];
+				double prediction = scores[0];
+				result[sequenceID][sequenceIteration] = fitness;
+			}
+		}
+		return result;
 		
 	}
 	
