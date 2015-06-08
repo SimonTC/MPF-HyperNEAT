@@ -25,10 +25,14 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 		
 		for (int i = 0; i < result.length; i++){
 			String s = "Sequence " + i + ": ";
+			double total = 0;
 			for (int j = 0; j < result[i].length; j++){
-				s += result[i][j] + "  ";
+				double d = result[i][j];
+				s += d + "  ";
+				total += d;
 			}
-			System.out.println(s);
+			double avg = total / (double) result[i].length;
+			System.out.println(s + "  Avg: " + avg);
 		}
 		
 
