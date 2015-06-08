@@ -18,9 +18,11 @@ public class NodeCounter {
 
 	public static void main(String[] args) {
 		String experimentFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636";
+		String topFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps";
 		NodeCounter nc = new NodeCounter();
 		try {
-			nc.goThroughExperiment(experimentFolder);
+			//nc.goThroughExperiment(experimentFolder);
+			nc.goThroughAllExperiments(topFolder);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -28,17 +30,29 @@ public class NodeCounter {
 
 	}
 	
+	public void goThroughAllExperiments(String topFolder) throws IOException{
+		File[] files = new File(topFolder).listFiles();
+		for (File f : files){
+			if (f.isDirectory()){
+				goThroughExperiment(f.getAbsolutePath());
+			}
+		}
+		
+	}
+	
 	public void goThroughExperiment(String experimentFolderPath) throws IOException{
 		File[] files = new File(experimentFolderPath).listFiles();
+		boolean foundFiles = false;
 		for (File f : files){
 			if (f.isDirectory() && StringUtils.isNumeric(f.getName())){
 				//Enter one experiment run folder
-				collectNodeCounts(f);
+				foundFiles = collectNodeCounts(f);
 			}
 		}
+		if (!foundFiles) collectNodeCounts(new File(experimentFolderPath));
 	}
 	
-	private void collectNodeCounts(File runDirectory) throws IOException{
+	private boolean collectNodeCounts(File runDirectory) throws IOException{
 		//Collect data		
 		File[] files = runDirectory.listFiles();
 		int[] finalGenInfo = null;
@@ -64,24 +78,28 @@ public class NodeCounter {
 			}
 		}
 		
-		countList.add(finalGenInfo);
-		
-		//Create csv file to write information to
-		File dataFile = new File(runDirectory.getAbsolutePath() + "/nodecounts.csv");
-		FileWriter writer = new FileWriter(dataFile);
-		
-		String s = "Generation;";
-		
-		for (int i = 0; i < countList.get(0).length; i++) s += "Level " + (i+1) + ";";
-		writer.write(s + "\n");
-		
-		for (int i = 0; i < countList.size(); i++){
-			s = i + ";";
-			for (int j : countList.get(i)) s += j + ";";
+		if (!countList.isEmpty()){
+			countList.add(finalGenInfo);
+			
+			//Create csv file to write information to
+			File dataFile = new File(runDirectory.getAbsolutePath() + "/nodecounts.csv");
+			FileWriter writer = new FileWriter(dataFile);
+			
+			String s = "Generation;";
+			
+			for (int i = 0; i < countList.get(0).length; i++) s += "Level " + (i+1) + ";";
 			writer.write(s + "\n");
+			
+			for (int i = 0; i < countList.size(); i++){
+				s = i + ";";
+				for (int j : countList.get(i)) s += j + ";";
+				writer.write(s + "\n");
+			}
+			
+			writer.close();
+			return true;
 		}
-		
-		writer.close();
+		return false;
 	}
 	
 	private int[] collectNodeCountFromFile(String networkFileName) throws FileNotFoundException{
