@@ -14,16 +14,17 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class RPS {
 	
-	private SimpleMatrix[] possibleInputs;
-	private int[][] sequences;
-	private SimpleMatrix rewardMatrix;
-	private int learningIterations;
-	private int trainingIterations;
-	private int evaluationIterations;
-	private int numDifferentSequences;
-	private int numIterationsPerSequence;
-	private long randSeed;
-	private Random rand;
+	protected SimpleMatrix[] possibleInputs;
+	protected int[][] sequences;
+	protected SimpleMatrix rewardMatrix;
+	protected int learningIterations;
+	protected int trainingIterations;
+	protected int evaluationIterations;
+	protected int numDifferentSequences;
+	protected int numIterationsPerSequence;
+	protected long randSeed;
+	protected Random rand;
+	protected boolean training;
 	
 	public RPS(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
@@ -87,8 +88,10 @@ public class RPS {
 				brain.reset();
 				*/
 				//Let it train
+				training = true;
 				brain.getNetwork().setUsePrediction(true);
 				runExperiment(trainingIterations, brain, curSequence);
+				training = false;
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0);
@@ -147,7 +150,7 @@ public class RPS {
 		
 	}
 	
-	private double[] runExperiment(int maxIterations, HTMNetwork activator, int[] sequence){
+	protected double[] runExperiment(int maxIterations, HTMNetwork activator, int[] sequence){
 		int curInput = 0;
 		double externalReward = 0;
 		
@@ -216,7 +219,7 @@ public class RPS {
 		return result;
 	}
 	
-	private double calculateReward(SimpleMatrix action, int inputID){
+	protected double calculateReward(SimpleMatrix action, int inputID){
 		int actionID = -1;
 		double maxValue = Double.NEGATIVE_INFINITY;
 		for (int j = 0; j < action.getNumElements(); j++){
@@ -230,7 +233,7 @@ public class RPS {
 		return result;
 	}
 	
-	private SimpleMatrix[] collectOutput(HTMNetwork activator){
+	protected SimpleMatrix[] collectOutput(HTMNetwork activator){
 		double[] predictionData = activator.getOutput();
 		SimpleMatrix prediction = new SimpleMatrix(1, predictionData.length, true, predictionData);
 		prediction.reshape(5, 5);
@@ -299,7 +302,7 @@ public class RPS {
 	 * @param playerSymbol SYmbol played by AI
 	 * @return
 	 */
-	private double reward(int opponentSymbol, int playerSymbol){
+	protected double reward(int opponentSymbol, int playerSymbol){
 		double reward = rewardMatrix.get(playerSymbol, opponentSymbol);
 		return reward;
 	}
