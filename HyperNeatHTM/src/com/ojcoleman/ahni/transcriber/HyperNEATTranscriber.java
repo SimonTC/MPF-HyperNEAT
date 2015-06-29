@@ -716,6 +716,123 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		return new CPPN(genotype);
 	}
 
+
+
+	/**
+	 * Returns true iff the Link Expression Output (LEO) is enabled.
+	 * 
+	 * @see #HYPERNEAT_LEO
+	 */
+	public boolean leoEnabled() {
+		return enableLEO;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the bias.
+	 */
+	public int getCPPNIndexBiasInput() {
+		return 0;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the x coordinate for the target neuron.
+	 */
+	public int getCPPNIndexTargetX() {
+		return cppnIdxTX;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the y coordinate for the target neuron.
+	 */
+	public int getCPPNIndexTargetY() {
+		return cppnIdxTY;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the z coordinate for the target neuron. Returns -1 if this input is not
+	 *         enabled.
+	 */
+	public int getCPPNIndexTargetZ() {
+		return cppnIdxTZ;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the x coordinate for the source neuron.
+	 */
+	public int getCPPNIndexSourceX() {
+		return cppnIdxSX;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the y coordinate for the source neuron.
+	 */
+	public int getCPPNIndexSourceY() {
+		return cppnIdxSY;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the z coordinate for the source neuron. Returns -1 if this input is not
+	 *         enabled.
+	 */
+	public int getCPPNIndexSourceZ() {
+		return cppnIdxSZ;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the delta (difference) for the x coordinates (the difference between the
+	 *         x coordinates of the source and target neurons). Returns -1 if this input is not enabled.
+	 */
+	public int getCPPNIndexDeltaX() {
+		return cppnIdxDX;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the delta (difference) for the y coordinates (the difference between the
+	 *         y coordinates of the source and target neurons). Returns -1 if this input is not enabled.
+	 */
+	public int getCPPNIndexDeltaY() {
+		return cppnIdxDY;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the delta (difference) for the z coordinates (the difference between the
+	 *         z coordinates of the source and target neurons). Returns -1 if this input is not enabled.
+	 */
+	public int getCPPNIndexDeltaZ() {
+		return cppnIdxDZ;
+	}
+
+	/**
+	 * @return the index in the CPPN inputs for the angle in the XY plane between the source and target neuron
+	 *         coordinates (relative to the line X axis). Returns -1 if this input is not enabled.
+	 */
+	public int getCPPNIndexAngle() {
+		return cppnIdxAn;
+	}
+
+	/**
+	 * @return an array containing the indexes in the CPPN outputs for the weight value(s).
+	 */
+	public int[] getCPPNIndexWeight() {
+		return cppnIdxWeight;
+	}
+
+	/**
+	 * @return an array containing the indexes in the CPPN outputs for the bias value(s). Returns [-1] if this output is
+	 *         not enabled.
+	 */
+	public int[] getCPPNIndexBiasOutput() {
+		return cppnIdxBias;
+	}
+
+	/**
+	 * @return an array containing the indexes in the CPPN outputs for the Link Expression Output (LEO) value(s).
+	 *         Returns [-1] if this output is not enabled.
+	 */
+	public int[] getCPPNIndexLEO() {
+		return cppnIdxLEO;
+	}
+	
 	/**
 	 * Provides a wrapper for an {@link com.anji.integration.Activator} that represents a CPPN.
 	 */
@@ -1298,120 +1415,5 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		public String toString() {
 			return cppnActivator.toString();
 		}
-	}
-
-	/**
-	 * Returns true iff the Link Expression Output (LEO) is enabled.
-	 * 
-	 * @see #HYPERNEAT_LEO
-	 */
-	public boolean leoEnabled() {
-		return enableLEO;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the bias.
-	 */
-	public int getCPPNIndexBiasInput() {
-		return 0;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the x coordinate for the target neuron.
-	 */
-	public int getCPPNIndexTargetX() {
-		return cppnIdxTX;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the y coordinate for the target neuron.
-	 */
-	public int getCPPNIndexTargetY() {
-		return cppnIdxTY;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the z coordinate for the target neuron. Returns -1 if this input is not
-	 *         enabled.
-	 */
-	public int getCPPNIndexTargetZ() {
-		return cppnIdxTZ;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the x coordinate for the source neuron.
-	 */
-	public int getCPPNIndexSourceX() {
-		return cppnIdxSX;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the y coordinate for the source neuron.
-	 */
-	public int getCPPNIndexSourceY() {
-		return cppnIdxSY;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the z coordinate for the source neuron. Returns -1 if this input is not
-	 *         enabled.
-	 */
-	public int getCPPNIndexSourceZ() {
-		return cppnIdxSZ;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the delta (difference) for the x coordinates (the difference between the
-	 *         x coordinates of the source and target neurons). Returns -1 if this input is not enabled.
-	 */
-	public int getCPPNIndexDeltaX() {
-		return cppnIdxDX;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the delta (difference) for the y coordinates (the difference between the
-	 *         y coordinates of the source and target neurons). Returns -1 if this input is not enabled.
-	 */
-	public int getCPPNIndexDeltaY() {
-		return cppnIdxDY;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the delta (difference) for the z coordinates (the difference between the
-	 *         z coordinates of the source and target neurons). Returns -1 if this input is not enabled.
-	 */
-	public int getCPPNIndexDeltaZ() {
-		return cppnIdxDZ;
-	}
-
-	/**
-	 * @return the index in the CPPN inputs for the angle in the XY plane between the source and target neuron
-	 *         coordinates (relative to the line X axis). Returns -1 if this input is not enabled.
-	 */
-	public int getCPPNIndexAngle() {
-		return cppnIdxAn;
-	}
-
-	/**
-	 * @return an array containing the indexes in the CPPN outputs for the weight value(s).
-	 */
-	public int[] getCPPNIndexWeight() {
-		return cppnIdxWeight;
-	}
-
-	/**
-	 * @return an array containing the indexes in the CPPN outputs for the bias value(s). Returns [-1] if this output is
-	 *         not enabled.
-	 */
-	public int[] getCPPNIndexBiasOutput() {
-		return cppnIdxBias;
-	}
-
-	/**
-	 * @return an array containing the indexes in the CPPN outputs for the Link Expression Output (LEO) value(s).
-	 *         Returns [-1] if this output is not enabled.
-	 */
-	public int[] getCPPNIndexLEO() {
-		return cppnIdxLEO;
 	}
 }
