@@ -13,6 +13,8 @@ import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
+	
+	boolean speed = true;
 
 	public static void main(String[] args) throws IOException {
 		String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636/0";
@@ -33,23 +35,27 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 		double[][] result = this.evaluate(genomeFile);
 		
 		for (int i = 0; i < result.length; i++){
-			String s = "Sequence " + i + ": ";
-			double total = 0;
-			for (int j = 0; j < result[i].length; j++){
-				double d = result[i][j];
-				s += d + "  ";
-				total += d;
+			
+			if (speed){
+				int timeToPrediction = (int) ((1- result[i][0]) * trainingIterations);
+				int timeToFitness = (int) ((1- result[i][1]) * trainingIterations);				
+				System.out.println("Sequence " + i + " TTP: " + timeToPrediction + " TTF: " + timeToFitness);
+			} else {
+				System.out.println("Sequence " + i + " Prediction: " + result[i][0] + " Fitness: " + result[i][1]);
 			}
-			double avg = total / (double) result[i].length;
-			System.out.println(s + "  Avg: " + avg);
+			
 		}
 	}
 	
 
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
-		//RPS eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
-		double threshold = 0.9;
-		RPS eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, threshold, threshold, 5);
+		RPS eval;
+		if (speed){
+			double threshold = 0.9;
+			eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, threshold, threshold, 5);
+		} else {
+			eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
+		}
 		Network brain = new Network(genomeFile, rand);
 		HTMNetwork network = new HTMNetwork(brain);
 		
