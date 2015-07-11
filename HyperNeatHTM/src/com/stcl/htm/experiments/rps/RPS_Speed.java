@@ -2,6 +2,8 @@ package com.stcl.htm.experiments.rps;
 
 import org.ejml.simple.SimpleMatrix;
 
+import stcl.algo.brain.Network;
+
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -29,6 +31,50 @@ public class RPS_Speed extends RPS {
 		this.averageOver = averageOver;
 	}
 	
+	@Override
+	public double[] run(HTMNetwork brain) {
+		String initializationString = brain.toString();
+		double totalFitness = 0;
+		double totalPrediction = 0;
+		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
+			System.out.println("Start on sequence " + sequenceID);
+			double sequenceFitness = 0;
+			double sequencePrediction = 0;
+			int[] curSequence = sequences[sequenceID];
+			runner.setSequence(curSequence);
+			runner.reset();
+			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				System.out.println("Iteration " + sequenceIteration);
+				Network network = new Network();
+				network.initialize(initializationString, rand);
+				brain.setNetwork(network);
+				
+				//Evaluate
+				brain.getNetwork().getActionNode().setExplorationChance(0.05);
+				brain.getNetwork().setLearning(true);
+				brain.reset();
+				runner.reset();
+				double[] scores = runExperiment(trainingIterations + evaluationIterations, brain, runner); //TODO: How many iterations?
+				double fitness = scores[1];
+				double prediction = scores[0];
+				sequenceFitness += fitness;
+				sequencePrediction += prediction;
+			}
+			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
+			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);
+			totalFitness += avgSequenceFitness;
+			totalPrediction += avgSequencePrediction;
+			sequenceScores[sequenceID][0] = avgSequencePrediction;
+			sequenceScores[sequenceID][1] = avgSequenceFitness;
+		}
+		double avgFitness = totalFitness / (double)sequences.length;
+		double avgPrediction = totalPrediction / (double)sequences.length;
+		double[] result = {avgPrediction, avgFitness};
+		
+		return result;
+		
+	}
+	
 	/**
 	 * Evaluates the activator on the given number of sequences.
 	 * Remember to reset the runner and set the sequence before running this method
@@ -50,6 +96,7 @@ public class RPS_Speed extends RPS {
 			double[] result = runner.runSequence(activator);
 			double prediction = result[0];
 			double fitness = result[1];
+			//System.out.println(fitness);
 			
 			if (prediction >= predictionThreshold){
 				numPredictionHits++;
@@ -74,8 +121,9 @@ public class RPS_Speed extends RPS {
 			counter++;
 		} while (counter < numSequences && cont);
 		
-		double timeToPrediction = firstPredictionHit / (double) numSequences;
-		double timeToFitness= firstFitnessHit / (double) numSequences;
+		double timeToPrediction = firstPredictionHit == -1? 1 : firstPredictionHit / (double) numSequences;
+		double timeToFitness = firstFitnessHit == -1? 1 : firstFitnessHit / (double) numSequences;
+		
 		
 		double predictionScore = 1 - timeToPrediction;
 		double fitnessScore = 1 - timeToFitness;
