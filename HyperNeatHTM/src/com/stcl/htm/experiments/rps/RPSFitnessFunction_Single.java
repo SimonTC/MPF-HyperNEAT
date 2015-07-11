@@ -51,7 +51,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
 		RPS eval;
 		if (speed){
-			double threshold = 0.9;
+			double threshold = 0.8;
 			eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, threshold, threshold, 5);
 		} else {
 			eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
