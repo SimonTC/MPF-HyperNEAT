@@ -15,17 +15,15 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class RPS {
 	
-	protected SimpleMatrix[] possibleInputs;
 	protected int[][] sequences;
-	protected long randSeed;
 	protected Random rand;
 	protected boolean training;
 	protected int numExperimentsPerSequence;
 	protected int trainingIterations;
 	protected int evaluationIterations;
-	private double[][] sequenceScores;
+	protected double[][] sequenceScores;
 	
-	private SequenceRunner runner;
+	protected SequenceRunner runner;
 	
 	
 	public RPS(SimpleMatrix[] possibleInputs, 
@@ -35,29 +33,30 @@ public class RPS {
 			int numExperimentsPerSequence,
 			int trainingIterations,
 			int evaluationIterations){
-		
+		rand = new Random(randSeed);
 		runner = new SequenceRunner(null, possibleInputs, rewardFunction, rand);
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
 		this.trainingIterations = trainingIterations;
 		this.evaluationIterations = evaluationIterations;
 		this.training = true;
-		this.randSeed = randSeed;
 		sequenceScores = new double[sequences.length][2];
+		this.sequences = sequences;
 
 	}
 	
 	public double[] run(HTMNetwork brain) {
-		rand = new Random(randSeed);
 		String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
+			System.out.println("Start on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
 			runner.reset();
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				System.out.println("Iteration " + sequenceIteration);
 				Network network = new Network();
 				network.initialize(initializationString, rand);
 				brain.setNetwork(network);
