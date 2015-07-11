@@ -16,6 +16,12 @@ public abstract class RewardFunction {
 		initializeRewardMatrix();
 	}
 	
+	/**
+	 * Calculates the reward given to the player based on the symbols played by him and the opponent
+	 * @param opponentSymbol
+	 * @param playerSymbol
+	 * @return
+	 */
 	public double reward(int opponentSymbol, int playerSymbol){
 		double reward = rewardMatrix.get(playerSymbol, opponentSymbol);
 		return reward;

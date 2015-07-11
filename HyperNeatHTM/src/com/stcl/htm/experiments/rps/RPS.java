@@ -81,12 +81,7 @@ public class RPS {
 				Network network = new Network();
 				network.initialize(initializationString, rand);
 				brain.setNetwork(network);
-				//Show good and bad actions
-				/*
-				brain.getNetwork().setUsePrediction(false);
-				runLearning(learningIterations, brain);
-				brain.reset();
-				*/
+				
 				//Let it train
 				training = true;
 				brain.getNetwork().setUsePrediction(true);
@@ -219,6 +214,8 @@ public class RPS {
 		return result;
 	}
 	
+
+	
 	protected double calculateReward(SimpleMatrix action, int inputID){
 		int actionID = -1;
 		double maxValue = Double.NEGATIVE_INFINITY;
@@ -310,20 +307,20 @@ public class RPS {
 	
 	private int maxID(SimpleMatrix m){
 		//Transform bias matrix into vector
-				double[] vector = m.getMatrix().data;
-				
-				//Go through bias vector until value is >= random number
-				double max = Double.NEGATIVE_INFINITY;
-				int maxID = -1;
-				int id = 0;
-				
-				for (double d : vector){
-					if (d > max){
-						max = d;
-						maxID = id;
-					}
-					id++;
-				}
-				return maxID;
+		double[] vector = m.getMatrix().data;
+		
+		//Go through bias vector until value is >= random number
+		double max = Double.NEGATIVE_INFINITY;
+		int maxID = -1;
+		int id = 0;
+		
+		for (double d : vector){
+			if (d > max){
+				max = d;
+				maxID = id;
+			}
+			id++;
+		}
+		return maxID;
 	}
 }
