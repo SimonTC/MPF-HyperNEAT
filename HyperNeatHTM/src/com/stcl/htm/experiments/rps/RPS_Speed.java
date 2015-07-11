@@ -54,7 +54,7 @@ public class RPS_Speed extends RPS {
 				brain.getNetwork().setLearning(true);
 				brain.reset();
 				runner.reset();
-				double[] scores = runExperiment(trainingIterations + evaluationIterations, brain, runner); //TODO: How many iterations?
+				double[] scores = runExperiment(trainingIterations, brain, runner); //TODO: How many iterations?
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
@@ -114,7 +114,7 @@ public class RPS_Speed extends RPS {
 				firstFitnessHit = -1;
 			}
 			
-			if (numFitnessHits >= averageOver){
+			if ( numPredictionHits >= averageOver){ //numFitnessHits >= averageOver &&
 				cont = false;
 			}
 			
