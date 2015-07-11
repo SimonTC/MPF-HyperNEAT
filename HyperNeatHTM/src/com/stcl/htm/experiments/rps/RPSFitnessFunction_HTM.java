@@ -94,10 +94,13 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
 		RPS eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		long start = System.currentTimeMillis();
-		double avgFitness = eval.evaluate(genotype, activator, threadIndex);		
+		HTMNetwork brain = (HTMNetwork) activator;
+		double[] result = eval.evaluate(brain);		
+		genotype.setPerformanceValue(result[0]);
+		genotype.setFitnessValue(result[1]);
 		double duration = (System.currentTimeMillis() - start) / 1000d;
 		if (logTime) logger.info("Evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " took: " + duration + " seconds. It started at " + start);
-		return avgFitness;
+		return result[1];
 	}
 	
 

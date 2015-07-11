@@ -44,9 +44,8 @@ public class RPS {
 
 	}
 	
-	public double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
+	public double[] evaluate(HTMNetwork brain) {
 		rand = new Random(randSeed);
-		HTMNetwork brain = (HTMNetwork) activator;
 		String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
@@ -83,40 +82,8 @@ public class RPS {
 		}
 		double avgFitness = totalFitness / (double)sequences.length;
 		double avgPrediction = totalPrediction / (double)sequences.length;
-		genotype.setPerformanceValue(avgPrediction);
-		genotype.setFitnessValue(avgFitness);
-		return avgFitness;
+		double[] result = {avgPrediction, avgFitness};
 		
-	}
-	
-	public double[][] evaluate(HTMNetwork brain) {
-		rand = new Random(randSeed);
-		String initializationString = brain.toString();
-		double[][] result = new double[sequences.length][numExperimentsPerSequence];
-		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
-			System.out.println("Starting on sequence " + sequenceID);
-			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				System.out.println("Starting on iteration " + sequenceIteration);
-				Network network = new Network();
-				network.initialize(initializationString, rand);
-				brain.setNetwork(network);
-				
-				//Let it train
-				training = true;
-				brain.getNetwork().setUsePrediction(true);
-				runExperiment(trainingIterations, brain, runner);
-				training = false;
-				
-				//Evaluate
-				brain.getNetwork().getActionNode().setExplorationChance(0);
-				brain.getNetwork().setLearning(false);
-				brain.reset();
-				runner.reset();
-				double[] scores = runExperiment(evaluationIterations, brain, runner);
-				double fitness = scores[1];
-				result[sequenceID][sequenceIteration] = fitness;
-			}
-		}
 		return result;
 		
 	}
