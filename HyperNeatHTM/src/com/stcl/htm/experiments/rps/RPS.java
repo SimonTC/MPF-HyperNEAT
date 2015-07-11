@@ -91,11 +91,11 @@ public class RPS {
 	/**
 	 * Evaluates the activator on the given number of sequences.
 	 * Remember to reset the runner and set the sequence before running this method
-	 * @param numSequences
+	 * @param numSequences the number times the sequence is repeated
 	 * @param activator
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
-	private double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
+	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
 		double totalPrediction = 0;
 		double totalFitness = 0;
 		for(int i = 0; i < numSequences; i++){
