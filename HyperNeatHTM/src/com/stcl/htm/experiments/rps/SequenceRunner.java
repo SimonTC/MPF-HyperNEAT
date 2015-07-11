@@ -50,7 +50,7 @@ public class SequenceRunner {
 		for (int i = 0; i < sequence.length; i++){
 			//Get input			
 			SimpleMatrix input = possibleInputs[sequence[i]];
-			SimpleMatrix noisyInput = addNoise(input);
+			SimpleMatrix noisyInput = input;//addNoise(input);
 			
 			double predictionError = 0;
 			if (i > 0){ //First prediction will always be wrong so we don't count it
