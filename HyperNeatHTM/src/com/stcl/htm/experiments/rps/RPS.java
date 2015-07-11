@@ -44,7 +44,7 @@ public class RPS {
 
 	}
 	
-	public double[] evaluate(HTMNetwork brain) {
+	public double[] run(HTMNetwork brain) {
 		rand = new Random(randSeed);
 		String initializationString = brain.toString();
 		double totalFitness = 0;
@@ -95,7 +95,7 @@ public class RPS {
 	 * @param activator
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
-	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
+	private double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
 		double totalPrediction = 0;
 		double totalFitness = 0;
 		for(int i = 0; i < numSequences; i++){

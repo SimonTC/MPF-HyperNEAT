@@ -51,7 +51,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 		Network brain = new Network(genomeFile, rand);
 		HTMNetwork network = new HTMNetwork(brain);
 		
-		double[][] result = eval.evaluate(network);		
+		double[][] result = eval.run(network);		
 
 		return result;
 	}

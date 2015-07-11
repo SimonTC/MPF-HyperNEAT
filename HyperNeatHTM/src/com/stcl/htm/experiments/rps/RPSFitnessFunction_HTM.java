@@ -95,7 +95,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		RPS eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		long start = System.currentTimeMillis();
 		HTMNetwork brain = (HTMNetwork) activator;
-		double[] result = eval.evaluate(brain);		
+		double[] result = eval.run(brain);		
 		genotype.setPerformanceValue(result[0]);
 		genotype.setFitnessValue(result[1]);
 		double duration = (System.currentTimeMillis() - start) / 1000d;
