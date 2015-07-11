@@ -23,6 +23,7 @@ public class RPS {
 	protected int numExperimentsPerSequence;
 	protected int trainingIterations;
 	protected int evaluationIterations;
+	private double[][] sequenceScores;
 	
 	private SequenceRunner runner;
 	
@@ -41,6 +42,7 @@ public class RPS {
 		this.evaluationIterations = evaluationIterations;
 		this.training = true;
 		this.randSeed = randSeed;
+		sequenceScores = new double[sequences.length][2];
 
 	}
 	
@@ -77,8 +79,12 @@ public class RPS {
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
 			}
-			totalFitness += (sequenceFitness / (double)numExperimentsPerSequence);
-			totalPrediction += (sequencePrediction / (double)numExperimentsPerSequence);
+			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
+			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);
+			totalFitness += avgSequenceFitness;
+			totalPrediction += avgSequencePrediction;
+			sequenceScores[sequenceID][0] = avgSequencePrediction;
+			sequenceScores[sequenceID][1] = avgSequenceFitness;
 		}
 		double avgFitness = totalFitness / (double)sequences.length;
 		double avgPrediction = totalPrediction / (double)sequences.length;
@@ -110,5 +116,9 @@ public class RPS {
 		
 		double[] result = {avgPrediction, avgFitness};
 		return result;
+	}
+	
+	public double[][] getSequenceScores(){
+		return sequenceScores;
 	}
 }

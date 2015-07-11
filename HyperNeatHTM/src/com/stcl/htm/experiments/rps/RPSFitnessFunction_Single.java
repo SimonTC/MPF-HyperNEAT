@@ -9,6 +9,7 @@ import stcl.algo.brain.Network;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
@@ -46,12 +47,13 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
 
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
-		RPS eval = new RPS(possibleInputs, sequences, rewardMatrix, rand.nextLong(), learningIterations, trainingIterations, evaluationIterations, numDifferentSequences, numExperimentsPerSequence);
+		RPS eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		
 		Network brain = new Network(genomeFile, rand);
 		HTMNetwork network = new HTMNetwork(brain);
 		
-		double[][] result = eval.run(network);		
+		eval.run(network);	
+		double[][] result = eval.getSequenceScores();
 
 		return result;
 	}
