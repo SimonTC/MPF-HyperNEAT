@@ -126,6 +126,7 @@ public class RPS {
 		double totalPrediction = 0;
 		double totalFitness = 0;
 		for(int i = 0; i < numSequences; i++){
+			activator.getNetwork().newEpisode();
 			double[] result = runner.runSequence(activator);
 			totalPrediction += result[0];
 			totalFitness += result[1];
