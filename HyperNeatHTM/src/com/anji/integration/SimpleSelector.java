@@ -39,7 +39,7 @@ import org.jgapcustomised.Species;
  */
 public class SimpleSelector extends NaturalSelector {
 
-	private List<Chromosome> chromosomes = new ArrayList<Chromosome>();
+	protected List<Chromosome> chromosomes = new ArrayList<Chromosome>();
 
 	/**
 	 * Add <code>a_chromosomeToAdd</code> to set of chromosomes to be evaluated.
