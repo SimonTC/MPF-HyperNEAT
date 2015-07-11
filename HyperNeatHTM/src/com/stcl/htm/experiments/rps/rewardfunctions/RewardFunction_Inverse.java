@@ -2,6 +2,11 @@ package com.stcl.htm.experiments.rps.rewardfunctions;
 
 import org.ejml.simple.SimpleMatrix;
 
+/**
+ * Implementation of the RewardFunction class that follows the inverse rules of RPS (Scissors > Rock > Paper > Scissors)
+ * @author Simon
+ *
+ */
 public class RewardFunction_Inverse extends RewardFunction {
 
 	@Override
