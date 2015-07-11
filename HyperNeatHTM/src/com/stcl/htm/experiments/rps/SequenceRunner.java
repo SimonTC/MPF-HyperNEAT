@@ -1,5 +1,7 @@
 package com.stcl.htm.experiments.rps;
 
+import java.util.Random;
+
 import org.ejml.simple.SimpleMatrix;
 
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
@@ -10,14 +12,16 @@ public class SequenceRunner {
 	private SimpleMatrix[] possibleInputs;
 	private int[] sequence;
 	private RewardFunction rewardFunction;
+	private Random rand;
 	
 	//Variables have to be saved here to remember values between sequence runs
 	private double externalReward;
 	private SimpleMatrix actionNextTimeStep;
 	private SimpleMatrix prediction;
 
-	public SequenceRunner(int[] sequence, SimpleMatrix[] possibleInputs, RewardFunction rewardFunction ) {
+	public SequenceRunner(int[] sequence, SimpleMatrix[] possibleInputs, RewardFunction rewardFunction, Random rand) {
 		this.possibleInputs = possibleInputs;
+		this.rand = rand;
 		setSequence(sequence);
 		setRewardFunction(rewardFunction);
 		reset();
@@ -37,7 +41,7 @@ public class SequenceRunner {
 	 * Goes through the sequence once.
 	 * Remember to call reset() if the evaluation should start from scratch
 	 * @param activator
-	 * @return Fitness and prediction accuracy
+	 * @return Array containing prediction success and fitness in the form [prediction,fitness]
 	 */
 	public double[] runSequence(HTMNetwork activator){
 		double totalPredictionError = 0;
@@ -45,7 +49,8 @@ public class SequenceRunner {
 		
 		for (int i = 0; i < sequence.length; i++){
 			//Get input			
-			SimpleMatrix input = new SimpleMatrix(possibleInputs[sequence[i]]);
+			SimpleMatrix input = possibleInputs[sequence[i]];
+			SimpleMatrix noisyInput = addNoise(input);
 			
 			double predictionError = 0;
 			if (i > 0){ //First prediction will always be wrong so we don't count it
@@ -67,7 +72,7 @@ public class SequenceRunner {
 			totalGameScore += externalReward;			
 			
 			//Give inputs to brain
-			SimpleMatrix inputVector = new SimpleMatrix(1, input.getNumElements(), true, input.getMatrix().data);
+			SimpleMatrix inputVector = new SimpleMatrix(1, noisyInput.getNumElements(), true, noisyInput.getMatrix().data);
 			activator.setInput(inputVector.getMatrix().data);
 			activator.setAction(actionThisTimestep.getMatrix().data);
 			
@@ -90,6 +95,26 @@ public class SequenceRunner {
 		
 		double[] result = {predictionSuccess, avgScore};
 		return result;
+	}
+	
+	/**
+	 * Creates a noisy matrix based on the given matrix. The noise added is in the range [-0.25, 0.25]
+	 * The input matrix is not altered in this method.
+	 * Values in the matrix will be in the range [0,1] after adding noise
+	 * @param m
+	 * @param noiseMagnitude
+	 * @return noisy matrix
+	 */
+	private SimpleMatrix addNoise(SimpleMatrix m){
+		SimpleMatrix noisy = new SimpleMatrix(m);
+		for (int i = 0; i < m.getNumElements(); i++){
+			double d = m.get(i);
+			d = d + (rand.nextDouble() - 0.25);
+			if (d < 0) d = 0;
+			if (d > 1) d = 1;
+			noisy.set(i, d);
+		}
+		return noisy;
 	}
 	
 	/**
