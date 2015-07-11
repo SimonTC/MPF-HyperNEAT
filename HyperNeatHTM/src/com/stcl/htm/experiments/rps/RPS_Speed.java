@@ -114,7 +114,7 @@ public class RPS_Speed extends RPS {
 				firstFitnessHit = -1;
 			}
 			
-			if (numFitnessHits >= averageOver && numPredictionHits >= averageOver){
+			if (numFitnessHits >= averageOver){
 				cont = false;
 			}
 			
