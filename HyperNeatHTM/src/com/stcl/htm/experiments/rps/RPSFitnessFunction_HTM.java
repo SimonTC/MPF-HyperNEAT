@@ -14,6 +14,7 @@ import com.anji.util.Randomizer;
 import com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT;
 import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -40,7 +41,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	protected int trainingIterations;
 	protected int evaluationIterations;
 	protected int numDifferentSequences;
-	protected int numIterationsPerSequence;
+	protected int numExperimentsPerSequence;
 	protected Random rand;
 	protected boolean logTime;
 	
@@ -58,7 +59,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		trainingIterations = props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY, 1000);
 		evaluationIterations = props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY, 100);
 		numDifferentSequences = props.getIntProperty(RPS_SEQUENCES_NUMBER_KEY, 1);
-		numIterationsPerSequence = props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY, 10);
+		numExperimentsPerSequence = props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY, 10);
 		logTime = props.getBooleanProperty(RPS_LOG_EVALUATION_TIME_KEY, false);
 		
 		//Create sequences
@@ -82,8 +83,6 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		}
 		
 		createInputs();
-		createRewardMatrix();
-		//createRewardMatrix_Scaled();
 		
 	}
 	
@@ -93,7 +92,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
-		RPS eval = new RPS(possibleInputs, sequences, rewardMatrix, rand.nextLong(), learningIterations, trainingIterations, evaluationIterations, numDifferentSequences, numIterationsPerSequence);
+		RPS eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		long start = System.currentTimeMillis();
 		double avgFitness = eval.evaluate(genotype, activator, threadIndex);		
 		double duration = (System.currentTimeMillis() - start) / 1000d;
@@ -139,23 +138,4 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		possibleInputs = tmp;
 	}
 	
-	private void createRewardMatrix_Scaled(){
-		double[][]data = {
-				{0.5,0,1},
-				{1,0.5,0},
-				{0,1,0.5}
-		};
-		
-		rewardMatrix = new SimpleMatrix(data);
-	}
-	
-	private void createRewardMatrix(){
-		double[][]data = {
-				{0,-1,1},
-				{1,0,-1},
-				{-1,1,0}
-		};
-		
-		rewardMatrix = new SimpleMatrix(data);
-	}
 }

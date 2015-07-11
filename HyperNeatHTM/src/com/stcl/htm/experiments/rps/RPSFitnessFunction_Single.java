@@ -46,7 +46,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
 
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
-		RPS eval = new RPS(possibleInputs, sequences, rewardMatrix, rand.nextLong(), learningIterations, trainingIterations, evaluationIterations, numDifferentSequences, numIterationsPerSequence);
+		RPS eval = new RPS(possibleInputs, sequences, rewardMatrix, rand.nextLong(), learningIterations, trainingIterations, evaluationIterations, numDifferentSequences, numExperimentsPerSequence);
 		
 		Network brain = new Network(genomeFile, rand);
 		HTMNetwork network = new HTMNetwork(brain);

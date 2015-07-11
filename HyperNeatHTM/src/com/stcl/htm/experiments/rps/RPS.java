@@ -20,7 +20,7 @@ public class RPS {
 	protected long randSeed;
 	protected Random rand;
 	protected boolean training;
-	protected int numIterationsPerSequence;
+	protected int numExperimentsPerSequence;
 	protected int trainingIterations;
 	protected int evaluationIterations;
 	
@@ -30,10 +30,16 @@ public class RPS {
 	public RPS(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
 			RewardFunction rewardFunction, 
-			long randSeed){
+			long randSeed,
+			int numExperimentsPerSequence,
+			int trainingIterations,
+			int evaluationIterations){
 		
 		runner = new SequenceRunner(null, possibleInputs, rewardFunction, rand);
-
+		this.numExperimentsPerSequence = numExperimentsPerSequence;
+		this.trainingIterations = trainingIterations;
+		this.evaluationIterations = evaluationIterations;
+		this.training = true;
 		this.randSeed = randSeed;
 
 	}
@@ -50,7 +56,7 @@ public class RPS {
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
 			runner.reset();
-			for (int sequenceIteration = 0; sequenceIteration < numIterationsPerSequence; sequenceIteration++){
+			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				Network network = new Network();
 				network.initialize(initializationString, rand);
 				brain.setNetwork(network);
@@ -72,8 +78,8 @@ public class RPS {
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
 			}
-			totalFitness += (sequenceFitness / (double)numIterationsPerSequence);
-			totalPrediction += (sequencePrediction / (double)numIterationsPerSequence);
+			totalFitness += (sequenceFitness / (double)numExperimentsPerSequence);
+			totalPrediction += (sequencePrediction / (double)numExperimentsPerSequence);
 		}
 		double avgFitness = totalFitness / (double)sequences.length;
 		double avgPrediction = totalPrediction / (double)sequences.length;
@@ -86,10 +92,10 @@ public class RPS {
 	public double[][] evaluate(HTMNetwork brain) {
 		rand = new Random(randSeed);
 		String initializationString = brain.toString();
-		double[][] result = new double[sequences.length][numIterationsPerSequence];
+		double[][] result = new double[sequences.length][numExperimentsPerSequence];
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
 			System.out.println("Starting on sequence " + sequenceID);
-			for (int sequenceIteration = 0; sequenceIteration < numIterationsPerSequence; sequenceIteration++){
+			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				System.out.println("Starting on iteration " + sequenceIteration);
 				Network network = new Network();
 				network.initialize(initializationString, rand);

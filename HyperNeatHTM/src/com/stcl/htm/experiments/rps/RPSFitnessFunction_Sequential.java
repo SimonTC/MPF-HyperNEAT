@@ -23,7 +23,7 @@ public class RPSFitnessFunction_Sequential extends RPSFitnessFunction_HTM {
 	private static Logger logger = Logger.getLogger(RPSFitnessFunction_Sequential.class);
 
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
-		RPS eval = new RPS_sequential(possibleInputs, sequences, rewardMatrix, rand.nextLong(), learningIterations, trainingIterations, evaluationIterations, numDifferentSequences, numIterationsPerSequence);
+		RPS eval = new RPS_sequential(possibleInputs, sequences, rewardMatrix, rand.nextLong(), learningIterations, trainingIterations, evaluationIterations, numDifferentSequences, numExperimentsPerSequence);
 		long start = System.currentTimeMillis();
 		double avgFitness = eval.evaluate(genotype, activator, threadIndex);		
 		double duration = (System.currentTimeMillis() - start) / 1000d;
