@@ -45,7 +45,7 @@ public class RPS {
 	}
 	
 	public double[] run(HTMNetwork brain) {
-		String initializationString = brain.toString();
+		//String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
@@ -57,10 +57,10 @@ public class RPS {
 			runner.reset();
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				System.out.println("Iteration " + sequenceIteration);
-				Network network = new Network();
-				network.initialize(initializationString, rand);
-				brain.setNetwork(network);
-				
+				//Network network = new Network();
+				//network.initialize(initializationString, rand);
+				//brain.setNetwork(network);
+				brain.getNetwork().reinitialize();
 				//Let it train
 				training = true;
 				brain.getNetwork().setUsePrediction(true);
