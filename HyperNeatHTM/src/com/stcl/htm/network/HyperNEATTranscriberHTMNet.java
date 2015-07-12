@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.*;
 
 import stcl.algo.brain.Network;
@@ -12,6 +13,8 @@ import stcl.algo.brain.nodes.ActionNode;
 import stcl.algo.brain.nodes.Node;
 import stcl.algo.brain.nodes.Sensor;
 import stcl.algo.brain.nodes.UnitNode;
+import stcl.algo.poolers.SOM;
+import stcl.algo.poolers.SpatialPooler;
 
 import com.anji.integration.Activator;
 import com.anji.integration.Transcriber;
@@ -22,6 +25,10 @@ import com.anji.util.Randomizer;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.nn.GridNet;
 import com.ojcoleman.ahni.transcriber.HyperNEATTranscriber;
+import com.ojcoleman.ahni.util.SuperPoint;
+
+import dk.stcl.core.basic.containers.SomMap;
+import dk.stcl.core.basic.containers.SomNode;
 
 /**
  * Constructs a {@link com.ojcoleman.ahni.nn.GridNet} neural network from a chromosome using the hypercube (from HyperNEAT)
@@ -123,11 +130,15 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					}
 					
 					if (n != null){					
-						cppn.setSourceCoordinatesFromGridIndices(sx, sy, sz);						
+						cppn.setSourceCoordinatesFromGridIndices(sx, sy, sz);	
+						double[] coordinates = {sx, sy, sz, -1,-1,-1}; //The last three are used for initializing the spatial pooler
+						SuperPoint p = new SuperPoint(coordinates);
+						cppn.setExtraSourceCoordinates(p);
 						
 						//Decide on spatial and temporal mapsize of node and initialize it
 						if (sz > 0){ //Sensors should not be initialized
 							cppn.setTargetCoordinatesFromGridIndices(sx, sy, sz);
+							cppn.setExtraTargetCoordinates(p);
 							cppn.query();
 							int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
 							int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
@@ -144,6 +155,35 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							brainNetwork.addNode(unitnode);
 							votingInfluences.put(id, votingInfluence);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
+							
+							//Initialize weights of Spatial pooler
+							if (spatialMapSize > 0){
+								SpatialPooler pooler = unitnode.getUnit().getSpatialPooler();
+								SOM som = pooler.getSOM();
+								SomMap map = som.getSomMap();
+								int mapHeight = map.getHeight();
+								int mapWidth = map.getWidth();
+								for (int mapX = 0; mapX < mapWidth; mapX++){
+									double x = (double) mapX / mapWidth;
+									for (int mapY = 0; mapY < mapHeight; mapY++){
+										double y = (double) mapY / mapHeight;
+										SomNode node = map.get(mapX, mapY);
+										SimpleMatrix vector = node.getVector();
+										int vectorLength = vector.getNumElements();
+										for (int i = 0; i < vectorLength; i++){
+											coordinates[3] = x;
+											coordinates[4] = y;
+											coordinates[5] = (double) i / vectorLength;
+											cppn.setExtraSourceCoordinates(p);
+											cppn.setExtraTargetCoordinates(p);
+											cppn.query();
+											double weight = (double) cppn.getRangedNeuronParam(0, 4);
+											vector.set(i, weight);
+										}
+										node.setVector(vector);
+									}
+								}								
+							}
 						}
 						
 						//Go through all possible parents and find the one with the highest connection weight
