@@ -10,6 +10,7 @@ import org.jgapcustomised.Chromosome;
 import stcl.algo.brain.Network;
 
 import com.anji.integration.Activator;
+import com.ojcoleman.bain.misc.PerformanceTest;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -45,6 +46,7 @@ public class RPS {
 	}
 	
 	public double[] run(HTMNetwork brain) {
+		System.out.println("Start run on brain ");
 		//String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
@@ -77,6 +79,9 @@ public class RPS {
 				double prediction = scores[0];
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
+				System.out.println("Fitness: " + fitness);
+				System.out.println("Prediction: " + prediction);
+				System.out.println();
 			}
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
 			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);

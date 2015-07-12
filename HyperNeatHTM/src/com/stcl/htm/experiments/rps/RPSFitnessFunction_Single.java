@@ -14,7 +14,7 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
-	boolean speed = true;
+	boolean speed = false;
 
 	public static void main(String[] args) throws IOException {
 		String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636/0";
