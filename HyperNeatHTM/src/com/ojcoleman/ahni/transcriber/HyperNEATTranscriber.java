@@ -313,6 +313,10 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 	private int cppnIdxTX = -1, cppnIdxTY = -1, cppnIdxTZ = -1, cppnIdxSX = -1, cppnIdxSY = -1, cppnIdxSZ = -1;
 	// Index of delta and angle inputs in CPPN input vector.
 	private int cppnIdxDX = -1, cppnIdxDY = -1, cppnIdxDZ = -1, cppnIdxAn = -1, cppnIdxBiasInput = -1;
+	//Number of extra inputs used in the CPPN (STC 12-07-2015)
+	private int numExtraCPPNInputs;
+	//Index list for all the extra CPPN inputs (STC 12-07-2015)
+	private int[] cppnIDxExtra;
 
 	// Index of output signals in CPPN output vector.
 
