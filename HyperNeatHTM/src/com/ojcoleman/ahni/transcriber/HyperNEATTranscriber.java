@@ -49,6 +49,12 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 	 * coordinates (relative to the line X axis).
 	 */
 	public static final String HYPERNEAT_INCLUDE_ANGLE = "ann.hyperneat.includeangle";
+	
+	/**
+	 * This number of extra inputs will be added to the CPPN to be used for input types not already covered
+	 *STC 12-07-2015
+	 */
+	public static final String HYPERNEAT_EXTRA_INPUTS = "ann.hyperneat.extrainputs";
 	/**
 	 * If true indicates that instead of using a separate output from the CPPN to specify weight values for each weight
 	 * layer in a feed-forward network, the layer coordinate is input to the CPPN and only a single output from CPPN is
