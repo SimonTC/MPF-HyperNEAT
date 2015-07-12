@@ -484,6 +484,16 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 			cppnIdxAn = cppnInputCount++; // angle
 			logger.info("CPPN: Added angle input.");
 		}
+		
+		/** FOLLOWING CODE MAKES IT POSSIBLE TO ADD EXTRA CPPN INPUTS (STC 12-07-2015) **/
+		numExtraCPPNInputs = props.getIntProperty(HYPERNEAT_EXTRA_INPUTS,0);
+		if (numExtraCPPNInputs > 0){
+			cppnIDxExtra = new int[numExtraCPPNInputs];
+			for (int i = 0; i < numExtraCPPNInputs; i++){
+				cppnIDxExtra[i] = cppnInputCount++;
+			}
+		}		
+		/**END OF CODE TO ADD EXTRA CPPN INPUTS **/
 
 		// Determine CPPN output size and mapping.
 		cppnOutputCount = 0;
@@ -818,6 +828,14 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 	 */
 	public int getCPPNIndexAngle() {
 		return cppnIdxAn;
+	}
+	
+	/**
+	 * 
+	 * @return the array of indices for all the extra CPPN inputs
+	 */
+	public int[] getCPPNIndexExtra(){
+		return cppnIDxExtra;
 	}
 
 	/**
