@@ -1,13 +1,19 @@
 package com.ojcoleman.ahni.util;
 
-public class SuperPoint {
+public class SuperPoint extends Point {
 	private double[] coordinates;
 
 	public SuperPoint() {
 	}
-
+	
+	/**
+	 * Creates a super point with the given coordinates. The three first values has to be x,y,z coordinates.
+	 * @param coordinates
+	 */
 	public SuperPoint(double[] coordinates) {
+		super(coordinates[0], coordinates[1], coordinates[2]);
 		this.coordinates = coordinates;
+		
 	}
 
 	/**
@@ -32,7 +38,6 @@ public class SuperPoint {
 	 */
 	@Override
 	public int hashCode() {
-		// x, y and z should be between -1 and 1.
 		double sum = 0;
 		for (double d : coordinates) sum += d;
 		return (int) (sum * (Integer.MAX_VALUE / coordinates.length));

@@ -19,6 +19,7 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.ojcoleman.ahni.util.ArrayUtil;
 import com.ojcoleman.ahni.util.Point;
 import com.ojcoleman.ahni.util.Range;
+import com.ojcoleman.ahni.util.SuperPoint;
 
 /**
  * To "transcribe" is to construct a phenotype from a genotype. This is a base class for Transcribers implementing the
@@ -315,9 +316,9 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 	private int cppnIdxDX = -1, cppnIdxDY = -1, cppnIdxDZ = -1, cppnIdxAn = -1, cppnIdxBiasInput = -1;
 	//Number of extra inputs used in the CPPN (STC 12-07-2015)
 	private int numExtraCPPNInputs;
-	//Index list for all the extra CPPN inputs (STC 12-07-2015)
-	private int[] cppnIDxExtra;
-
+	//Index list for all the extra source and target coordinate inputs in the CPPN vector (STC 12-07-2015)
+	private int[] cppnIDxTExtra, cppnIDxSExtra;;
+	
 	// Index of output signals in CPPN output vector.
 
 	// bias (either a single output for all layers or one output per layer OR neuron type)
@@ -488,9 +489,13 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		/** FOLLOWING CODE MAKES IT POSSIBLE TO ADD EXTRA CPPN INPUTS (STC 12-07-2015) **/
 		numExtraCPPNInputs = props.getIntProperty(HYPERNEAT_EXTRA_INPUTS,0);
 		if (numExtraCPPNInputs > 0){
-			cppnIDxExtra = new int[numExtraCPPNInputs];
+			cppnIDxTExtra = new int[numExtraCPPNInputs];
 			for (int i = 0; i < numExtraCPPNInputs; i++){
-				cppnIDxExtra[i] = cppnInputCount++;
+				cppnIDxTExtra[i] = cppnInputCount++;
+			}
+			cppnIDxSExtra = new int[numExtraCPPNInputs];
+			for (int i = 0; i < numExtraCPPNInputs; i++){
+				cppnIDxSExtra[i] = cppnInputCount++;
 			}
 		}		
 		/**END OF CODE TO ADD EXTRA CPPN INPUTS **/
@@ -830,12 +835,18 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		return cppnIdxAn;
 	}
 	
-	/**
-	 * 
-	 * @return the array of indices for all the extra CPPN inputs
+	/** 
+	 * @return the array of indices for all the extra target coordinate CPPN inputs
 	 */
-	public int[] getCPPNIndexExtra(){
-		return cppnIDxExtra;
+	public int[] getCPPNIndexTExtra(){
+		return cppnIDxTExtra;
+	}
+	
+	/** 
+	 * @return the array of indices for all the extra source coordinate CPPN inputs
+	 */
+	public int[] getCPPNIndexSExtra(){
+		return cppnIDxSExtra;
 	}
 
 	/**
@@ -941,6 +952,22 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		public void setSourceCoordinates(Point p) {
 			setSourceCoordinates(p.x, p.y, p.z);
 		}
+		
+		/**
+		 * Set the coordinates of the target neuron in a substrate with more than three dimensions with range [0, 1] (coordinates are
+		 * translated to a user-specified range if necessary, e.g. see {@link #rangeX}). If the z coordinate is not
+		 * required it will be ignored. 
+		 * 
+		 * @param p A SuperPoint containing the coordinates of the target neuron. Coordinates should be in range [0, 1].
+		 */
+		public void setSourceCoordinates(SuperPoint p){
+			setSourceCoordinates(p);
+			double[] coordinates = p.getCoordinates();
+			for (int i = 3; i < coordinates.length; i++){
+				int id = cppnIDxSExtra[i-1];
+				cppnInput[id] = coordinates[i];
+			}
+		}
 
 		/**
 		 * Set the coordinates of the source neuron specified by the given indices into a grid-based substrate. If the z
@@ -1012,6 +1039,22 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		 */
 		public void setTargetCoordinates(Point p) {
 			setTargetCoordinates(p.x, p.y, p.z);
+		}
+		
+		/**
+		 * Set the coordinates of the target neuron in a substrate with more than three dimensions with range [0, 1] (coordinates are
+		 * translated to a user-specified range if necessary, e.g. see {@link #rangeX}). If the z coordinate is not
+		 * required it will be ignored. 
+		 * 
+		 * @param p A SuperPoint containing the coordinates of the target neuron. Coordinates should be in range [0, 1].
+		 */
+		public void setTargetCoordinates(SuperPoint p){
+			setTargetCoordinates(p);
+			double[] coordinates = p.getCoordinates();
+			for (int i = 3; i < coordinates.length; i++){
+				int id = cppnIDxTExtra[i-1];
+				cppnInput[id] = coordinates[i];
+			}
 		}
 
 		/**
