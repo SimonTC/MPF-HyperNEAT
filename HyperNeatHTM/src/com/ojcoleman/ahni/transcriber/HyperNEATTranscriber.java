@@ -962,9 +962,18 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		 */
 		public void setSourceCoordinates(SuperPoint p){
 			setSourceCoordinates(p);
+			setExtraSourceCoordinates(p);
+		}
+		
+		/**
+		 * Set the extra source coordinates apart from x,y,z.
+		 * This has it's own method to be able to work with setSourceCoordinatesFromGridIndices
+		 * @param p
+		 */
+		public void setExtraSourceCoordinates(SuperPoint p){
 			double[] coordinates = p.getCoordinates();
 			for (int i = 3; i < coordinates.length; i++){
-				int id = cppnIDxSExtra[i-1];
+				int id = cppnIDxSExtra[i-3];
 				cppnInput[id] = coordinates[i];
 			}
 		}
@@ -1050,9 +1059,18 @@ public abstract class HyperNEATTranscriber<T extends Activator> extends Transcri
 		 */
 		public void setTargetCoordinates(SuperPoint p){
 			setTargetCoordinates(p);
+			setExtraTargetCoordinates(p);
+		}
+		
+		/**
+		 * Set the extra target coordinates apart from x,y,z.
+		 * This has it's own method to be able to work with setTargetCoordinatesFromGridIndices
+		 * @param p
+		 */
+		public void setExtraTargetCoordinates(SuperPoint p){
 			double[] coordinates = p.getCoordinates();
 			for (int i = 3; i < coordinates.length; i++){
-				int id = cppnIDxTExtra[i-1];
+				int id = cppnIDxTExtra[i-3];
 				cppnInput[id] = coordinates[i];
 			}
 		}
