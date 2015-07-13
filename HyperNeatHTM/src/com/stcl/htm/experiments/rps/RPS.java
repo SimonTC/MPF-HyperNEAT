@@ -62,11 +62,12 @@ public class RPS {
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				runner.reset();
 				brain.getNetwork().reinitialize();
+				brain.getNetwork().setUseExternalReward(true);
 				
 				//Let it train
 				training = true;
 				brain.getNetwork().setUsePrediction(true);
-				brain.getNetwork().getActionNode().setExplorationChance(0.0);
+				brain.getNetwork().getActionNode().setExplorationChance(0.05);
 				runExperiment(trainingIterations, brain, runner);
 				training = false;
 				
