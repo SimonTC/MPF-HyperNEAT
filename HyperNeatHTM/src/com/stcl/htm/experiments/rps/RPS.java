@@ -62,9 +62,10 @@ public class RPS {
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
-			runner.reset();
+			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				
+				runner.reset();
+				/*
 				Network_DataCollector collector = (Network_DataCollector) brain.getNetwork();
 				String path = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/reporting/sequence " + sequenceID + "/iteration " + sequenceIteration;
 				//(use relative path for Unix systems)
@@ -73,7 +74,7 @@ public class RPS {
 				f.getParentFile().mkdirs(); 
 				collector.initializeWriters(path, true);
 				collector.openFiles(true);
-				
+				*/
 				System.out.println("Iteration " + sequenceIteration);
 				//Network network = new Network();
 				//network.initialize(initializationString, rand);
@@ -102,7 +103,7 @@ public class RPS {
 				System.out.println("Fitness: " + fitness);
 				System.out.println("Prediction: " + prediction);
 				System.out.println();
-				collector.closeFiles();
+				//collector.closeFiles();
 				
 			}
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
