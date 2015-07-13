@@ -71,7 +71,7 @@ public class RPS {
 				File f = new File(path);
 				//(works for both Windows and Linux)
 				f.getParentFile().mkdirs(); 
-				collector.initializeWriters(path, false);
+				collector.initializeWriters(path, true);
 				collector.openFiles(true);
 				
 				System.out.println("Iteration " + sequenceIteration);
@@ -121,7 +121,7 @@ public class RPS {
 	}
 	
 	private void printInfo(HTMNetwork brain){
-		
+		/*
 		System.out.println("SOM models in Action Node:");
 		brain.getNetwork().getActionNode().printSomModels();
 		
