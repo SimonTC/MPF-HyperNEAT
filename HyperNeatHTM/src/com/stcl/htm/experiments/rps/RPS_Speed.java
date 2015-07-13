@@ -33,24 +33,20 @@ public class RPS_Speed extends RPS {
 	
 	@Override
 	public double[] run(HTMNetwork brain) {
-		String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
-			System.out.println("Start on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
 			runner.reset();
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				System.out.println("Iteration " + sequenceIteration);
-				Network network = new Network();
-				network.initialize(initializationString, rand);
-				brain.setNetwork(network);
+				runner.reset();
+				brain.getNetwork().reinitialize();
 				
 				//Evaluate
-				brain.getNetwork().getActionNode().setExplorationChance(0.05);
+				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(true);
 				brain.reset();
 				runner.reset();
@@ -96,7 +92,6 @@ public class RPS_Speed extends RPS {
 			double[] result = runner.runSequence(activator);
 			double prediction = result[0];
 			double fitness = result[1];
-			//System.out.println(fitness);
 			
 			if (prediction >= predictionThreshold){
 				numPredictionHits++;
@@ -114,7 +109,7 @@ public class RPS_Speed extends RPS {
 				firstFitnessHit = -1;
 			}
 			
-			if ( numPredictionHits >= averageOver){ //numFitnessHits >= averageOver &&
+			if ( numFitnessHits >= averageOver){
 				cont = false;
 			}
 			
