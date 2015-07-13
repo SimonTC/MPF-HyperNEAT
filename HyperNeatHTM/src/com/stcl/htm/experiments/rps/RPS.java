@@ -1,5 +1,6 @@
 package com.stcl.htm.experiments.rps;
 
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.text.Position;
@@ -8,6 +9,8 @@ import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.Network_DataCollector;
+import stcl.algo.brain.nodes.UnitNode;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.bain.misc.PerformanceTest;
@@ -50,6 +53,9 @@ public class RPS {
 		//String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
+		
+		printInfo(brain);
+		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
 			System.out.println("Start on sequence " + sequenceID);
 			double sequenceFitness = 0;
@@ -58,11 +64,24 @@ public class RPS {
 			runner.setSequence(curSequence);
 			runner.reset();
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				
+				Network_DataCollector collector = (Network_DataCollector) brain.getNetwork();
+				String path = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/reporting/sequence " + sequenceID + "/iteration " + sequenceIteration;
+				//(use relative path for Unix systems)
+				File f = new File(path);
+				//(works for both Windows and Linux)
+				f.getParentFile().mkdirs(); 
+				collector.initializeWriters(path, false);
+				collector.openFiles(true);
+				
 				System.out.println("Iteration " + sequenceIteration);
 				//Network network = new Network();
 				//network.initialize(initializationString, rand);
 				//brain.setNetwork(network);
 				brain.getNetwork().reinitialize();
+				
+				printInfo(brain);
+				
 				//Let it train
 				training = true;
 				brain.getNetwork().setUsePrediction(true);
@@ -83,6 +102,7 @@ public class RPS {
 				System.out.println("Fitness: " + fitness);
 				System.out.println("Prediction: " + prediction);
 				System.out.println();
+				collector.closeFiles();
 				
 			}
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
@@ -97,6 +117,21 @@ public class RPS {
 		double[] result = {avgPrediction, avgFitness};
 		
 		return result;
+		
+	}
+	
+	private void printInfo(HTMNetwork brain){
+		
+		System.out.println("SOM models in Action Node:");
+		brain.getNetwork().getActionNode().printSomModels();
+		
+		/*
+		System.out.println("Prediction models in Unit nodes:");
+		for (UnitNode n : brain.getNetwork().getUnitNodes()){
+			n.getUnit().printPredictionModel();
+			System.out.println();
+		}
+		*/
 		
 	}
 	

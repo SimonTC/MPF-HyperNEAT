@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.jgapcustomised.Chromosome;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.Network_DataCollector;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
@@ -56,7 +57,8 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 		} else {
 			eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		}
-		Network brain = new Network(genomeFile, rand);
+		//Network brain = new Network(genomeFile, rand);
+		Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
 		HTMNetwork network = new HTMNetwork(brain);
 		
 		eval.run(network);	
