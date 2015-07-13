@@ -79,9 +79,11 @@ public class RPS {
 				double prediction = scores[0];
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
+				
 				System.out.println("Fitness: " + fitness);
 				System.out.println("Prediction: " + prediction);
 				System.out.println();
+				
 			}
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
 			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);
