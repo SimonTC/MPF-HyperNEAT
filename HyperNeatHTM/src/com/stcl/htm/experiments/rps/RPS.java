@@ -49,15 +49,11 @@ public class RPS {
 	}
 	
 	public double[] run(HTMNetwork brain) {
-		System.out.println("Start run on brain ");
-		//String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
-		
-		printInfo(brain);
+
 		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
-			System.out.println("Start on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
@@ -65,32 +61,17 @@ public class RPS {
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				runner.reset();
-				/*
-				Network_DataCollector collector = (Network_DataCollector) brain.getNetwork();
-				String path = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/reporting/sequence " + sequenceID + "/iteration " + sequenceIteration;
-				//(use relative path for Unix systems)
-				File f = new File(path);
-				//(works for both Windows and Linux)
-				f.getParentFile().mkdirs(); 
-				collector.initializeWriters(path, true);
-				collector.openFiles(true);
-				*/
-				System.out.println("Iteration " + sequenceIteration);
-				//Network network = new Network();
-				//network.initialize(initializationString, rand);
-				//brain.setNetwork(network);
 				brain.getNetwork().reinitialize();
-				
-				printInfo(brain);
 				
 				//Let it train
 				training = true;
 				brain.getNetwork().setUsePrediction(true);
+				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				runExperiment(trainingIterations, brain, runner);
 				training = false;
 				
 				//Evaluate
-				brain.getNetwork().getActionNode().setExplorationChance(0);
+				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(false);
 				brain.reset();
 				runner.reset();
@@ -99,11 +80,7 @@ public class RPS {
 				double prediction = scores[0];
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
-				
-				System.out.println("Fitness: " + fitness);
-				System.out.println("Prediction: " + prediction);
-				System.out.println();
-				//collector.closeFiles();
+
 				
 			}
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
@@ -118,21 +95,6 @@ public class RPS {
 		double[] result = {avgPrediction, avgFitness};
 		
 		return result;
-		
-	}
-	
-	private void printInfo(HTMNetwork brain){
-		/*
-		System.out.println("SOM models in Action Node:");
-		brain.getNetwork().getActionNode().printSomModels();
-		
-		/*
-		System.out.println("Prediction models in Unit nodes:");
-		for (UnitNode n : brain.getNetwork().getUnitNodes()){
-			n.getUnit().printPredictionModel();
-			System.out.println();
-		}
-		*/
 		
 	}
 	
