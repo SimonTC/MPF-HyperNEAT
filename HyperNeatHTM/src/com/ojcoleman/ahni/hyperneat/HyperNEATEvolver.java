@@ -460,7 +460,7 @@ public class HyperNEATEvolver implements Configurable, GeneticEventListener {
 					m.append(fitLabels);
 					m.append(perfLabels);
 					
-					m.append("ZPC\tZFC\tSC\tNS\tES\tSCT\tSS\tSA    \tSNBP\tGS      \tTime\tETA      \tMem");
+					m.append("ZPC\tZFC\tSC\tNS\tES\tSCT\tSS\tSA    \tSNBP\tGS      \tTime\tETA      \tMem    \tSize");
 					
 					logger.info(m);
 					m = new StringBuilder();
@@ -486,8 +486,8 @@ public class HyperNEATEvolver implements Configurable, GeneticEventListener {
 				//m.append(nf4.format(avgBestSpeciesPerformance) + "\t");
 				m.append(numSpecies + "\t" + numNewSpecies + "\t" + numExtinctSpecies + "\t" + nf1.format(speciationCompatThreshold) + "\t" + minSpeciesSize + "/" + maxSpeciesSize + "\t" + minSpeciesAge + "/" + maxSpeciesAge + "\t" + numSpeciesWithNewPerformance + "\t");
 				m.append(minSize + "/" + avgSize + "/" + maxSize + "\t");
-				m.append(nf3.format(cumulativeDurationBetweenLogging / logPerGenerations) + "\t" + Misc.formatTimeInterval(eta) + "\t" + memUsed + "MB");
-				
+				m.append(nf3.format(cumulativeDurationBetweenLogging / logPerGenerations) + "\t" + Misc.formatTimeInterval(eta) + "\t" + memUsed + "MB\t");
+				m.append(genotype.getChromosomes().size());
 				logger.info(m);
 				cumulativeDurationBetweenLogging = 0;
 			}
