@@ -158,30 +158,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							//Initialize weights of Spatial pooler
 							if (spatialMapSize > 0){
 								SpatialPooler pooler = unitnode.getUnit().getSpatialPooler();
-								SOM som = pooler.getSOM();
-								SomMap map = som.getSomMap();
-								int mapHeight = map.getHeight();
-								int mapWidth = map.getWidth();
-								for (int mapX = 0; mapX < mapWidth; mapX++){
-									double x = (double) mapX / mapWidth;
-									for (int mapY = 0; mapY < mapHeight; mapY++){
-										double y = (double) mapY / mapHeight;
-										SomNode node = map.get(mapX, mapY);
-										SimpleMatrix vector = node.getVector();
-										int vectorLength = vector.getNumElements();
-										for (int i = 0; i < vectorLength; i++){
-											coordinates[3] = x;
-											coordinates[4] = y;
-											coordinates[5] = (double) i / vectorLength;
-											cppn.setExtraSourceCoordinates(p);
-											cppn.setExtraTargetCoordinates(p);
-											cppn.query();
-											double weight = (double) cppn.getRangedNeuronParam(0, 4);
-											vector.set(i, weight);
-										}
-										node.setVector(vector);
-									}
-								}								
+								initializeSpatialPoolerWeights(pooler, coordinates, cppn, p);
 							}
 							unitnode.createInitializationString();
 						}
@@ -239,6 +216,17 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 				actionNode.setInfluenceMap(votingInfluences);
 				actionNode.setUpdateVoterInfluence(false);
 			}
+			
+			//Initializa pooler weigths of action node
+			cppn.setSourceCoordinatesFromGridIndices(-1, -1, -1);	
+			cppn.setTargetCoordinatesFromGridIndices(-1, -1, -1);
+			double[] coordinates = {-1, -1, -1, -1,-1,-1}; //The last three are used for initializing the spatial pooler
+			SuperPoint p = new SuperPoint(coordinates);
+			cppn.setExtraSourceCoordinates(p);			
+			cppn.setExtraTargetCoordinates(p);
+			SpatialPooler pooler = actionNode.getPooler();
+			initializeSpatialPoolerWeights(pooler, coordinates, cppn, p);
+			actionNode.createPoolerInitializationString();
 		}
 
 		if (createNewPhenotype) {
@@ -250,6 +238,33 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		}
 
 		return phenotype;
+	}
+	
+	private void initializeSpatialPoolerWeights(SpatialPooler pooler, double[] coordinates, CPPN cppn, SuperPoint p){
+		SOM som = pooler.getSOM();
+		SomMap map = som.getSomMap();
+		int mapHeight = map.getHeight();
+		int mapWidth = map.getWidth();
+		for (int mapX = 0; mapX < mapWidth; mapX++){
+			double x = (double) mapX / mapWidth;
+			for (int mapY = 0; mapY < mapHeight; mapY++){
+				double y = (double) mapY / mapHeight;
+				SomNode node = map.get(mapX, mapY);
+				SimpleMatrix vector = node.getVector();
+				int vectorLength = vector.getNumElements();
+				for (int i = 0; i < vectorLength; i++){
+					coordinates[3] = x;
+					coordinates[4] = y;
+					coordinates[5] = (double) i / vectorLength;
+					cppn.setExtraSourceCoordinates(p);
+					cppn.setExtraTargetCoordinates(p);
+					cppn.query();
+					double weight = (double) cppn.getRangedNeuronParam(0, 4);
+					vector.set(i, weight);
+				}
+				node.setVector(vector);
+			}
+		}								
 	}
 
 	/**
