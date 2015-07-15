@@ -1,6 +1,7 @@
 package com.stcl.htm.experiments.rps;
 
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 
 public class RPSFitnessFunction_Speed extends RPSFitnessFunction_HTM {
@@ -19,7 +20,8 @@ public class RPSFitnessFunction_Speed extends RPSFitnessFunction_HTM {
 	
 	@Override
 	protected RPS setupEvaluator(){
-		RPS_Speed eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, averageOver);
+		RewardFunction[] functions = {new RewardFunction_Standard()};
+		RPS_Speed eval = new RPS_Speed(possibleInputs, sequences, functions, rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, averageOver);
 		return eval;
 	}
 

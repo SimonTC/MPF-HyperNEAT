@@ -31,13 +31,13 @@ public class RPS {
 	
 	public RPS(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
-			RewardFunction rewardFunction, 
+			RewardFunction[] rewardFunctions, 
 			long randSeed,
 			int numExperimentsPerSequence,
 			int trainingIterations,
 			int evaluationIterations){
 		rand = new Random(randSeed);
-		runner = new SequenceRunner(null, possibleInputs, rewardFunction, rand);
+		runner = new SequenceRunner(null, possibleInputs, rewardFunctions, rand);
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
 		this.trainingIterations = trainingIterations;
 		this.evaluationIterations = evaluationIterations;
@@ -57,7 +57,7 @@ public class RPS {
 			runner.setSequence(curSequence);
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				runner.reset();
+				runner.reset(false);
 				brain.getNetwork().reinitialize();
 				brain.getNetwork().setUseExternalReward(true);
 				
@@ -70,7 +70,7 @@ public class RPS {
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(false);
 				brain.reset();
-				runner.reset();
+				runner.reset(false);
 				double[] scores = runExperiment(evaluationIterations, brain, runner);
 				double fitness = scores[1];
 				double prediction = scores[0];

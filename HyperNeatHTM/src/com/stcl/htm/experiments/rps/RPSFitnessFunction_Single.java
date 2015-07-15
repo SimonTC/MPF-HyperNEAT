@@ -11,12 +11,13 @@ import stcl.algo.brain.Network_DataCollector;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
-	boolean speed = true;
+	boolean speed = false;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -57,12 +58,13 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
 		RPS eval;
+		RewardFunction[] functions = {new RewardFunction_Standard()};
 		if (speed){
 			double fitnessThreshold = 0.9;
 			double predictionThreshold = 0.0;
-			eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
+			eval = new RPS_Speed(possibleInputs, sequences, functions, rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
 		} else {
-			eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
+			eval = new RPS(possibleInputs, sequences, functions, rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		}
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);

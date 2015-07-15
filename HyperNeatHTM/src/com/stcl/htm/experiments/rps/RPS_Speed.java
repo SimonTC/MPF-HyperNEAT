@@ -17,7 +17,7 @@ public class RPS_Speed extends RPS {
 
 	public RPS_Speed(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
-			RewardFunction rewardFunction, 
+			RewardFunction[] rewardFunctions, 
 			long randSeed,
 			int numExperimentsPerSequence, 
 			int trainingIterations,
@@ -25,7 +25,7 @@ public class RPS_Speed extends RPS {
 			double predictionThreshold,
 			double fitnessThreshold,
 			int averageOver) {
-		super(possibleInputs, sequences, rewardFunction, randSeed,
+		super(possibleInputs, sequences, rewardFunctions, randSeed,
 				numExperimentsPerSequence, trainingIterations,
 				evaluationIterations);
 		this.predictionThreshold = predictionThreshold;
@@ -45,7 +45,7 @@ public class RPS_Speed extends RPS {
 			runner.setSequence(curSequence);
 
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				runner.reset();
+				runner.reset(false);
 				brain.getNetwork().reinitialize();
 				brain.getNetwork().setUseExternalReward(true);
 				
