@@ -15,12 +15,12 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
-	boolean speed = false;
+	boolean speed = true;
 
 	public static void main(String[] args) throws IOException {
-		String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636/0";
+		String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/1436813645510/0";
 		String propsFileName = experimentRun + "/run.properties";
-		String genomeFile = experimentRun + "/best_performing-final-13879.txt";;
+		String genomeFile = experimentRun + "/best_performing-final-15162.txt";;
 
 		RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
 		eval.run(propsFileName, genomeFile);
@@ -52,8 +52,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
 		RPS eval;
 		if (speed){
-			double threshold = 0.8;
-			eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, threshold, threshold, 5);
+			double fitnessThreshold = 0.9;
+			double predictionThreshold = 0.0;
+			eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
 		} else {
 			eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		}

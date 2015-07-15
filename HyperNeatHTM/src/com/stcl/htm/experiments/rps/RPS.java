@@ -21,7 +21,6 @@ public class RPS {
 	
 	protected int[][] sequences;
 	protected Random rand;
-	protected boolean training;
 	protected int numExperimentsPerSequence;
 	protected int trainingIterations;
 	protected int evaluationIterations;
@@ -42,7 +41,6 @@ public class RPS {
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
 		this.trainingIterations = trainingIterations;
 		this.evaluationIterations = evaluationIterations;
-		this.training = true;
 		sequenceScores = new double[sequences.length][2];
 		this.sequences = sequences;
 
@@ -51,7 +49,6 @@ public class RPS {
 	public double[] run(HTMNetwork brain) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
-
 		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
 			double sequenceFitness = 0;
@@ -65,11 +62,9 @@ public class RPS {
 				brain.getNetwork().setUseExternalReward(true);
 				
 				//Let it train
-				training = true;
 				brain.getNetwork().setUsePrediction(true);
 				brain.getNetwork().getActionNode().setExplorationChance(0.05);
 				runExperiment(trainingIterations, brain, runner);
-				training = false;
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
