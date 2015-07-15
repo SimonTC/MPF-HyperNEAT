@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="./graphFitnessRefresh.xsl" ?>
 <!DOCTYPE run SYSTEM "../run.dtd">
-<run name="rps_pc" timedatestamp="[20150715 22:26:02 - 20150715 22:26:12]" >
+<run name="rps_pc" timedatestamp="[20150715 22:40:46 - 20150715 22:40:56]" >
 <search-parameters>
 <population-size>50</population-size>
 <generations>200</generations>

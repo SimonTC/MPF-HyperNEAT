@@ -218,9 +218,9 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 			}
 			
 			//Initializa pooler weigths of action node
-			cppn.setSourceCoordinatesFromGridIndices(-1, -1, -1);	
-			cppn.setTargetCoordinatesFromGridIndices(-1, -1, -1);
-			double[] coordinates = {-1, -1, -1, -1,-1,-1}; //The last three are used for initializing the spatial pooler
+			cppn.setSourceCoordinatesFromGridIndices(0, 0, 0);	
+			cppn.setTargetCoordinatesFromGridIndices(0, 0, 0);
+			double[] coordinates = {0, 0, 0, 0, 0, 0}; //The last three are used for initializing the spatial pooler
 			SuperPoint p = new SuperPoint(coordinates);
 			cppn.setExtraSourceCoordinates(p);			
 			cppn.setExtraTargetCoordinates(p);
