@@ -68,9 +68,9 @@ public class RPS {
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
-				brain.getNetwork().setLearning(false);
+				brain.getNetwork().setLearning(true);
 				brain.reset();
-				runner.reset(false);
+				runner.reset(true);
 				double[] scores = runExperiment(evaluationIterations, brain, runner);
 				double fitness = scores[1];
 				double prediction = scores[0];

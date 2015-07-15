@@ -12,6 +12,7 @@ import stcl.algo.brain.Network_DataCollector;
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Inverse;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -58,7 +59,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
 		RPS eval;
-		RewardFunction[] functions = {new RewardFunction_Standard()};
+		RewardFunction[] functions = {new RewardFunction_Standard(), new RewardFunction_Inverse()};
 		if (speed){
 			double fitnessThreshold = 0.9;
 			double predictionThreshold = 0.0;
