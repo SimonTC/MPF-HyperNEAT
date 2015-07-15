@@ -101,6 +101,9 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		genotype.setFitnessValue(result[1]);
 		double duration = (System.currentTimeMillis() - start) / 1000d;
 		if (logTime) logger.info("Evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " took: " + duration + " seconds. It started at " + start);
+		
+		logger.info("Genotype " + genotype.getId() + " got a fitness of " + result[1]); 
+		
 		return result[1];
 	}
 	
