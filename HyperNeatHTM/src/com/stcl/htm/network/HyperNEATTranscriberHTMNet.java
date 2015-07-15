@@ -91,7 +91,6 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	 */
 	public HTMNetwork newHTMBrain(Chromosome genotype, HTMNetwork phenotype) throws TranscriberException {
 		CPPN cppn = new CPPN(genotype);
-		
 		int connectionRange = this.connectionRange == -1 ? Integer.MAX_VALUE / 4 : this.connectionRange;
 
 		boolean[][][][][][] connectionMatrix;
@@ -184,6 +183,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 									}
 								}								
 							}
+							unitnode.createInitializationString();
 						}
 						
 						//Go through all possible parents and find the one with the highest connection weight
