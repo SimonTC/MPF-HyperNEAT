@@ -32,7 +32,6 @@ public class RPS {
 	public RPS(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
 			RewardFunction[] rewardFunctions, 
-			long randSeed,
 			int numExperimentsPerSequence,
 			int trainingIterations,
 			int evaluationIterations){

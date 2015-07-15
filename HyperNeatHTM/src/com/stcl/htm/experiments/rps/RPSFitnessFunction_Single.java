@@ -63,9 +63,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 		if (speed){
 			double fitnessThreshold = 0.9;
 			double predictionThreshold = 0.0;
-			eval = new RPS_Speed(possibleInputs, sequences, functions, rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
+			eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
 		} else {
-			eval = new RPS(possibleInputs, sequences, functions, 0, numExperimentsPerSequence, trainingIterations, evaluationIterations);
+			eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		}
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);

@@ -106,7 +106,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	
 	protected RPS setupEvaluator(){
 		RewardFunction[] functions = {new RewardFunction_Standard()};
-		RPS eval = new RPS(possibleInputs, sequences, functions, rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
+		RPS eval = new RPS(possibleInputs, sequences, functions,  numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		return eval;
 	}
 

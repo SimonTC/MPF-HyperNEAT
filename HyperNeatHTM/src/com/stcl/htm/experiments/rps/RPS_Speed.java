@@ -18,14 +18,13 @@ public class RPS_Speed extends RPS {
 	public RPS_Speed(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
 			RewardFunction[] rewardFunctions, 
-			long randSeed,
 			int numExperimentsPerSequence, 
 			int trainingIterations,
 			int evaluationIterations,
 			double predictionThreshold,
 			double fitnessThreshold,
 			int averageOver) {
-		super(possibleInputs, sequences, rewardFunctions, randSeed,
+		super(possibleInputs, sequences, rewardFunctions, 
 				numExperimentsPerSequence, trainingIterations,
 				evaluationIterations);
 		this.predictionThreshold = predictionThreshold;
