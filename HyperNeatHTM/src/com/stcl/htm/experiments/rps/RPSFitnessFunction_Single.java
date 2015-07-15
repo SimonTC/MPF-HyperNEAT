@@ -2,6 +2,7 @@ package com.stcl.htm.experiments.rps;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Random;
 
 import org.jgapcustomised.Chromosome;
 
@@ -15,15 +16,20 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
-	boolean speed = true;
+	boolean speed = false;
 
 	public static void main(String[] args) throws IOException {
-		String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/1436813645510/0";
-		String propsFileName = experimentRun + "/run.properties";
-		String genomeFile = experimentRun + "/best_performing-final-15162.txt";;
-
-		RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
-		eval.run(propsFileName, genomeFile);
+		
+		for (int i = 0; i < 10; i++){
+			String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/1436813645510/0";
+			String propsFileName = experimentRun + "/run.properties";
+			String genomeFile = experimentRun + "/best_performing-final-15162.txt";;
+	
+			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
+			eval.run(propsFileName, genomeFile);
+			System.out.println();
+			System.out.println();
+		}
 		
 		System.exit(0);
 	}
@@ -59,7 +65,10 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 			eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		}
 		//Network brain = new Network(genomeFile, rand);
-		Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
+		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
+		long randSeed = new Random().nextLong();
+		System.out.println("seed: " + randSeed);
+		Network_DataCollector brain = new Network_DataCollector(genomeFile, new Random(randSeed));
 		HTMNetwork network = new HTMNetwork(brain);
 		
 		eval.run(network);	
