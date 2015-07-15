@@ -65,13 +65,13 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 			double predictionThreshold = 0.0;
 			eval = new RPS_Speed(possibleInputs, sequences, functions, rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
 		} else {
-			eval = new RPS(possibleInputs, sequences, functions, rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
+			eval = new RPS(possibleInputs, sequences, functions, 0, numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		}
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
-		long randSeed = new Random().nextLong();
+		long randSeed = 0;//new Random().nextLong();
 		System.out.println("seed: " + randSeed);
-		Network_DataCollector brain = new Network_DataCollector(genomeFile, new Random(randSeed));
+		Network_DataCollector brain = new Network_DataCollector(genomeFile, null);
 		HTMNetwork network = new HTMNetwork(brain);
 		
 		eval.run(network);	

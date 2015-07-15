@@ -36,7 +36,7 @@ public class RPS {
 			int numExperimentsPerSequence,
 			int trainingIterations,
 			int evaluationIterations){
-		rand = new Random(randSeed);
+		rand = null; // new Random(randSeed);
 		runner = new SequenceRunner(null, possibleInputs, rewardFunctions, rand);
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
 		this.trainingIterations = trainingIterations;
@@ -70,7 +70,7 @@ public class RPS {
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(true);
 				brain.reset();
-				runner.reset(true);
+				runner.reset(false);
 				double[] scores = runExperiment(evaluationIterations, brain, runner);
 				double fitness = scores[1];
 				double prediction = scores[0];

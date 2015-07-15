@@ -55,7 +55,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		super.init(props);
 		Randomizer randomizer = new Randomizer();
 		randomizer.init(props);
-		rand = randomizer.getRand();
+		rand = null;//randomizer.getRand();
 		learningIterations = props.getIntProperty(RPS_LEARNING_ITERATIONS_KEY, 100);
 		trainingIterations = props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY, 1000);
 		evaluationIterations = props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY, 100);
