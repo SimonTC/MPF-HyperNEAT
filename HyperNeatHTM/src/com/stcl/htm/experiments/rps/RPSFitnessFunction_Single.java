@@ -16,7 +16,7 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
-	boolean speed = false;
+	boolean speed = true;
 
 	public static void main(String[] args) throws IOException {
 		
