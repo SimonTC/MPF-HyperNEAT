@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="./graphFitnessRefresh.xsl" ?>
 <!DOCTYPE run SYSTEM "../run.dtd">
-<run name="rps_pc_random" timedatestamp="[20150617 20:52:58 - 20150617 20:54:23]" >
+<run name="rps_pc" timedatestamp="[20150715 21:32:27 - 20150715 21:32:36]" >
 <search-parameters>
-<population-size>4</population-size>
+<population-size>50</population-size>
 <generations>200</generations>
 </search-parameters>
 <generation id="1" >
@@ -13,10 +13,10 @@
 <avg>0</avg>
 </fitness>
 <complexity>
-<champ>41</champ>
-<max>41</max>
-<min>41</min>
-<avg>41.0</avg>
+<champ>48</champ>
+<max>48</max>
+<min>48</min>
+<avg>48.0</avg>
 </complexity>
 </generation>
 </run>

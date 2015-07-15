@@ -1,5 +1,7 @@
 package com.stcl.htm.experiments.rps;
 
+import java.util.LinkedList;
+
 import org.ejml.simple.SimpleMatrix;
 
 import stcl.algo.brain.Network;
@@ -15,15 +17,14 @@ public class RPS_Speed extends RPS {
 
 	public RPS_Speed(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
-			RewardFunction rewardFunction, 
-			long randSeed,
+			RewardFunction[] rewardFunctions, 
 			int numExperimentsPerSequence, 
 			int trainingIterations,
 			int evaluationIterations,
 			double predictionThreshold,
 			double fitnessThreshold,
 			int averageOver) {
-		super(possibleInputs, sequences, rewardFunction, randSeed,
+		super(possibleInputs, sequences, rewardFunctions, 
 				numExperimentsPerSequence, trainingIterations,
 				evaluationIterations);
 		this.predictionThreshold = predictionThreshold;
@@ -33,27 +34,25 @@ public class RPS_Speed extends RPS {
 	
 	@Override
 	public double[] run(HTMNetwork brain) {
-		String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
+		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
-			System.out.println("Start on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
-			runner.reset();
+
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				System.out.println("Iteration " + sequenceIteration);
-				Network network = new Network();
-				network.initialize(initializationString, rand);
-				brain.setNetwork(network);
+				runner.reset(false);
+				brain.getNetwork().reinitialize();
+				brain.getNetwork().setUseExternalReward(true);
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0.05);
 				brain.getNetwork().setLearning(true);
 				brain.reset();
-				runner.reset();
+
 				double[] scores = runExperiment(trainingIterations, brain, runner); //TODO: How many iterations?
 				double fitness = scores[1];
 				double prediction = scores[0];
@@ -84,37 +83,48 @@ public class RPS_Speed extends RPS {
 	 */
 	@Override
 	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
-		int numPredictionHits = 0;
-		int numFitnessHits = 0;
 		int firstPredictionHit = -1;
 		int firstFitnessHit = -1;
 		boolean cont = true;
 		int counter = 0;
+		LinkedList<Double> fitnessList = new LinkedList<Double>();
+		LinkedList<Double> predictionList = new LinkedList<Double>();
+		double totalPrediction = 0;
+		double totalFitness = 0;
+		
 
 		do{
 			activator.getNetwork().newEpisode();
 			double[] result = runner.runSequence(activator);
 			double prediction = result[0];
 			double fitness = result[1];
-			//System.out.println(fitness);
+			totalFitness += fitness;
+			totalPrediction += prediction;
+			fitnessList.addLast(fitness);
+			predictionList.addLast(prediction);
+			if (fitnessList.size() > averageOver) totalFitness -= fitnessList.removeFirst();
+			if (predictionList.size() > averageOver) totalPrediction -= predictionList.removeFirst();
+			double avgFitness = totalFitness / (double) averageOver;
+			double avgPrediction= totalPrediction/ (double) averageOver;
+			boolean predictionGood, fitnessGood;
 			
-			if (prediction >= predictionThreshold){
-				numPredictionHits++;
+			if (avgPrediction >= predictionThreshold){
+				predictionGood = true;
 				if (firstPredictionHit == -1) firstPredictionHit = counter;
 			}else{
-				numPredictionHits = 0;
+				predictionGood = false;
 				firstPredictionHit = -1;
 			}
 			
-			if (fitness >= fitnessThreshold){
-				numFitnessHits++;
+			if (avgFitness >= fitnessThreshold){
+				fitnessGood = true;
 				if (firstFitnessHit == -1) firstFitnessHit = counter;
 			} else {
-				numFitnessHits = 0;
+				fitnessGood = false;
 				firstFitnessHit = -1;
 			}
 			
-			if ( numPredictionHits >= averageOver){ //numFitnessHits >= averageOver &&
+			if (predictionGood && fitnessGood){
 				cont = false;
 			}
 			

@@ -2,27 +2,36 @@ package com.stcl.htm.experiments.rps;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Random;
 
 import org.jgapcustomised.Chromosome;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.Network_DataCollector;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Inverse;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
-	boolean speed = true;
+	boolean speed = false;
 
 	public static void main(String[] args) throws IOException {
-		String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636/0";
-		String propsFileName = experimentRun + "/run.properties";
-		String genomeFile = experimentRun + "/best_performing-final-13879.txt";;
-
-		RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
-		eval.run(propsFileName, genomeFile);
+		
+		for (int i = 0; i < 10; i++){
+			String experimentRun = "D:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1436984774014";
+			String propsFileName = experimentRun + "/run.properties";
+			String genomeFile = experimentRun + "/best_performing-1-1128.txt";;
+	
+			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
+			eval.run(propsFileName, genomeFile);
+			System.out.println();
+			System.out.println();
+		}
 		
 		System.exit(0);
 	}
@@ -50,13 +59,19 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
 		RPS eval;
+		RewardFunction[] functions = {new RewardFunction_Standard(), new RewardFunction_Inverse()};
 		if (speed){
-			double threshold = 0.8;
-			eval = new RPS_Speed(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations, threshold, threshold, 5);
+			double fitnessThreshold = 0.9;
+			double predictionThreshold = 0.0;
+			eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
 		} else {
-			eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
+			eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		}
-		Network brain = new Network(genomeFile, rand);
+		//Network brain = new Network(genomeFile, rand);
+		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
+		long randSeed = 0;//new Random().nextLong();
+		System.out.println("seed: " + randSeed);
+		Network_DataCollector brain = new Network_DataCollector(genomeFile, null);
 		HTMNetwork network = new HTMNetwork(brain);
 		
 		eval.run(network);	

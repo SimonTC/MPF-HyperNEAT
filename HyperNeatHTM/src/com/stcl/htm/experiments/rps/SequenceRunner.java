@@ -11,7 +11,9 @@ public class SequenceRunner {
 	
 	private SimpleMatrix[] possibleInputs;
 	private int[] sequence;
-	private RewardFunction rewardFunction;
+	private RewardFunction[] rewardFunctions;
+	private RewardFunction curRewardFunction;
+	private int curRewardFunctionID;
 	private Random rand;
 	
 	//Variables have to be saved here to remember values between sequence runs
@@ -19,22 +21,27 @@ public class SequenceRunner {
 	private SimpleMatrix actionNextTimeStep;
 	private SimpleMatrix prediction;
 
-	public SequenceRunner(int[] sequence, SimpleMatrix[] possibleInputs, RewardFunction rewardFunction, Random rand) {
+	public SequenceRunner(int[] sequence, SimpleMatrix[] possibleInputs, RewardFunction[] rewardFunctions, Random rand) {
 		this.possibleInputs = possibleInputs;
 		this.rand = rand;
 		setSequence(sequence);
-		setRewardFunction(rewardFunction);
-		reset();
+		setRewardFunctions(rewardFunctions);
+		reset(false);
 	}
 	
 	/**
 	 * Reset all variables to their initial values.
 	 */
-	public void reset(){
+	public void reset(boolean gotoNextRewardFunction){
 		externalReward = 0;
 		double[][] tmp = {{1,0,0}};
 		actionNextTimeStep = new SimpleMatrix(tmp);
 		prediction = possibleInputs[0];		
+		if (gotoNextRewardFunction){
+			curRewardFunctionID++;
+			if (curRewardFunctionID == rewardFunctions.length) curRewardFunctionID = 0;
+			curRewardFunction = rewardFunctions[curRewardFunctionID];
+		}
 	}
 	
 	/**
@@ -133,7 +140,7 @@ public class SequenceRunner {
 				actionID = j;
 			}
 		}
-		double reward = rewardFunction.reward(inputID, actionID);
+		double reward = curRewardFunction.reward(inputID, actionID);
 		return reward;
 	}
 	
@@ -187,8 +194,10 @@ public class SequenceRunner {
 		this.sequence = sequence;
 	}
 	
-	public void setRewardFunction(RewardFunction rewardFunction){
-		this.rewardFunction = rewardFunction;
+	public void setRewardFunctions(RewardFunction[] rewardFunctions){
+		this.rewardFunctions = rewardFunctions;
+		curRewardFunctionID = 0;
+		curRewardFunction = rewardFunctions[curRewardFunctionID];
 	}
 
 }

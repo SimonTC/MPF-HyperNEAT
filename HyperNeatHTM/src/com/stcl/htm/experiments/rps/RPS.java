@@ -1,5 +1,6 @@
 package com.stcl.htm.experiments.rps;
 
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.text.Position;
@@ -8,8 +9,11 @@ import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.Chromosome;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.Network_DataCollector;
+import stcl.algo.brain.nodes.UnitNode;
 
 import com.anji.integration.Activator;
+import com.ojcoleman.bain.misc.PerformanceTest;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -17,7 +21,6 @@ public class RPS {
 	
 	protected int[][] sequences;
 	protected Random rand;
-	protected boolean training;
 	protected int numExperimentsPerSequence;
 	protected int trainingIterations;
 	protected int evaluationIterations;
@@ -28,55 +31,52 @@ public class RPS {
 	
 	public RPS(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
-			RewardFunction rewardFunction, 
-			long randSeed,
+			RewardFunction[] rewardFunctions, 
 			int numExperimentsPerSequence,
 			int trainingIterations,
 			int evaluationIterations){
-		rand = new Random(randSeed);
-		runner = new SequenceRunner(null, possibleInputs, rewardFunction, rand);
+		rand = null; // new Random(randSeed);
+		runner = new SequenceRunner(null, possibleInputs, rewardFunctions, rand);
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
 		this.trainingIterations = trainingIterations;
 		this.evaluationIterations = evaluationIterations;
-		this.training = true;
 		sequenceScores = new double[sequences.length][2];
 		this.sequences = sequences;
 
 	}
 	
 	public double[] run(HTMNetwork brain) {
-		String initializationString = brain.toString();
 		double totalFitness = 0;
 		double totalPrediction = 0;
+		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
-			System.out.println("Start on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
-			runner.reset();
+			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				System.out.println("Iteration " + sequenceIteration);
-				Network network = new Network();
-				network.initialize(initializationString, rand);
-				brain.setNetwork(network);
+				runner.reset(false);
+				brain.getNetwork().reinitialize();
+				brain.getNetwork().setUseExternalReward(true);
 				
 				//Let it train
-				training = true;
 				brain.getNetwork().setUsePrediction(true);
+				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				runExperiment(trainingIterations, brain, runner);
-				training = false;
 				
 				//Evaluate
-				brain.getNetwork().getActionNode().setExplorationChance(0);
-				brain.getNetwork().setLearning(false);
+				brain.getNetwork().getActionNode().setExplorationChance(0.0);
+				brain.getNetwork().setLearning(true);
 				brain.reset();
-				runner.reset();
+				runner.reset(false);
 				double[] scores = runExperiment(evaluationIterations, brain, runner);
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
+
+				
 			}
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
 			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);

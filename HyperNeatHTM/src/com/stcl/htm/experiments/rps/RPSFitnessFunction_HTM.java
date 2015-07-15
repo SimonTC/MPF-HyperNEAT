@@ -14,6 +14,7 @@ import com.anji.util.Randomizer;
 import com.ojcoleman.ahni.evaluation.BulkFitnessFunctionMT;
 import com.ojcoleman.ahni.evaluation.HyperNEATFitnessFunction;
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
 import com.stcl.htm.network.HTMNetwork;
@@ -92,17 +93,22 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	}
 	
 	protected double evaluate(Chromosome genotype, Activator activator, int threadIndex) {
-		RPS eval = new RPS(possibleInputs, sequences, new RewardFunction_Standard(), rand.nextLong(), numExperimentsPerSequence, trainingIterations, evaluationIterations);
+		RPS eval = setupEvaluator();
 		long start = System.currentTimeMillis();
 		HTMNetwork brain = (HTMNetwork) activator;
 		double[] result = eval.run(brain);		
-		genotype.setPerformanceValue(result[0]);
+		genotype.setPerformanceValue(0);
 		genotype.setFitnessValue(result[1]);
 		double duration = (System.currentTimeMillis() - start) / 1000d;
 		if (logTime) logger.info("Evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " took: " + duration + " seconds. It started at " + start);
 		return result[1];
 	}
 	
+	protected RPS setupEvaluator(){
+		RewardFunction[] functions = {new RewardFunction_Standard()};
+		RPS eval = new RPS(possibleInputs, sequences, functions,  numExperimentsPerSequence, trainingIterations, evaluationIterations);
+		return eval;
+	}
 
 	
 	private void createInputs(){
