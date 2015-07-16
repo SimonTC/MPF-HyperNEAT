@@ -38,7 +38,8 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	
 	public void run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
-		
+		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
+		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "20");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
