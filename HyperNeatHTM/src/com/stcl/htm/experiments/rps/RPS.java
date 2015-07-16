@@ -67,7 +67,7 @@ public class RPS {
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
-				brain.getNetwork().setLearning(true);
+				brain.getNetwork().setLearning(false);
 				brain.reset();
 				runner.reset(false);
 				double[] scores = runExperiment(evaluationIterations, brain, runner);
