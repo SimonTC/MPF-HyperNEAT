@@ -22,7 +22,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 
 	public static void main(String[] args) throws IOException {
 		
-		for (int i = 0; i < 1; i++){
+		for (int i = 0; i < 2; i++){
 			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1437032968723/0";
 			String propsFileName = experimentRun + "/run.properties";
 			String genomeFile = experimentRun + "/best_performing-final-21776.txt";;
@@ -39,7 +39,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	public void run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
 		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
-		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "20");
+		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "100");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
@@ -72,7 +72,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
 		long randSeed = 0;//new Random().nextLong();
 		System.out.println("seed: " + randSeed);
-		Network_DataCollector brain = new Network_DataCollector(genomeFile, null);
+		Network_DataCollector brain = new Network_DataCollector(genomeFile, new Random());
 		HTMNetwork network = new HTMNetwork(brain);
 		
 		eval.run(network);	
