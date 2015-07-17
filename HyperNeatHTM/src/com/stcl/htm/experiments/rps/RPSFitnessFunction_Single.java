@@ -23,9 +23,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	public static void main(String[] args) throws IOException {
 		
 		for (int i = 0; i < 2; i++){
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1437032968723/0";
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1437032968723/1";
 			String propsFileName = experimentRun + "/run.properties";
-			String genomeFile = experimentRun + "/best_performing-final-21776.txt";;
+			String genomeFile = experimentRun + "/best_performing-final-25607.txt";;
 	
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
 			eval.run(propsFileName, genomeFile);
@@ -39,10 +39,12 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 	public void run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
 		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
-		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "100");
+		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "10");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
+		double fitnessSum = 0;
+		double predictionSum = 0;
 		
 		for (int i = 0; i < result.length; i++){
 			
@@ -52,9 +54,14 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_HTM {
 				System.out.println("Sequence " + i + " TTP: " + timeToPrediction + " TTF: " + timeToFitness);
 			} else {
 				System.out.println("Sequence " + i + " Prediction: " + result[i][0] + " Fitness: " + result[i][1]);
+				predictionSum += result[i][0];
+				fitnessSum += result[i][1];
 			}
 			
 		}
+		double avgFitness = fitnessSum / (double) result.length;
+		double avgPrediction = predictionSum / (double) result.length;
+		System.out.println("Avg prediction: " + avgPrediction + " Avg fitness: " + avgFitness);
 	}
 	
 
