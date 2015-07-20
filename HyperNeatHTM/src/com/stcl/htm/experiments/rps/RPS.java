@@ -50,21 +50,21 @@ public class RPS {
 		double totalPrediction = 0;
 		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
-			System.out.println("Starting on sequence " + sequenceID);
+			//System.out.println("Starting on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
-				System.out.println("Starting on iteration " + sequenceIteration);
+				//System.out.println("Starting on iteration " + sequenceIteration);
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
 				brain.getNetwork().setUseExternalReward(true);
 				
 				//Let it train
 				brain.getNetwork().setUsePrediction(true);
-				brain.getNetwork().getActionNode().setExplorationChance(0.0);
+				brain.getNetwork().getActionNode().setExplorationChance(0.05);
 				runExperiment(trainingIterations, brain, runner);
 				
 				//Evaluate
