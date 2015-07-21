@@ -32,6 +32,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	public static final String RPS_SEQUENCES_ALPHABET_SIZE = "rps.sequences.alphabet.size";
 	public static final String RPS_SEQUENCES_RAND_SEED_KEY = "rps.sequences.rand.seed";
 	public static final String RPS_LOG_EVALUATION_TIME_KEY = "rps.log.evaluation.time";
+	public static final String RPS_TRAINING_EXPLORE_CHANCE = "rps.training.explore.chance";
 
 	private static Logger logger = Logger.getLogger(RPSFitnessFunction_HTM.class);
 	
@@ -45,6 +46,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	protected int numExperimentsPerSequence;
 	protected Random rand;
 	protected boolean logTime;
+	private double exploreChance;
 	
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.
@@ -62,6 +64,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		numDifferentSequences = props.getIntProperty(RPS_SEQUENCES_NUMBER_KEY, 1);
 		numExperimentsPerSequence = props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY, 10);
 		logTime = props.getBooleanProperty(RPS_LOG_EVALUATION_TIME_KEY, false);
+		exploreChance = props.getDoubleProperty(RPS_TRAINING_EXPLORE_CHANCE, 0.05);
 		
 		//Create sequences
 		long sequenceSeed = 0;
@@ -96,7 +99,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		RPS eval = setupEvaluator();
 		long start = System.currentTimeMillis();
 		HTMNetwork brain = (HTMNetwork) activator;
-		double[] result = eval.run(brain);		
+		double[] result = eval.run(brain, exploreChance);		
 		genotype.setPerformanceValue(0);
 		genotype.setFitnessValue(result[1]);
 		double duration = (System.currentTimeMillis() - start) / 1000d;

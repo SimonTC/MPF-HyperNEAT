@@ -45,7 +45,7 @@ public class RPS {
 
 	}
 	
-	public double[] run(HTMNetwork brain) {
+	public double[] run(HTMNetwork brain, double explorationChance) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		
@@ -64,7 +64,7 @@ public class RPS {
 				
 				//Let it train
 				brain.getNetwork().setUsePrediction(true);
-				brain.getNetwork().getActionNode().setExplorationChance(0.05);
+				brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
 				runExperiment(trainingIterations, brain, runner);
 				
 				//Evaluate
@@ -92,6 +92,10 @@ public class RPS {
 		double[] result = {avgPrediction, avgFitness};
 		
 		return result;
+	}
+	
+	public double[] run(HTMNetwork brain) {
+		return this.run(brain,0);
 		
 	}
 	
