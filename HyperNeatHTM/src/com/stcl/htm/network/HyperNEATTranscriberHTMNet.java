@@ -13,8 +13,10 @@ import stcl.algo.brain.nodes.ActionNode;
 import stcl.algo.brain.nodes.Node;
 import stcl.algo.brain.nodes.Sensor;
 import stcl.algo.brain.nodes.UnitNode;
+import stcl.algo.poolers.RSOM;
 import stcl.algo.poolers.SOM;
 import stcl.algo.poolers.SpatialPooler;
+import stcl.algo.poolers.TemporalPooler;
 
 import com.anji.integration.Activator;
 import com.anji.integration.Transcriber;
@@ -160,6 +162,12 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 								SpatialPooler pooler = unitnode.getUnit().getSpatialPooler();
 								initializeSpatialPoolerWeights(pooler, coordinates, cppn, p);
 							}
+							
+							//Initialize weights of temporal pooler
+							if (temporalMapSize > 0){
+								TemporalPooler pooler = unitnode.getUnit().getTemporalPooler();
+								initializeTemporalPoolerWeights(pooler, coordinates, cppn, p);
+							}
 							unitnode.createInitializationString();
 						}
 						
@@ -260,6 +268,33 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					cppn.setExtraTargetCoordinates(p);
 					cppn.query();
 					double weight = (double) cppn.getRangedNeuronParam(0, 4);
+					vector.set(i, weight);
+				}
+				node.setVector(vector);
+			}
+		}								
+	}
+	
+	private void initializeTemporalPoolerWeights(TemporalPooler pooler, double[] coordinates, CPPN cppn, SuperPoint p){
+		RSOM rsom = pooler.getRSOM();
+		SomMap map = rsom.getSomMap(); 
+		int mapHeight = map.getHeight();
+		int mapWidth = map.getWidth();
+		for (int mapX = 0; mapX < mapWidth; mapX++){
+			double x = (double) mapX / mapWidth;
+			for (int mapY = 0; mapY < mapHeight; mapY++){
+				double y = (double) mapY / mapHeight;
+				SomNode node = map.get(mapX, mapY);
+				SimpleMatrix vector = node.getVector();
+				int vectorLength = vector.getNumElements();
+				for (int i = 0; i < vectorLength; i++){
+					coordinates[3] = x;
+					coordinates[4] = y;
+					coordinates[5] = (double) i / vectorLength;
+					cppn.setExtraSourceCoordinates(p);
+					cppn.setExtraTargetCoordinates(p);
+					cppn.query();
+					double weight = (double) cppn.getRangedNeuronParam(0, 5);
 					vector.set(i, weight);
 				}
 				node.setVector(vector);
