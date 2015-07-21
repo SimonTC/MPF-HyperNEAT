@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="./graphFitnessRefresh.xsl" ?>
 <!DOCTYPE run SYSTEM "../run.dtd">
-<run name="rps_pc" timedatestamp="[20150721 11:51:55 - 20150721 11:52:09]" >
+<run name="rps_pc" timedatestamp="[20150721 16:14:19 - 20150721 16:14:34]" >
 <search-parameters>
 <population-size>10</population-size>
 <generations>200</generations>
@@ -78,11 +78,151 @@
 <complexity>
 <champ>151</champ>
 <max>153</max>
-<min>149</min>
-<avg>151.0</avg>
+<min>148</min>
+<avg>150.72727272727272</avg>
 </complexity>
 <species id="1">
 <chromosome id="1198" fitness="0.625" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="5" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>151</champ>
+<max>151</max>
+<min>151</min>
+<avg>151.0</avg>
+</complexity>
+<species id="0">
+</species>
+<species id="1">
+<chromosome id="1736" fitness="0.7700000000000001" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="6" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>151</champ>
+<max>152</max>
+<min>148</min>
+<avg>150.63636363636363</avg>
+</complexity>
+<species id="1">
+<chromosome id="1736" fitness="0.7700000000000001" />
+</species>
+</generation>
+<generation id="7" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>151</champ>
+<max>151</max>
+<min>151</min>
+<avg>151.0</avg>
+</complexity>
+<species id="1">
+<chromosome id="1736" fitness="0.7700000000000001" />
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+<species id="0">
+</species>
+</generation>
+<generation id="8" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>151</champ>
+<max>153</max>
+<min>149</min>
+<avg>150.9090909090909</avg>
+</complexity>
+<species id="1">
+<chromosome id="1736" fitness="0.7700000000000001" />
+</species>
+</generation>
+<generation id="9" >
+<fitness>
+<max>1.0</max>
+<min>0.0</min>
+<avg>0</avg>
+</fitness>
+<complexity>
+<champ>151</champ>
+<max>152</max>
+<min>147</min>
+<avg>150.63636363636363</avg>
+</complexity>
+<species id="1">
+<chromosome id="1736" fitness="0.7700000000000001" />
 </species>
 <species id="0">
 </species>
