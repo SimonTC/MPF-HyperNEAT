@@ -19,7 +19,7 @@ import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
 import com.stcl.htm.network.HTMNetwork;
 
-public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
+public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 	
 	public static final String RPS_LEARNING_ITERATIONS_KEY = "rps.learning.iterations";
 	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
@@ -34,7 +34,7 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 	public static final String RPS_LOG_EVALUATION_TIME_KEY = "rps.log.evaluation.time";
 	public static final String RPS_TRAINING_EXPLORE_CHANCE = "rps.training.explore.chance";
 
-	private static Logger logger = Logger.getLogger(RPSFitnessFunction_HTM.class);
+	private static Logger logger = Logger.getLogger(RPSFitnessFunction_Fitness.class);
 	
 	protected SimpleMatrix[] possibleInputs;
 	protected int[][] sequences;
@@ -100,14 +100,20 @@ public class RPSFitnessFunction_HTM extends HyperNEATFitnessFunction {
 		long start = System.currentTimeMillis();
 		HTMNetwork brain = (HTMNetwork) activator;
 		double[] result = eval.run(brain, exploreChance);		
-		genotype.setPerformanceValue(0);
-		genotype.setFitnessValue(result[1]);
+		double fitness = collectFitness(result, genotype);
 		double duration = (System.currentTimeMillis() - start) / 1000d;
 		if (logTime) logger.info("Evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " took: " + duration + " seconds. It started at " + start);
 		
 		//logger.info("Genotype " + genotype.getId() + " got a fitness of " + result[1]); 
 		
-		return result[1];
+		return fitness;
+	}
+	
+	protected double collectFitness(double[] result, Chromosome genotype){
+		double fitness = result[1]; //Collect fitness
+		genotype.setPerformanceValue(fitness);
+		genotype.setFitnessValue(fitness);
+		return fitness;
 	}
 	
 	protected RPS setupEvaluator(){

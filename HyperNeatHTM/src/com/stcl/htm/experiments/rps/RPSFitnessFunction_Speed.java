@@ -4,7 +4,7 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 
-public class RPSFitnessFunction_Speed extends RPSFitnessFunction_HTM {
+public class RPSFitnessFunction_Speed extends RPSFitnessFunction_Fitness {
 	public static final String RPS_SPEED_PREDICTION_THRESHOLD_KEY = "rps.speed.predictionthreshold";
 	public static final String RPS_SPEED_FITNESS_THRESHOLD_KEY = "rps.speed.fitnessthreshold";
 	public static final String RPS_SPEED_AVERAGEOVER_KEY = "rps.speed.averageover";
