@@ -48,10 +48,10 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 	
 	public static final String HTM_ACTION_VECTOR_LENGTH_KEY = "htm.action.inputlenght";
 	public static final String HTM_ACTION_GROUP_MAPSIZE_KEY = "htm.action.mapsize";
-	public static final String HTM_ACTION_VOTER_INFLUENCE_EVOLVE_KEY = "htm.action.voter.influence.evolve";
 	public static final String HTM_ACTION_DECIDER_BATCH_TRAINING_KEY = "htm.action.decider.batch.training";
 	public static final String HTM_ACTION_DECIDER_REACTIONARY_KEY = "htm.action.decider.reactionary";
-
+	public static final String HTM_ACTION_NODE_RANDOM_EXPLORATION = "htm.action.node.random.exploration";
+	
 	private final static Logger logger = Logger.getLogger(HyperNEATTranscriberHTMNet.class);
 	
 	private Randomizer rand;
@@ -215,15 +215,13 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 			Sensor actionSensor = new Sensor(nextFreeID++, -1,-1,0); //The action sensor isn't really part of the sensor layer so we give it negative coordinates
 			actionSensor.initialize(actionVectorLength);
 			ActionNode actionNode = new ActionNode(nextFreeID++);
-			actionNode.initialize(rand.getRand(), actionVectorLength, props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2), 0.1, explorationChance); //TODO: Use parameters
+			actionNode.initialize(rand.getRand(), actionVectorLength, props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2), 
+					0.1, explorationChance, props.getBooleanProperty(HTM_ACTION_NODE_RANDOM_EXPLORATION, false)); //TODO: Use parameters
 			actionSensor.setParent(actionNode);
 			actionNode.addChild(actionSensor);
 			brainNetwork.addNode(actionNode);
 			brainNetwork.addNode(actionSensor);
-			if (props.getBooleanProperty(HTM_ACTION_VOTER_INFLUENCE_EVOLVE_KEY, false)){
-				actionNode.setInfluenceMap(votingInfluences);
-				actionNode.setUpdateVoterInfluence(false);
-			}
+			
 			
 			//Initializa pooler weigths of action node
 			cppn.setSourceCoordinatesFromGridIndices(0, 0, 0);	
