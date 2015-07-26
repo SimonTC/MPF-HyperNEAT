@@ -63,12 +63,14 @@ public class TestSuite {
 	public void writeResults(double[][][] results, String resultFolder) throws IOException{
 		String headers = "Seq, Fitness, Prediction, Speed_Fitness, Speed_Prediction, Adaption";
 		for (int i = 0; i < results.length; i++){
-			String filename = genomeFiles[i].getName() + "_results.csv";
+			String filename = genomeFiles[i].getName();
+			filename = filename.substring(0, filename.length() - 4) + "_results.csv";
 			FileWriter writer = new FileWriter(resultFolder + "/" + filename);
 			writer.openFile(false);
 			writer.writeLine(headers);
 			for (int sequence = 0; sequence < results[i][0].length; sequence++){
-				for (int test = 0; test < results[i].length; i++){
+				writer.write(sequence + ",");
+				for (int test = 0; test < results[i].length; test++){
 					writer.write(results[i][test][sequence] + ",");
 				}
 				writer.writeLine("");
