@@ -33,7 +33,7 @@ public class RPS_Speed extends RPS {
 	}
 	
 	@Override
-	public double[] run(HTMNetwork brain) {
+	public double[] run(HTMNetwork brain, double explorationChance) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		
@@ -49,11 +49,11 @@ public class RPS_Speed extends RPS {
 				brain.getNetwork().setUseExternalReward(true);
 				
 				//Evaluate
-				brain.getNetwork().getActionNode().setExplorationChance(0.05);
+				brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
 				brain.getNetwork().setLearning(true);
 				brain.reset();
 
-				double[] scores = runExperiment(trainingIterations, brain, runner); //TODO: How many iterations?
+				double[] scores = runExperiment(trainingIterations + evaluationIterations, brain, runner); //TODO: How many iterations?
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
