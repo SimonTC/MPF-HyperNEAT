@@ -1,5 +1,6 @@
 package com.stcl.htm.experiments.rps;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
@@ -19,10 +20,11 @@ import com.stcl.htm.network.HTMNetwork;
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
+	boolean collectData = false;
 
 	public static void main(String[] args) throws IOException {
 		
-		for (int i = 0; i < 2; i++){
+		for (int i = 0; i < 1; i++){
 			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1437817450998/0";
 			String propsFileName = experimentRun + "/run.properties";
 			String genomeFile = experimentRun + "/best_performing-final-25275.txt";;
@@ -39,7 +41,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	public void run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
 		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
-		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "10");
+		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "1");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
@@ -82,10 +84,25 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		Network_DataCollector brain = new Network_DataCollector(genomeFile, new Random());
 		HTMNetwork network = new HTMNetwork(brain);
 		
+		if (collectData){
+			setupDataCollection(brain, genomeFile);
+		}
+		
 		eval.run(network);	
 		double[][] result = eval.getSequenceScores();
+		
+		if(collectData){
+			brain.closeFiles();
+		}
 
 		return result;
+	}
+	
+	private void setupDataCollection(Network_DataCollector brain, String genomeFile){
+		File f = new File(genomeFile);
+		String parentFolder = f.getParent();
+		String dataFolder = parentFolder + "/DataCollection";
+		brain.initializeWriters(dataFolder, false);
 	}
 
 }
