@@ -38,6 +38,8 @@ public class TestSuite {
 			e.printStackTrace();
 		}
 		
+		System.out.println("Finished tests");
+		
 
 	}
 	
