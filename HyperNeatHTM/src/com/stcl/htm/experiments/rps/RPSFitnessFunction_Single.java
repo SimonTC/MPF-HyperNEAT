@@ -25,9 +25,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	public static void main(String[] args) throws IOException {
 		
 		for (int i = 0; i < 1; i++){
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1437817450998/0";
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1437996574156";
 			String propsFileName = experimentRun + "/run.properties";
-			String genomeFile = experimentRun + "/best_performing-final-25275.txt";;
+			String genomeFile = experimentRun + "/best_performing-final-5206.txt";;
 	
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
 			eval.run(propsFileName, genomeFile);
@@ -41,7 +41,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	public void run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
 		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
-		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "1");
+		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "10");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
