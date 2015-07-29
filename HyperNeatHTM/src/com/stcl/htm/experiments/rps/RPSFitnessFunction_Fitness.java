@@ -66,7 +66,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 		logTime = props.getBooleanProperty(RPS_LOG_EVALUATION_TIME_KEY, false);
 		exploreChance = props.getDoubleProperty(RPS_TRAINING_EXPLORE_CHANCE, 0.05);
 		
-		createSequences(props, rand);
+		sequences = createSequences(props, rand);
 		
 		createInputs();
 		
