@@ -21,6 +21,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
 	boolean collectData = false;
+	boolean setSequencesManually = false;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -64,6 +65,19 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		double avgFitness = fitnessSum / (double) result.length;
 		double avgPrediction = predictionSum / (double) result.length;
 		System.out.println("Avg prediction: " + avgPrediction + " Avg fitness: " + avgFitness);
+	}
+	
+	@Override
+	protected int[][] createSequences(Properties props, Random rand){
+		int[][] sequencesToReturn = null;
+		int[][] generatedSequences = super.createSequences(props, rand);
+		if (setSequencesManually){
+			int[][] mySequence ={{0,1,2}};
+			sequencesToReturn = mySequence;
+		} else {
+			sequencesToReturn = generatedSequences;
+		}
+		return sequencesToReturn;
 	}
 	
 
