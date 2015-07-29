@@ -1,5 +1,6 @@
 package com.stcl.htm.experiments.rps;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
@@ -130,7 +131,6 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 		RPS eval = new RPS(possibleInputs, sequences, functions,  numExperimentsPerSequence, trainingIterations, evaluationIterations);
 		return eval;
 	}
-
 	
 	private void createInputs(){
 		double[][] rockData = {

@@ -1,5 +1,6 @@
 package com.stcl.htm.experiments.rps;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.ejml.simple.SimpleMatrix;
@@ -15,6 +16,7 @@ public class SequenceRunner {
 	private RewardFunction curRewardFunction;
 	private int curRewardFunctionID;
 	private Random rand;
+	private ArrayList<SimpleMatrix> possibleActions;
 	
 	//Variables have to be saved here to remember values between sequence runs
 	private double externalReward;
@@ -27,6 +29,7 @@ public class SequenceRunner {
 		setSequence(sequence);
 		setRewardFunctions(rewardFunctions);
 		reset(false);
+		this.possibleActions = createPossibleActions();
 	}
 	
 	/**
@@ -44,6 +47,24 @@ public class SequenceRunner {
 		}
 	}
 	
+	private ArrayList<SimpleMatrix> createPossibleActions(){
+		double[][] rock = {{1,0,0}};
+		double[][] paper = {{0,1,0}};
+		double[][] scissors = {{0,0,1}};
+		double[][] empty = {{0,0,0}};
+		
+		SimpleMatrix r = new SimpleMatrix(rock);
+		SimpleMatrix p = new SimpleMatrix(paper);
+		SimpleMatrix s = new SimpleMatrix(scissors);
+		SimpleMatrix e = new SimpleMatrix(empty);
+		ArrayList<SimpleMatrix> arr = new ArrayList<SimpleMatrix>();
+		arr.add(r);
+		arr.add(p);
+		arr.add(s);
+		arr.add(e);
+		return arr;
+	}
+	
 	/**
 	 * Goes through the sequence once.
 	 * Remember to call reset() if the evaluation should start from scratch
@@ -54,7 +75,7 @@ public class SequenceRunner {
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
 		
-		
+		activator.getNetwork().getActionNode().setPossibleActions(possibleActions);
 		
 		for (int i = 0; i < sequence.length; i++){
 			//Get input			
