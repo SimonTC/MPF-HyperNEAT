@@ -152,7 +152,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							boolean batchTraining = props.getBooleanProperty(HTM_ACTION_DECIDER_BATCH_TRAINING_KEY, false);
 							boolean usePrediction = true; //TODO: Is this used? ALso move to property file
 							boolean reactionary = props.getBooleanProperty(HTM_ACTION_DECIDER_REACTIONARY_KEY, false);
-							unitnode.initialize(rand.getRand(), spatialMapSize, temporalMapSize, markovOrder, actionMapSize * actionMapSize, usePrediction, reactionary, batchTraining);
+							unitnode.initialize(spatialMapSize, temporalMapSize, markovOrder, actionMapSize * actionMapSize, usePrediction, reactionary, batchTraining);
 							brainNetwork.addNode(unitnode);
 							votingInfluences.put(id, votingInfluence);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());

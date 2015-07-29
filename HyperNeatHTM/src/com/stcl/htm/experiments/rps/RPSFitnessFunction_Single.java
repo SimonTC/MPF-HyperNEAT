@@ -9,6 +9,7 @@ import org.jgapcustomised.Chromosome;
 
 import stcl.algo.brain.Network;
 import stcl.algo.brain.Network_DataCollector;
+import stcl.algo.util.FileWriter;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
@@ -26,10 +27,10 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 
 	public static void main(String[] args) throws IOException {
 		
-		for (int i = 0; i < 10; i++){
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1438173434855";
+		for (int i = 0; i < 1; i++){
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1438176442018";
 			String propsFileName = experimentRun + "/run.properties";
-			String genomeFile = experimentRun + "/best_performing-2-1794.txt";;
+			String genomeFile = experimentRun + "/best_performing-8-2068.txt";;
 	
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
 			eval.run(propsFileName, genomeFile);
@@ -117,7 +118,22 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		File f = new File(genomeFile);
 		String parentFolder = f.getParent();
 		String dataFolder = parentFolder + "/DataCollection";
+		printBrain(brain, dataFolder);
 		brain.initializeWriters(dataFolder, false);
+	}
+	
+	private void printBrain(Network_DataCollector brain, String folder){
+		String description = brain.toString();
+		try {
+			FileWriter fw = new FileWriter(folder + "/NetworkDescription.txt");
+			fw.openFile(false);
+			fw.write(description);
+			fw.closeFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
