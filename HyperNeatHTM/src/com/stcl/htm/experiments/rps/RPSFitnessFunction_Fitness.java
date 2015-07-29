@@ -66,7 +66,13 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 		logTime = props.getBooleanProperty(RPS_LOG_EVALUATION_TIME_KEY, false);
 		exploreChance = props.getDoubleProperty(RPS_TRAINING_EXPLORE_CHANCE, 0.05);
 		
-		//Create sequences
+		createSequences(props, rand);
+		
+		createInputs();
+		
+	}
+	
+	protected int[][] createSequences(Properties props, Random rand){
 		long sequenceSeed = 0;
 		try{
 			sequenceSeed = props.getLongProperty(RPS_SEQUENCES_RAND_SEED_KEY);
@@ -81,13 +87,11 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 		int alphabetSize = props.getIntProperty(RPS_SEQUENCES_ALPHABET_SIZE, 3); //Currently not in use
 		Random sequenceRand = new Random(sequenceSeed);
 		SequenceBuilder builder = new SequenceBuilder();
-		sequences = new int[numDifferentSequences][];
+		int[][] sequences = new int[numDifferentSequences][];
 		for ( int i = 0; i < numDifferentSequences; i++){
 			sequences[i] = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
 		}
-		
-		createInputs();
-		
+		return sequences;
 	}
 	
 	@Override
