@@ -54,6 +54,8 @@ public class SequenceRunner {
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
 		
+		
+		
 		for (int i = 0; i < sequence.length; i++){
 			//Get input			
 			SimpleMatrix input = possibleInputs[sequence[i]];
@@ -63,7 +65,7 @@ public class SequenceRunner {
 			if (i > 0){ //First prediction will always be wrong so we don't count it
 				SimpleMatrix diff = input.minus(prediction);
 				predictionError = diff.normF();	
-				if (predictionError > 0.1) predictionError = 1; //TODO: Maybe change threshold of error	
+				predictionError = (predictionError > 0.1) ? 1 : 0; //TODO: Maybe change threshold of error	
 			}
 			totalPredictionError += predictionError;
 			SimpleMatrix actionThisTimestep = actionNextTimeStep;

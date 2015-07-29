@@ -17,7 +17,6 @@ import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Inverse;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
-import com.stcl.htm.util.RandomUtil;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
@@ -27,7 +26,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 
 	public static void main(String[] args) throws IOException {
 		
-		for (int i = 0; i < 1; i++){
+		for (int i = 0; i < 10; i++){
 			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1438176442018";
 			String propsFileName = experimentRun + "/run.properties";
 			String genomeFile = experimentRun + "/best_performing-8-2068.txt";;
@@ -97,14 +96,14 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
 		long randSeed = 0;//new Random().nextLong();
 		System.out.println("seed: " + randSeed);
-		Network_DataCollector brain = new Network_DataCollector(genomeFile, new RandomUtil());
+		Network_DataCollector brain = new Network_DataCollector(genomeFile, new Random());
 		HTMNetwork network = new HTMNetwork(brain);
 		
 		if (collectData){
 			setupDataCollection(brain, genomeFile);
 		}
 		
-		eval.run(network);	
+		eval.run(network, 1);	
 		double[][] result = eval.getSequenceScores();
 		
 		if(collectData){
