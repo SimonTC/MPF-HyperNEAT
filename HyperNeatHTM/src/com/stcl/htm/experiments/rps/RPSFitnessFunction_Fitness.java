@@ -74,10 +74,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 	}
 	
 	protected int[][] createSequences(Properties props, Random rand){
-		int[][] mySequence ={{0,1,2}};
-		
-		return mySequence;
-		/*
+
 		long sequenceSeed = 0;
 		try{
 			sequenceSeed = props.getLongProperty(RPS_SEQUENCES_RAND_SEED_KEY);
@@ -97,7 +94,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 			sequences[i] = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
 		}
 		return sequences;
-		*/
+		
 	}
 	
 	@Override
