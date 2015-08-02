@@ -55,7 +55,7 @@ public class RPS_Speed extends RPS {
 				brain.getNetwork().setLearning(true);
 				brain.reset();
 
-				double[] scores = runExperiment(trainingIterations + evaluationIterations, brain, runner); //TODO: How many iterations?
+				double[] scores = runExperiment(trainingIterations + evaluationIterations, brain, runner); 
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;

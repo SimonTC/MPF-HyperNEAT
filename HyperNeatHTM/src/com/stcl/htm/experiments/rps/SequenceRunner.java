@@ -88,7 +88,7 @@ public class SequenceRunner {
 			if (i > 0){ //First prediction will always be wrong so we don't count it
 				SimpleMatrix diff = input.minus(prediction);
 				predictionError = diff.normF();	
-				predictionError = (predictionError > 0.1) ? 1 : 0; //TODO: Maybe change threshold of error	
+				predictionError = (predictionError > 0.1) ? 1 : 0; 
 			}
 			totalPredictionError += predictionError;
 			SimpleMatrix actionThisTimestep = actionNextTimeStep;
