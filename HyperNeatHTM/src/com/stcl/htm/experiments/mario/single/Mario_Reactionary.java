@@ -23,7 +23,7 @@ import vikrasim.agents.MasterAgent;
 
 public class Mario_Reactionary {
 	
-	private final String outputFile = "D:/Users/Simon/Documents/Experiments/HTM/mario/No_Evo";
+	private final String outputFile = "c:/Users/Simon/Google Drive/Experiments/HTM/mario/No_Evo";
 	private Network_DataCollector agentBrain;
 	
 	private Random rand = new Random(1234);
@@ -53,7 +53,7 @@ public class Mario_Reactionary {
 		setup(false);
 		
 		System.out.println("Starting teaching");
-		doTeaching(teacher, agent, 100, 0, learningOptions);
+		doTeaching(teacher, agent, 10, 0, learningOptions);
 		System.out.println();
 		
 		System.out.println("Q-Matrix:");
@@ -65,7 +65,7 @@ public class Mario_Reactionary {
 		System.out.println();
 		
 		System.out.println("Starting training");
-		//doTraining(agent, 100, 0, learningOptions);
+		doTraining(agent, 100, 0, learningOptions);
 		System.out.println();
 		
 		System.out.println("Starting evaluation");
@@ -77,6 +77,7 @@ public class Mario_Reactionary {
 	private void doTeaching(MasterAgent teacher, MPFAgent pupil, int episodes, int saveEvery, String learningOptions){
 		boolean writeInfo = false;
 		for (int i = 0; i < episodes; i++){
+			pupil.newEpisode();
 			if (saveEvery > 0){
 				writeInfo = (i % saveEvery == 0);
 			}
@@ -90,6 +91,7 @@ public class Mario_Reactionary {
 	private void doTraining(MPFAgent pupil, int episodes, int saveEvery, String learningOptions){
 		boolean writeInfo = false;
 		for (int i = 0; i < episodes; i++){
+			pupil.newEpisode();
 			pupil.setExplorationChance(1 - (double) i / episodes);    
 			if (saveEvery > 0){
 				writeInfo = (i % saveEvery == 0);
@@ -106,6 +108,7 @@ public class Mario_Reactionary {
 		pupil.getNetwork().getNetwork().setLearning(false);
 		boolean writeInfo = false;
 		for (int i = 0; i < episodes; i++){
+			pupil.newEpisode();
 			if (saveEvery > 0){
 				writeInfo = (i % saveEvery == 0);
 			}
@@ -200,7 +203,7 @@ public class Mario_Reactionary {
 	}
 	
 	private MasterAgent createTeacher(){
-		String file = "D:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
+		String file = "c:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
 		MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
 		agentGAP.createBrain();
 		
@@ -238,7 +241,7 @@ public class Mario_Reactionary {
 		ActionNode actionNode = new ActionNode(4);
 		int actionMapSize = 4;
 		int numActions = actionMapSize * actionMapSize;
-		actionNode.initialize(rand, actionVectorLength, actionMapSize, 0.1, 0.05);
+		actionNode.initialize(rand, actionVectorLength, actionMapSize, 0.1, 0.05, false);
 		actionSensor.setParent(actionNode);
 				
 		//Initialize unit nodes
@@ -246,7 +249,7 @@ public class Mario_Reactionary {
 		int spatialMapSize_input = 5;
 		int temporalMapSize_input = 3;
 		int markovOrder_input = 3;
-		inputPooler.initialize(rand, inputLength, spatialMapSize_input, temporalMapSize_input, markovOrder_input, numActions, true,true,offlineLearning);
+		inputPooler.initialize(inputLength, spatialMapSize_input, temporalMapSize_input, markovOrder_input, numActions, true,true,offlineLearning);
 	
 		//Combiner
 		
@@ -254,14 +257,14 @@ public class Mario_Reactionary {
 		int spatialMapSize_combiner = 5;
 		int temporalMapSize_combiner = 3;
 		int markovOrder_combiner = 3;
-		combiner.initialize(rand, ffInputLength_combiner, spatialMapSize_combiner, temporalMapSize_combiner,  markovOrder_combiner, numActions, true,true,offlineLearning);
+		combiner.initialize(ffInputLength_combiner, spatialMapSize_combiner, temporalMapSize_combiner,  markovOrder_combiner, numActions, true,true,offlineLearning);
 	
 		//top node
 		int ffInputLength_top = combiner.getFeedforwardOutputVectorLength();
 		int spatialMapSize_top = 5;
 		int temporalMapSize_top = 3;
 		int markovOrder_top = 3;
-		topNode.initialize(rand, ffInputLength_top, spatialMapSize_top, temporalMapSize_top,  markovOrder_top, numActions, true,true,offlineLearning);
+		topNode.initialize(ffInputLength_top, spatialMapSize_top, temporalMapSize_top,  markovOrder_top, numActions, true,true,offlineLearning);
 		
 		//Create input sensors
 		int id = 5;

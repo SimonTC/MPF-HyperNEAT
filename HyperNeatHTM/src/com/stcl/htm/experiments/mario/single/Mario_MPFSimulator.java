@@ -36,9 +36,9 @@ public class Mario_MPFSimulator {
 		// options = options + " -ls 2 -ld 2 -z on";
 		System.out.print(learningOptions);
 
-		String outputFile = "D:/Users/Simon/Documents/Experiments/HTM/mario/No_Evo";
+		String outputFile = "c:/Users/Simon/Google Drive/Experiments/HTM/mario/No_Evo";
 		// Create new agent
-		String file = "D:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
+		String file = "c:\\Users\\Simon\\Dropbox\\ITU\\AI\\Mario\\Exam\\Org - disabled -4.txt";
 		MasterAgent agentGAP = new GapAgent("ThisRocks", file, 1, 1, 7, 7);
 		agentGAP.createBrain();
 		MPFAgent agentMPF = new MPFAgent("MPF", 1, 1, 7, 7, new Random(1234), true);
