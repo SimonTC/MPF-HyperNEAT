@@ -34,9 +34,11 @@ public class RPS {
 			RewardFunction[] rewardFunctions, 
 			int numExperimentsPerSequence,
 			int trainingIterations,
-			int evaluationIterations){
-		rand = null; // new Random(randSeed);
-		runner = new SequenceRunner(null, possibleInputs, rewardFunctions, rand);
+			int evaluationIterations,
+			long randSeed,
+			double noiseMagnitude){
+		rand = new Random(randSeed);
+		runner = new SequenceRunner(null, possibleInputs, rewardFunctions, rand, noiseMagnitude);
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
 		this.trainingIterations = trainingIterations;
 		this.evaluationIterations = evaluationIterations;

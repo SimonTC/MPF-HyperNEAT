@@ -88,9 +88,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		if (speed){
 			double fitnessThreshold = 0.9;
 			double predictionThreshold = 0.0;
-			eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, 5);
+			eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, predictionThreshold, fitnessThreshold, 5);
 		} else {
-			eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations);
+			eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude);
 		}
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);

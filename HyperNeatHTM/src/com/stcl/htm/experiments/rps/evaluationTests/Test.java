@@ -15,17 +15,20 @@ public abstract class Test {
 
 	public static final String RPS_EVALUATION_ITERATIONS_KEY = "rps.evaluation.iterations";
 	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
+	public static final String RPS_NOISE_MAGNITUDE = "rps.noise.magnitude";
 	
 	protected int[][] sequences;
 	protected SimpleMatrix[] possibleInputs;
 	protected RPS evaluator;
 	protected int numSequences;
+	protected Random rand;
 
 	public void setupTest(Properties props, int[][] sequences){
 		this.sequences = sequences;
 		possibleInputs = createInputs();
 		evaluator = setupEvaluator(props, sequences, possibleInputs);
 		this.numSequences = sequences.length;
+		rand = new Random();
 		
 	}
 	

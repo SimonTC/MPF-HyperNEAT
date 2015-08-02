@@ -16,10 +16,12 @@ public class RPS_Adaption extends RPS {
 			RewardFunction[] rewardFunctions, 
 			int numExperimentsPerSequence, 
 			int trainingIterations,
-			int evaluationIterations){
+			int evaluationIterations,
+			long randSeed,
+			double noiseMagnitude){
 		super(possibleInputs, sequences, rewardFunctions, 
 				numExperimentsPerSequence, trainingIterations,
-				evaluationIterations);
+				evaluationIterations, randSeed, noiseMagnitude);
 
 	}
 	

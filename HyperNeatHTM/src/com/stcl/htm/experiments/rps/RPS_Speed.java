@@ -21,12 +21,14 @@ public class RPS_Speed extends RPS {
 			int numExperimentsPerSequence, 
 			int trainingIterations,
 			int evaluationIterations,
+			long randSeed,
+			double noiseMagnitude,
 			double predictionThreshold,
 			double fitnessThreshold,
 			int averageOver) {
 		super(possibleInputs, sequences, rewardFunctions, 
 				numExperimentsPerSequence, trainingIterations,
-				evaluationIterations);
+				evaluationIterations, randSeed, noiseMagnitude);
 		this.predictionThreshold = predictionThreshold;
 		this.fitnessThreshold = fitnessThreshold;
 		this.averageOver = averageOver;

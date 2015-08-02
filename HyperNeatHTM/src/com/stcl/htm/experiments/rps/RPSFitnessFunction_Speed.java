@@ -21,7 +21,7 @@ public class RPSFitnessFunction_Speed extends RPSFitnessFunction_Fitness {
 	@Override
 	protected RPS setupEvaluator(){
 		RewardFunction[] functions = {new RewardFunction_Standard()};
-		RPS_Speed eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, predictionThreshold, fitnessThreshold, averageOver);
+		RPS_Speed eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, predictionThreshold, fitnessThreshold, averageOver);
 		return eval;
 	}
 

@@ -17,19 +17,21 @@ public class SequenceRunner {
 	private int curRewardFunctionID;
 	private Random rand;
 	private ArrayList<SimpleMatrix> possibleActions;
+	private double noiseMagnitude;
 	
 	//Variables have to be saved here to remember values between sequence runs
 	private double externalReward;
 	private SimpleMatrix actionNextTimeStep;
 	private SimpleMatrix prediction;
 
-	public SequenceRunner(int[] sequence, SimpleMatrix[] possibleInputs, RewardFunction[] rewardFunctions, Random rand) {
+	public SequenceRunner(int[] sequence, SimpleMatrix[] possibleInputs, RewardFunction[] rewardFunctions, Random rand, double noiseMagnitude) {
 		this.possibleInputs = possibleInputs;
 		this.rand = rand;
 		setSequence(sequence);
 		setRewardFunctions(rewardFunctions);
 		reset(false);
 		this.possibleActions = createPossibleActions();
+		this.noiseMagnitude = noiseMagnitude;
 	}
 	
 	/**
@@ -80,7 +82,7 @@ public class SequenceRunner {
 		for (int i = 0; i < sequence.length; i++){
 			//Get input			
 			SimpleMatrix input = possibleInputs[sequence[i]];
-			SimpleMatrix noisyInput = input;//addNoise(input);
+			SimpleMatrix noisyInput = addNoise(input, noiseMagnitude);
 			
 			double predictionError = 0;
 			if (i > 0){ //First prediction will always be wrong so we don't count it
@@ -135,11 +137,12 @@ public class SequenceRunner {
 	 * @param noiseMagnitude
 	 * @return noisy matrix
 	 */
-	private SimpleMatrix addNoise(SimpleMatrix m){
+	private SimpleMatrix addNoise(SimpleMatrix m, double magnitude){
 		SimpleMatrix noisy = new SimpleMatrix(m);
 		for (int i = 0; i < m.getNumElements(); i++){
 			double d = m.get(i);
-			d = d + (rand.nextDouble() - 0.25);
+			double noise = magnitude * (rand.nextDouble() - 0.5) * 2;
+			d = d + noise;
 			if (d < 0) d = 0;
 			if (d > 1) d = 1;
 			noisy.set(i, d);
@@ -215,6 +218,10 @@ public class SequenceRunner {
 	
 	public void setSequence(int[] sequence){
 		this.sequence = sequence;
+	}
+	
+	public void setNoiseMagnitude(double d){
+		this.noiseMagnitude = d;
 	}
 	
 	public void setRewardFunctions(RewardFunction[] rewardFunctions){

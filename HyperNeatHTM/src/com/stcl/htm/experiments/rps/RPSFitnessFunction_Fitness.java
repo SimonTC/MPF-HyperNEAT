@@ -34,6 +34,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 	public static final String RPS_SEQUENCES_RAND_SEED_KEY = "rps.sequences.rand.seed";
 	public static final String RPS_LOG_EVALUATION_TIME_KEY = "rps.log.evaluation.time";
 	public static final String RPS_TRAINING_EXPLORE_CHANCE = "rps.training.explore.chance";
+	public static final String RPS_NOISE_MAGNITUDE = "rps.noise.magnitude";
 
 	private static Logger logger = Logger.getLogger(RPSFitnessFunction_Fitness.class);
 	
@@ -47,6 +48,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 	protected int numExperimentsPerSequence;
 	protected Random rand;
 	protected boolean logTime;
+	protected double noiseMagnitude;
 	private double exploreChance;
 	
 	/**
@@ -66,6 +68,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 		numExperimentsPerSequence = props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY, 10);
 		logTime = props.getBooleanProperty(RPS_LOG_EVALUATION_TIME_KEY, false);
 		exploreChance = props.getDoubleProperty(RPS_TRAINING_EXPLORE_CHANCE, 0.05);
+		noiseMagnitude = props.getDoubleProperty(RPS_NOISE_MAGNITUDE, 0.0);
 		
 		sequences = createSequences(props, rand);
 		
@@ -125,7 +128,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 	
 	protected RPS setupEvaluator(){
 		RewardFunction[] functions = {new RewardFunction_Standard()};
-		RPS eval = new RPS(possibleInputs, sequences, functions,  numExperimentsPerSequence, trainingIterations, evaluationIterations);
+		RPS eval = new RPS(possibleInputs, sequences, functions,  numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude);
 		return eval;
 	}
 	
