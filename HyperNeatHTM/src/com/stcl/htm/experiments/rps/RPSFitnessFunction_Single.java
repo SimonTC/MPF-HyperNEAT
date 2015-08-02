@@ -21,12 +21,12 @@ import com.stcl.htm.network.HTMNetwork;
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
-	boolean collectData = false;
+	boolean collectData = true;
 	boolean setSequencesManually = true;
 
 	public static void main(String[] args) throws IOException {
 		
-		for (int i = 0; i < 10; i++){
+		for (int i = 0; i < 1; i++){
 			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1438176442018";
 			String propsFileName = experimentRun + "/run.properties";
 			String genomeFile = experimentRun + "/best_performing-8-2068.txt";;
