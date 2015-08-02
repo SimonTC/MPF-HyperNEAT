@@ -41,7 +41,6 @@ public class RPS_Adaption extends RPS {
 				//System.out.println("Starting on iteration " + sequenceIteration);
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
-				brain.getNetwork().setUseExternalReward(true);
 				
 				double[] firstScores = runOneRound(brain, explorationChance);
 				

@@ -48,7 +48,6 @@ public class RPS_Speed extends RPS {
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
-				brain.getNetwork().setUseExternalReward(true);
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(explorationChance);

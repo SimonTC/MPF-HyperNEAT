@@ -62,7 +62,6 @@ public class RPS {
 				//System.out.println("Starting on iteration " + sequenceIteration);
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
-				brain.getNetwork().setUseExternalReward(true);
 				
 				//Let it train
 				brain.getNetwork().setUsePrediction(true);
