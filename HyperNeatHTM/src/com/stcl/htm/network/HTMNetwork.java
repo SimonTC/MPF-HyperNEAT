@@ -132,7 +132,7 @@ public class HTMNetwork  implements Activator, Serializable {
 
 	@Override
 	public void reset() {
-		network.flush();
+		network.newEpisode();
 	}
 
 	@Override
