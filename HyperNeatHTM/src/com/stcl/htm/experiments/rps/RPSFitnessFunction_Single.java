@@ -21,7 +21,7 @@ import com.stcl.htm.network.HTMNetwork;
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
-	boolean collectData = true;
+	boolean collectData = false;
 	boolean setSequencesManually = true;
 
 	public static void main(String[] args) throws IOException {

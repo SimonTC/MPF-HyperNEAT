@@ -157,6 +157,8 @@ public class SequenceRunner {
 	 * @return
 	 */
 	private double calculateReward(SimpleMatrix action, int inputID){
+		if (action.elementSum() < 0.001) return -1; //Make sure that null actions are punished
+		
 		int actionID = -1;
 		double maxValue = Double.NEGATIVE_INFINITY;
 		for (int j = 0; j < action.getNumElements(); j++){
