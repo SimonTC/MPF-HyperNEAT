@@ -49,7 +49,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 	protected Random rand;
 	protected boolean logTime;
 	protected double noiseMagnitude;
-	private double exploreChance;
+	protected double exploreChance;
 	
 	/**
 	 * See <a href=" {@docRoot} /params.htm" target="anji_params">Parameter Details </a> for specific property settings.

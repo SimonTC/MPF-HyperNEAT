@@ -79,34 +79,39 @@ public class SequenceRunner {
 		
 		activator.getNetwork().getActionNode().setPossibleActions(possibleActions);
 		
+		//Give blank input and action to network
+		SimpleMatrix initialInput = new SimpleMatrix(5, 5);
+		SimpleMatrix initialAction = new SimpleMatrix(1, 3);
+		giveInputsToActivator(activator, initialInput, initialAction);
+		
+		activator.step(0);
+		
+		//Collect initial prediction and action
+		SimpleMatrix[] initialOutput = collectOutput(activator);
+		prediction = initialOutput[0];
+		actionNextTimeStep = initialOutput[1];
+		
 		for (int i = 0; i < sequence.length; i++){
 			//Get input			
 			SimpleMatrix input = possibleInputs[sequence[i]];
 			SimpleMatrix noisyInput = addNoise(input, noiseMagnitude);
 			
 			double predictionError = 0;
-			if (i > 0){ //First prediction will always be wrong so we don't count it
-				SimpleMatrix diff = input.minus(prediction);
-				predictionError = diff.normF();	
-				predictionError = (predictionError > 0.1) ? 1 : 0; 
-			}
+			SimpleMatrix diff = input.minus(prediction);
+			predictionError = diff.normF();	
+			predictionError = (predictionError > 0.1) ? 1 : 0;
 			totalPredictionError += predictionError;
+			
 			SimpleMatrix actionThisTimestep = actionNextTimeStep;
 			double rewardForBeingInCurrentState = externalReward;
 			  
 						
 			//Calculate reward
-			if ( i > 0){ //First action is always wrong so don't punish
-				externalReward = calculateReward(actionThisTimestep, sequence[i]);
-			} else {
-				externalReward = 1;
-			}
+			externalReward = calculateReward(actionThisTimestep, sequence[i]);
 			totalGameScore += externalReward;			
 			
 			//Give inputs to brain
-			SimpleMatrix inputVector = new SimpleMatrix(1, noisyInput.getNumElements(), true, noisyInput.getMatrix().data);
-			activator.setInput(inputVector.getMatrix().data);
-			activator.setAction(actionThisTimestep.getMatrix().data);
+			giveInputsToActivator(activator, noisyInput, actionThisTimestep);
 			
 			//Do one step
 			activator.step(rewardForBeingInCurrentState);
@@ -127,6 +132,13 @@ public class SequenceRunner {
 		
 		double[] result = {predictionSuccess, avgScore};
 		return result;
+	}
+	
+	private void giveInputsToActivator(HTMNetwork activator, SimpleMatrix input, SimpleMatrix action){
+		SimpleMatrix inputVector = new SimpleMatrix(1, input.getNumElements(), true, input.getMatrix().data);
+		SimpleMatrix actionVector = new SimpleMatrix(1, action.getNumElements(), true, action.getMatrix().data);
+		activator.setInput(inputVector.getMatrix().data);		
+		activator.setAction(actionVector.getMatrix().data);
 	}
 	
 	/**

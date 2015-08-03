@@ -17,11 +17,12 @@ import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Inverse;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
+import com.thoughtworks.xstream.security.ExplicitTypePermission;
 
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
-	boolean collectData = true;
+	boolean collectData = false;
 	boolean setSequencesManually = true;
 
 	public static void main(String[] args) throws IOException {
@@ -103,7 +104,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 			setupDataCollection(brain, genomeFile);
 		}
 		
-		eval.run(network, 1);	
+		eval.run(network, exploreChance);	
 		double[][] result = eval.getSequenceScores();
 		
 		if(collectData){
