@@ -108,8 +108,6 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		for (int l = 0; l < depth; l++){
 			nodes[l] = new Node[height[l]][width[l]];
 		}
-		
-		TreeMap<Integer, Double> votingInfluences = new TreeMap<Integer, Double>();
 
 		// query CPPN for substrate connections and node parameters
 		for (int sz = 0; sz < depth; sz++) { //Node in top layer doesn't have any parent
@@ -144,7 +142,6 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							int spatialMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 0));
 							int temporalMapSize = (int) Math.round(cppn.getRangedNeuronParam(0, 1));
 							int markovOrder = (int) Math.round(cppn.getRangedNeuronParam(0, 2));
-							double votingInfluence = (double) cppn.getRangedNeuronParam(0, 3);
 							int actionMapSize = props.getIntProperty(HTM_ACTION_GROUP_MAPSIZE_KEY,2);
 							UnitNode unitnode = (UnitNode) n;
 							int id = nextFreeID++;
@@ -154,7 +151,6 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 							boolean reactionary = props.getBooleanProperty(HTM_ACTION_DECIDER_REACTIONARY_KEY, false);
 							unitnode.initialize(spatialMapSize, temporalMapSize, markovOrder, actionMapSize * actionMapSize, usePrediction, reactionary, batchTraining);
 							brainNetwork.addNode(unitnode);
-							votingInfluences.put(id, votingInfluence);
 							//System.out.println("Initialized unitnode with id " + unitnode.getID());
 							
 							//Initialize weights of Spatial pooler
@@ -265,7 +261,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					cppn.setExtraSourceCoordinates(p);
 					cppn.setExtraTargetCoordinates(p);
 					cppn.query();
-					double weight = (double) cppn.getRangedNeuronParam(0, 4);
+					double weight = (double) cppn.getRangedNeuronParam(0, 3);
 					vector.set(i, weight);
 				}
 				node.setVector(vector);
@@ -292,7 +288,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 					cppn.setExtraSourceCoordinates(p);
 					cppn.setExtraTargetCoordinates(p);
 					cppn.query();
-					double weight = (double) cppn.getRangedNeuronParam(0, 5);
+					double weight = (double) cppn.getRangedNeuronParam(0, 4);
 					vector.set(i, weight);
 				}
 				node.setVector(vector);
