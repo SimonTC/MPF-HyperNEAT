@@ -48,8 +48,9 @@ public class RPS_Adaption extends RPS {
 				
 				double[] secondScores = runOneRound(brain, explorationChance);
 				
-				double fitness = secondScores[1] / firstScores[1];
-				double prediction = secondScores[0] / firstScores[0];
+				
+				double fitness = sigmoid(secondScores[1] / firstScores[1]);
+				double prediction = sigmoid(secondScores[0] / firstScores[0]);
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
 
@@ -68,6 +69,11 @@ public class RPS_Adaption extends RPS {
 		
 		return result;
 		
+	}
+	
+	private double sigmoid(double n){
+		double sigmoid = 1.0/(1.0 + Math.exp(-n));
+		return sigmoid;
 	}
 	
 	private double[] runOneRound(HTMNetwork brain, double explorationChance){
