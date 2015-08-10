@@ -26,7 +26,7 @@ public class TestSuite {
 
 	public static void main(String[] args) {
 		String topFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data";
-		int numSequences = 100;
+		int numSequences = 5;
 		
 		 File dir = new File(topFolder);
 		 File[] directoryListing = dir.listFiles();
@@ -82,7 +82,7 @@ public class TestSuite {
 		String headers = "Seq, Fitness, Prediction, Speed_Fitness, Speed_Prediction, Adaption";
 		for (int i = 0; i < results.length; i++){
 			String filename = genomeFiles[i].getName();
-			filename = filename.substring(0, filename.length() - 4) + "_results.csv";
+			filename = filename.substring(0, filename.length() - 4) + "_resultsPred.csv";
 			FileWriter writer = new FileWriter(resultFolder + "/" + filename);
 			writer.openFile(false);
 			writer.writeLine(headers);
@@ -122,7 +122,8 @@ public class TestSuite {
 	}
 	
 	private Test[] setupTesters(Properties props, int numSequences){
-		Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
+		Test[] testers = { new Test_Prediction()};
+		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
 		int[][] sequences = setupSequences(props, numSequences);
 		for (Test t : testers){
 			t.setupTest(props, sequences);

@@ -99,7 +99,7 @@ public class SequenceRunner {
 			double predictionError = 0;
 			SimpleMatrix diff = input.minus(prediction);
 			predictionError = diff.normF();	
-			predictionError = (predictionError > 0.1) ? 1 : 0;
+			//predictionError = (predictionError > 0.1) ? 1 : 0;
 			totalPredictionError += predictionError;
 			
 			SimpleMatrix actionThisTimestep = actionNextTimeStep;
