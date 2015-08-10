@@ -25,8 +25,25 @@ public class TestSuite {
 	
 
 	public static void main(String[] args) {
-		String testFolder = args[0];
-		int numSequences = Integer.parseInt(args[1]);
+		String topFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data";
+		int numSequences = 100;
+		
+		 File dir = new File(topFolder);
+		 File[] directoryListing = dir.listFiles();
+		 
+		 for (int i = 0; i < directoryListing.length; i++){
+			  File f = directoryListing[i];
+			  String path = f.getAbsolutePath() + "/evaluation";
+			  runTestsOnOneExperiment(path, numSequences);
+			  System.out.println("Finished evaluation on experiment " + i);
+		  }
+		
+		 System.out.println("Finished tests");
+		
+
+	}
+	
+	public static void runTestsOnOneExperiment(String testFolder, int numSequences){
 		String propertiesFile = testFolder + "/props.properties";
 		
 		try {
@@ -38,9 +55,6 @@ public class TestSuite {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Finished tests");
-		
-
 	}
 	
 	public TestSuite(String testFolder, String propertiesFile, int numSequences) throws IOException{
@@ -48,6 +62,8 @@ public class TestSuite {
 		testers = setupTesters(props, numSequences);
 		loadGenomeFiles(testFolder + "/Genomes");		
 	}
+	
+	
 	
 	public double[][][] run() throws FileNotFoundException{
 		double[][][] results = new double[genomeFilePaths.length][][];

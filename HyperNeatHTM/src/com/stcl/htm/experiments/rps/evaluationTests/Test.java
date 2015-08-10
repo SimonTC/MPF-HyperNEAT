@@ -25,10 +25,11 @@ public abstract class Test {
 
 	public void setupTest(Properties props, int[][] sequences){
 		this.sequences = sequences;
+		rand = new Random();
 		possibleInputs = createInputs();
 		evaluator = setupEvaluator(props, sequences, possibleInputs);
 		this.numSequences = sequences.length;
-		rand = new Random();
+		
 		
 	}
 	
