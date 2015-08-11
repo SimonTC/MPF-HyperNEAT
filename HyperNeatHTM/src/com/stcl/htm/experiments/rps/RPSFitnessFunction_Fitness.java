@@ -22,6 +22,8 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 	
+	private boolean setSequenceManually = false; //Only used for debugging purposes
+	
 	public static final String RPS_LEARNING_ITERATIONS_KEY = "rps.learning.iterations";
 	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
 	public static final String RPS_EVALUATION_ITERATIONS_KEY = "rps.evaluation.iterations";
@@ -90,13 +92,18 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 		int blockLengthMin = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MIN);
 		int blockLengthMax = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX);
 		int alphabetSize = props.getIntProperty(RPS_SEQUENCES_ALPHABET_SIZE, 3); //Currently not in use
-		Random sequenceRand = new Random(sequenceSeed);
-		SequenceBuilder builder = new SequenceBuilder();
-		int[][] sequences = new int[numDifferentSequences][];
-		for ( int i = 0; i < numDifferentSequences; i++){
-			sequences[i] = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
+		if (setSequenceManually){ //Only used for debugging
+			int[][] mySequence ={{0,1,2}};
+			return mySequence;
+		} else {		
+			Random sequenceRand = new Random(sequenceSeed);
+			SequenceBuilder builder = new SequenceBuilder();
+			int[][] sequences = new int[numDifferentSequences][];
+			for ( int i = 0; i < numDifferentSequences; i++){
+				sequences[i] = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
+			}
+			return sequences;
 		}
-		return sequences;
 		
 	}
 	

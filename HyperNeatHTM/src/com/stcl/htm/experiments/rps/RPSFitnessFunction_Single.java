@@ -28,9 +28,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	public static void main(String[] args) throws IOException {
 		
 		for (int i = 0; i < 1; i++){
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/0 Normal run/HTM/Experiments/1438935911798/0";
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1439281660206";
 			String propsFileName = experimentRun + "/run.properties";
-			String genomeFile = experimentRun + "/best_performing-final-12291.txt";;
+			String genomeFile = experimentRun + "/best_performing-final-1196.txt";;
 	
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
 			eval.run(propsFileName, genomeFile);
