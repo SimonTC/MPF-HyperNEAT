@@ -32,26 +32,37 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
-		
-		for (int i = 0; i < 1; i++){
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/0 Normal run/evaluation";
-			String propsFileName = experimentRun + "/props.properties";
-			String genomeFile = experimentRun + "/genomes/0_best_performing-final-12291.txt";
+		double fitnessSum = 0;
+		double predictionSum = 0;
+		int numRepetitions = 10;
+		for (int i = 0; i < numRepetitions; i++){
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/0 Normal run/HTM/Experiments/1438935911798/0";
+			String propsFileName = experimentRun + "/run.properties";
+			String genomeFile = experimentRun + "/best_performing-final-12291.txt";
 	
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
-			eval.run(propsFileName, genomeFile);
+			double[] result = eval.run(propsFileName, genomeFile);
+			fitnessSum+= result[1];
+			predictionSum+= result[0];
 			System.out.println();
 			System.out.println();
 		}
 		
+		double avgFitness = fitnessSum / (double) numRepetitions;
+		double avgPrediction = predictionSum / (double) numRepetitions;
+		System.out.println();
+		System.out.println("**************** Final result ***************");
+		System.out.println("Avg prediction: " + avgPrediction + " Avg fitness: " + avgFitness);
+		System.out.println("*********************************************");
+		
 		System.exit(0);
 	}
 	
-	public void run(String propsFileName, String genomeFile) throws IOException{
+	public double[] run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
-		props.setProperty("fitness.max_threads", "1");
-		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
-		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "100");
+		//props.setProperty("fitness.max_threads", "1");
+		//props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
+		//props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "100");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
@@ -74,6 +85,8 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		double avgFitness = fitnessSum / (double) result.length;
 		double avgPrediction = predictionSum / (double) result.length;
 		System.out.println("Avg prediction: " + avgPrediction + " Avg fitness: " + avgFitness);
+		double[] retVal = {avgPrediction, avgFitness};
+		return retVal;
 	}
 	
 	@Override
