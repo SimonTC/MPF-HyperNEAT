@@ -11,6 +11,7 @@ import com.stcl.htm.network.HTMNetwork;
 public class SequenceRunner {
 	
 	private SimpleMatrix[] possibleInputs;
+	private SimpleMatrix[] patternsToTestAgainst;
 	private int[] sequence;
 	private RewardFunction[] rewardFunctions;
 	private RewardFunction curRewardFunction;
@@ -32,6 +33,27 @@ public class SequenceRunner {
 		reset(false);
 		this.possibleActions = createPossibleActions();
 		this.noiseMagnitude = noiseMagnitude;
+		this.patternsToTestAgainst = createPatternsToTestAgainst(possibleInputs);
+	}
+	
+	private SimpleMatrix[] createPatternsToTestAgainst(SimpleMatrix[] possibleInputs){
+		int cols = possibleInputs[0].numCols();
+		int rows = possibleInputs[0].numRows();
+		SimpleMatrix[] testPatterns = new SimpleMatrix[possibleInputs.length * 2];
+		int counter = 0;
+		for (int i = 0; i < possibleInputs.length; i++){
+			testPatterns[i] = new SimpleMatrix(rows, cols);
+			for (int j = 0; j < testPatterns[i].getNumElements(); j++){
+				testPatterns[i].set(j, rand.nextDouble());
+			}
+			counter = i;
+		}
+		counter += 1;
+		for (int i = 0; i < possibleInputs.length; i++){
+			testPatterns[i + counter] = new SimpleMatrix(possibleInputs[i]);
+			
+		}
+		return testPatterns;
 	}
 	
 	/**
@@ -100,10 +122,7 @@ public class SequenceRunner {
 			SimpleMatrix input = possibleInputs[sequence[i]];
 			SimpleMatrix noisyInput = addNoise(input, noiseMagnitude);
 			
-			double predictionError = 0;
-			SimpleMatrix diff = input.minus(prediction);
-			predictionError = diff.normF();	
-			//predictionError = (predictionError > 0.1) ? 1 : 0;
+			double predictionError = calculatePredictionError(prediction, input);
 			totalPredictionError += predictionError;
 			
 			SimpleMatrix actionThisTimestep = actionNextTimeStep;
@@ -147,6 +166,25 @@ public class SequenceRunner {
 		SimpleMatrix actionVector = new SimpleMatrix(1, action.getNumElements(), true, action.getMatrix().data);
 		activator.setInput(inputVector.getMatrix().data);		
 		activator.setAction(actionVector.getMatrix().data);
+	}
+	
+	private double calculatePredictionError(SimpleMatrix prediction, SimpleMatrix actual){
+		double minError = Double.POSITIVE_INFINITY;
+		SimpleMatrix bestMatch = null;
+		
+		for (SimpleMatrix m : patternsToTestAgainst){
+			SimpleMatrix diff = m.minus(prediction);
+			double d = diff.normF();	
+			if (d < minError){
+				d = minError;
+				bestMatch = m;
+			}
+		}		
+		
+		double predictionError = 1;
+		if (bestMatch.isIdentical(actual, 0.001)) predictionError = 0;
+		
+		return predictionError;
 	}
 	
 	/**
