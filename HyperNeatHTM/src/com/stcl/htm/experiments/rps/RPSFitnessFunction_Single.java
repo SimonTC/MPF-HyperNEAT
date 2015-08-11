@@ -49,10 +49,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	public void run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
-		props.remove("fitness.max_threads");
 		props.setProperty("fitness.max_threads", "1");
 		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
-		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "1");
+		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "100");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
@@ -87,6 +86,13 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		} else {
 			sequencesToReturn = generatedSequences;
 		}
+		
+		for (int i = 0; i < sequencesToReturn.length; i++){
+			String s  = "Sequence " + i + ": ";
+			for (int j : sequencesToReturn[i]) s+= " " + j;
+			System.out.println(s);
+		}
+		
 		return sequencesToReturn;
 	}
 	
