@@ -182,7 +182,9 @@ public class SequenceRunner {
 		}		
 		
 		double predictionError = 1;
-		if (bestMatch.isIdentical(actual, 0.001)) predictionError = 0;
+		if (bestMatch.isIdentical(actual, 0.001)) {
+			predictionError = 0;
+		}
 		
 		return predictionError;
 	}

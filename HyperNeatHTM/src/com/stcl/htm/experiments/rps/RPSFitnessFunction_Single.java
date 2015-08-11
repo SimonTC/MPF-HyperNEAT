@@ -26,7 +26,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	boolean collectData = false;
 	boolean setSequencesManually = true;
 	
-	boolean visualize = true;
+	boolean visualize = false;
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
@@ -34,7 +34,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		for (int i = 0; i < 1; i++){
 			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1439281660206";
 			String propsFileName = experimentRun + "/run.properties";
-			String genomeFile = experimentRun + "/best_performing-final-1196.txt";;
+			String genomeFile = experimentRun + "/best_performing-final-1196.txt";
 	
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
 			eval.run(propsFileName, genomeFile);
