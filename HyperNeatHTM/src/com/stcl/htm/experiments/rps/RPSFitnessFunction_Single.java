@@ -26,17 +26,17 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
 	boolean collectData = false;
-	boolean setSequencesManually = true;
+	boolean setSequencesManually = false;
 	
-	boolean visualize = true;
+	boolean visualize = false;
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
 		
 		for (int i = 0; i < 1; i++){
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps_pc/1439281660206";
-			String propsFileName = experimentRun + "/run.properties";
-			String genomeFile = experimentRun + "/best_performing-final-1196.txt";
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/0 Normal run/evaluation";
+			String propsFileName = experimentRun + "/props.properties";
+			String genomeFile = experimentRun + "/genomes/0_best_performing-final-12291.txt";
 	
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
 			eval.run(propsFileName, genomeFile);
@@ -52,7 +52,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		props.remove("fitness.max_threads");
 		props.setProperty("fitness.max_threads", "1");
 		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
-		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "10");
+		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "1");
 		this.init(props);
 		
 		double[][] result = this.evaluate(genomeFile);
