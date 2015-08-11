@@ -10,6 +10,7 @@ import org.jgapcustomised.Chromosome;
 import stcl.algo.brain.Network;
 import stcl.algo.brain.Network_DataCollector;
 import stcl.algo.util.FileWriter;
+import stcl.graphics.MPFGUI;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
@@ -24,7 +25,10 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	boolean speed = false;
 	boolean collectData = false;
 	boolean setSequencesManually = true;
-
+	
+	boolean visualize = true;
+	private int framesPerSecond = 1;
+	
 	public static void main(String[] args) throws IOException {
 		
 		for (int i = 0; i < 1; i++){
@@ -43,6 +47,8 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	public void run(String propsFileName, String genomeFile) throws IOException{
 		Properties props = new Properties(propsFileName);
+		props.remove("fitness.max_threads");
+		props.setProperty("fitness.max_threads", "1");
 		props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
 		props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "10");
 		this.init(props);
@@ -84,6 +90,12 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
+		GUI gui = null;
+		if (visualize){
+			gui = new GUI();
+			gui.initialize(5, 2, framesPerSecond);
+		}
+		
 		RPS eval;
 		RewardFunction[] functions = {new RewardFunction_Standard(), new RewardFunction_Inverse()};
 		if (speed){
@@ -91,7 +103,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 			double predictionThreshold = 0.0;
 			eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, predictionThreshold, fitnessThreshold, 5);
 		} else {
-			eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude);
+			eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, gui);
 		}
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);

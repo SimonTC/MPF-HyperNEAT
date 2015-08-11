@@ -27,7 +27,7 @@ public class RPS {
 	protected double[][] sequenceScores;
 	
 	protected SequenceRunner runner;
-	
+	protected GUI gui;
 	
 	public RPS(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
@@ -37,6 +37,19 @@ public class RPS {
 			int evaluationIterations,
 			long randSeed,
 			double noiseMagnitude){
+		this(possibleInputs, sequences, rewardFunctions, numExperimentsPerSequence, trainingIterations, evaluationIterations, randSeed, noiseMagnitude, null);
+	}
+	
+	
+	public RPS(SimpleMatrix[] possibleInputs, 
+			int[][] sequences,
+			RewardFunction[] rewardFunctions, 
+			int numExperimentsPerSequence,
+			int trainingIterations,
+			int evaluationIterations,
+			long randSeed,
+			double noiseMagnitude,
+			GUI gui){
 		rand = new Random(randSeed);
 		runner = new SequenceRunner(null, possibleInputs, rewardFunctions, rand, noiseMagnitude);
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
@@ -44,6 +57,7 @@ public class RPS {
 		this.evaluationIterations = evaluationIterations;
 		sequenceScores = new double[sequences.length][2];
 		this.sequences = sequences;
+		this.gui = gui;
 
 	}
 	
@@ -59,6 +73,7 @@ public class RPS {
 			runner.setSequence(curSequence);
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				String name = sequenceID + " test " + sequenceIteration;
 				//System.out.println("Starting on iteration " + sequenceIteration);
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
@@ -73,7 +88,7 @@ public class RPS {
 				brain.getNetwork().setLearning(false);
 				brain.reset();
 				runner.reset(false);
-				double[] scores = runExperiment(evaluationIterations, brain, runner);
+				double[] scores = runExperiment(evaluationIterations, brain, runner, gui,name);
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
@@ -100,6 +115,11 @@ public class RPS {
 		
 	}
 	
+	
+	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
+		return this.runExperiment(numSequences, activator, runner, null, null);
+	}
+	
 	/**
 	 * Evaluates the activator on the given number of sequences.
 	 * Remember to reset the runner and set the sequence before running this method
@@ -107,12 +127,13 @@ public class RPS {
 	 * @param activator
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
-	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
+	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner, GUI gui, String name){
 		double totalPrediction = 0;
 		double totalFitness = 0;
 		for(int i = 0; i < numSequences; i++){
 			activator.getNetwork().newEpisode();
-			double[] result = runner.runSequence(activator);
+			if (gui != null) gui.setSequenceName(name + " iteration " + i);
+			double[] result = runner.runSequence(activator, gui);
 			totalPrediction += result[0];
 			totalFitness += result[1];
 		}

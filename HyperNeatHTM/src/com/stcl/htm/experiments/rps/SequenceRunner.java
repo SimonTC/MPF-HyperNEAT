@@ -67,13 +67,17 @@ public class SequenceRunner {
 		return arr;
 	}
 	
+	
+	public double[] runSequence(HTMNetwork activator){
+		return runSequence(activator, null);
+	}
 	/**
 	 * Goes through the sequence once.
 	 * Remember to call reset() if the evaluation should start from scratch
 	 * @param activator
 	 * @return Array containing prediction success and fitness in the form [prediction,fitness]
 	 */
-	public double[] runSequence(HTMNetwork activator){
+	public double[] runSequence(HTMNetwork activator, GUI gui){
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
 		
@@ -120,6 +124,10 @@ public class SequenceRunner {
 			SimpleMatrix[] output = collectOutput(activator);
 			prediction = output[0];
 			actionNextTimeStep = output[1];
+			
+			if (gui != null){
+				gui.update(activator.getNetwork(), noisyInput, actionThisTimestep, prediction, actionNextTimeStep, i);
+			}
 		}
 		
 		double avgPredictionError = totalPredictionError / (double) sequence.length;
