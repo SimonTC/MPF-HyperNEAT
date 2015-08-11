@@ -14,6 +14,8 @@ import stcl.graphics.MPFGUI;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.ahni.hyperneat.Properties;
+import com.stcl.htm.experiments.rps.gui.GUI;
+import com.stcl.htm.experiments.rps.gui.GUI_Overview;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Inverse;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
@@ -26,7 +28,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	boolean collectData = false;
 	boolean setSequencesManually = true;
 	
-	boolean visualize = false;
+	boolean visualize = true;
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
@@ -92,7 +94,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	protected double[][] evaluate(String genomeFile) throws FileNotFoundException {
 		GUI gui = null;
 		if (visualize){
-			gui = new GUI();
+			gui = new GUI_Overview();
 			gui.initialize(5, 2, framesPerSecond);
 		}
 		

@@ -14,6 +14,7 @@ import stcl.algo.brain.nodes.UnitNode;
 
 import com.anji.integration.Activator;
 import com.ojcoleman.bain.misc.PerformanceTest;
+import com.stcl.htm.experiments.rps.gui.GUI;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
 

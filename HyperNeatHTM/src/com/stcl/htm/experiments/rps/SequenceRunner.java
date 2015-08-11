@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.ejml.simple.SimpleMatrix;
 
+import com.stcl.htm.experiments.rps.gui.GUI;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -117,6 +118,10 @@ public class SequenceRunner {
 		prediction = initialOutput[0];
 		actionNextTimeStep = initialOutput[1];
 		
+		if (gui != null){
+			gui.update(activator.getNetwork(), initialInput, initialAction, prediction, actionNextTimeStep, -1);
+		}
+		
 		for (int i = 0; i < sequence.length; i++){
 			//Get input			
 			SimpleMatrix input = possibleInputs[sequence[i]];
@@ -176,7 +181,7 @@ public class SequenceRunner {
 			SimpleMatrix diff = m.minus(prediction);
 			double d = diff.normF();	
 			if (d < minError){
-				d = minError;
+				minError = d;
 				bestMatch = m;
 			}
 		}		

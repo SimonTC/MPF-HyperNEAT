@@ -1,13 +1,13 @@
-package com.stcl.htm.experiments.rps;
+package com.stcl.htm.experiments.rps.gui;
 
 import org.ejml.simple.SimpleMatrix;
 
 import stcl.algo.brain.Network;
 import stcl.graphics.MPFGUI;
 
-public class GUI {
-	
-	private MPFGUI minorGui;
+public class GUI_Overview implements GUI {
+
+private MPFGUI minorGui;
 	
 	public void initialize(int observationMatrixSize, int actionMatrixSize, int fps){
 		minorGui = new MPFGUI();
@@ -21,5 +21,4 @@ public class GUI {
 	public void setSequenceName(String name){
 		minorGui.setSequenceName(name);
 	}
-
 }
