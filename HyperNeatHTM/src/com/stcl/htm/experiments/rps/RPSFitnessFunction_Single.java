@@ -28,7 +28,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	boolean collectData = false;
 	boolean setSequencesManually = false;
 	
-	boolean visualize = false;
+	boolean visualize = true;
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
