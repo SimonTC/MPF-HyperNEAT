@@ -25,8 +25,8 @@ public class TestSuite {
 	
 
 	public static void main(String[] args) {
-		String topFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data";
-		int numSequences = 5;
+		String topFolder = args[0];
+		int numSequences = Integer.parseInt(args[1]);
 		
 		 File dir = new File(topFolder);
 		 File[] directoryListing = dir.listFiles();
@@ -35,7 +35,7 @@ public class TestSuite {
 			  File f = directoryListing[i];
 			  String path = f.getAbsolutePath() + "/evaluation";
 			  runTestsOnOneExperiment(path, numSequences);
-			  System.out.println("Finished evaluation on experiment " + i);
+			  System.out.println("Finished evaluation on experiment " + f.getName());
 		  }
 		
 		 System.out.println("Finished tests");
@@ -122,8 +122,9 @@ public class TestSuite {
 	}
 	
 	private Test[] setupTesters(Properties props, int numSequences){
-		Test[] testers = { new Test_Prediction()};
+		//Test[] testers = { new Test_Prediction()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
+		Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
 		int[][] sequences = setupSequences(props, numSequences);
 		for (Test t : testers){
 			t.setupTest(props, sequences);
