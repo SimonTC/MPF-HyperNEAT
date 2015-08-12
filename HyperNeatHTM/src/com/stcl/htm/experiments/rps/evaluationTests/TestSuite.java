@@ -27,32 +27,42 @@ public class TestSuite implements Runnable{
 	private File[] genomeFiles;
 	private String[] genomeFilePaths;
 	private String testFolder;
-	private int numSequences;
 	
 
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args)  {
 		String topFolder = args[0];
 		int numSequences = Integer.parseInt(args[1]);
 		
 		 File dir = new File(topFolder);
 		 File[] directoryListing = dir.listFiles();
 		 
-		 ExecutorService executor = Executors.newFixedThreadPool(4);
+		 if (directoryListing.length == 0){
+			 System.out.println("No files found in directory " + dir.getAbsolutePath());
+		 } else {
 		 
-		 for (int i = 0; i < directoryListing.length; i++){
-			  File f = directoryListing[i];
-			  if (f.isDirectory()){
-				  String path = f.getAbsolutePath() + "/evaluation";
-				  TestSuite ts = new TestSuite(path, numSequences);
-				  executor.execute(ts);
-			  }
-		  }
-		 
-		 executor.shutdown();
-		 
-		 executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-		
-		 System.out.println("Finished tests");
+			 ExecutorService executor = Executors.newFixedThreadPool(4);
+			 try {
+				 for (int i = 0; i < directoryListing.length; i++){
+					  File f = directoryListing[i];
+					  if (f.isDirectory()){
+						  String path = f.getAbsolutePath() + "/evaluation";
+						  TestSuite ts = new TestSuite(path, numSequences);
+							executor.execute(ts);
+					  }
+				  }
+				 
+				 executor.shutdown();
+				 
+				 executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+			 	} catch (IOException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 
+			 
+			
+			 System.out.println("Finished tests");
+		 }
 		
 
 	}
@@ -63,16 +73,15 @@ public class TestSuite implements Runnable{
 		String propertiesFile = testFolder + "/props.properties";
 		Properties props = new Properties(propertiesFile);
 		testers = setupTesters(props, numSequences);
-		loadGenomeFiles(testFolder + "/Genomes");		
+		loadGenomeFiles(testFolder + "/genomes");		
 		this.testFolder = testFolder;
-		this.numSequences = numSequences;
 	}
 	
 	@Override
 	public void run(){
 		try {
 			double[][][] results = this.runTest();
-			this.writeResults(results, testFolder + "/Results");
+			this.writeResults(results, testFolder + "/results");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,7 +93,7 @@ public class TestSuite implements Runnable{
 	
 	
 	
-	public double[][][] runTest() throws FileNotFoundException{
+	private double[][][] runTest() throws FileNotFoundException{
 		double[][][] results = new double[genomeFilePaths.length][][];
 		
 		for (int i = 0; i < genomeFilePaths.length; i++){
@@ -97,7 +106,7 @@ public class TestSuite implements Runnable{
 		return results;		
 	}
 	
-	public void writeResults(double[][][] results, String resultFolder) throws IOException{
+	private void writeResults(double[][][] results, String resultFolder) throws IOException{
 		String headers = "Seq, Fitness, Prediction, Speed_Prediction, Adaption";
 		for (int i = 0; i < results.length; i++){
 			String filename = genomeFiles[i].getName();
