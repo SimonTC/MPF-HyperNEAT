@@ -3,7 +3,11 @@ package com.stcl.htm.experiments.rps.evaluationTests;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import stcl.algo.brain.Network_DataCollector;
 import stcl.algo.util.FileWriter;
@@ -12,7 +16,7 @@ import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
 import com.stcl.htm.network.HTMNetwork;
 
-public class TestSuite {
+public class TestSuite implements Runnable{
 	
 	public static final String RPS_SEQUENCES_LEVELS_KEY = "rps.sequences.levels";
 	public static final String RPS_SEQUENCES_BLOCKLENGTH_MIN = "rps.sequences.blocklength.min";
@@ -22,50 +26,65 @@ public class TestSuite {
 	private Test[] testers;
 	private File[] genomeFiles;
 	private String[] genomeFilePaths;
+	private String testFolder;
+	private int numSequences;
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		String topFolder = args[0];
 		int numSequences = Integer.parseInt(args[1]);
 		
 		 File dir = new File(topFolder);
 		 File[] directoryListing = dir.listFiles();
 		 
+		 ExecutorService executor = Executors.newFixedThreadPool(4);
+		 
 		 for (int i = 0; i < directoryListing.length; i++){
 			  File f = directoryListing[i];
-			  String path = f.getAbsolutePath() + "/evaluation";
-			  runTestsOnOneExperiment(path, numSequences);
-			  System.out.println("Finished evaluation on experiment " + f.getName());
+			  if (f.isDirectory()){
+				  String path = f.getAbsolutePath() + "/evaluation";
+				  TestSuite ts = new TestSuite(path, numSequences);
+				  executor.execute(ts);
+			  }
 		  }
+		 
+		 executor.shutdown();
+		 
+		 executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
 		
 		 System.out.println("Finished tests");
 		
 
 	}
 	
-	public static void runTestsOnOneExperiment(String testFolder, int numSequences){
+
+	
+	public TestSuite(String testFolder,  int numSequences) throws IOException{
 		String propertiesFile = testFolder + "/props.properties";
-		
+		Properties props = new Properties(propertiesFile);
+		testers = setupTesters(props, numSequences);
+		loadGenomeFiles(testFolder + "/Genomes");		
+		this.testFolder = testFolder;
+		this.numSequences = numSequences;
+	}
+	
+	@Override
+	public void run(){
 		try {
-			TestSuite ts = new TestSuite(testFolder, propertiesFile, numSequences);
-			double[][][] results = ts.run();
-			ts.writeResults(results, testFolder + "/Results");
+			double[][][] results = this.runTest();
+			this.writeResults(results, testFolder + "/Results");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-	}
-	
-	public TestSuite(String testFolder, String propertiesFile, int numSequences) throws IOException{
-		Properties props = new Properties(propertiesFile);
-		testers = setupTesters(props, numSequences);
-		loadGenomeFiles(testFolder + "/Genomes");		
+		String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+		System.out.println(timeStamp + ":  Finished tests in " + testFolder);
 	}
 	
 	
 	
-	public double[][][] run() throws FileNotFoundException{
+	public double[][][] runTest() throws FileNotFoundException{
 		double[][][] results = new double[genomeFilePaths.length][][];
 		
 		for (int i = 0; i < genomeFilePaths.length; i++){
@@ -79,10 +98,10 @@ public class TestSuite {
 	}
 	
 	public void writeResults(double[][][] results, String resultFolder) throws IOException{
-		String headers = "Seq, Fitness, Prediction, Speed_Fitness, Speed_Prediction, Adaption";
+		String headers = "Seq, Fitness, Prediction, Speed_Prediction, Adaption";
 		for (int i = 0; i < results.length; i++){
 			String filename = genomeFiles[i].getName();
-			filename = filename.substring(0, filename.length() - 4) + "_resultsPred.csv";
+			filename = filename.substring(0, filename.length() - 4) + "_results.csv";
 			FileWriter writer = new FileWriter(resultFolder + "/" + filename);
 			writer.openFile(false);
 			writer.writeLine(headers);

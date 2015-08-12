@@ -22,6 +22,9 @@ public abstract class Test {
 	protected RPS evaluator;
 	protected int numSequences;
 	protected Random rand;
+	
+	private HTMNetwork myBrain;
+	private double[] results;
 
 	public void setupTest(Properties props, int[][] sequences){
 		this.sequences = sequences;
@@ -67,6 +70,10 @@ public abstract class Test {
 		SimpleMatrix[] tmp = {rock, paper, scissors};
 
 		return tmp;
+	}
+	
+	public void setBrain(HTMNetwork brain){
+		this.myBrain = brain;
 	}
 	
 	public abstract double[] test(HTMNetwork brain);
