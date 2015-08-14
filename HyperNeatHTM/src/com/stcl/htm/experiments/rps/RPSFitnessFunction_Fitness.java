@@ -116,7 +116,7 @@ public class RPSFitnessFunction_Fitness extends HyperNEATFitnessFunction {
 		RPS eval = setupEvaluator();
 		long start = System.currentTimeMillis();
 		HTMNetwork brain = (HTMNetwork) activator;
-		double[] result = eval.run(brain, exploreChance);		
+		double[] result = eval.run(brain, exploreChance, false); //When being used in evolution we don't wan't to collect the game scores		
 		double fitness = collectFitness(result, genotype);
 		double duration = (System.currentTimeMillis() - start) / 1000d;
 		if (logTime) logger.info("Evaluation of genotype " + genotype.getId() + " on thread " + threadIndex + " took: " + duration + " seconds. It started at " + start);

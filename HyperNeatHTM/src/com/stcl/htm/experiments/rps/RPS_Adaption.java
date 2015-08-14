@@ -26,7 +26,7 @@ public class RPS_Adaption extends RPS {
 	}
 	
 	@Override
-	public double[] run(HTMNetwork brain, double explorationChance) {
+	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		
@@ -42,11 +42,11 @@ public class RPS_Adaption extends RPS {
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
 				
-				double[] firstScores = runOneRound(brain, explorationChance);
+				double[] firstScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores);
 				
 				runner.reset(true);
 				
-				double[] secondScores = runOneRound(brain, explorationChance);
+				double[] secondScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores);
 				
 				
 				double fitness = sigmoid(secondScores[1] / firstScores[1]);
@@ -76,17 +76,17 @@ public class RPS_Adaption extends RPS {
 		return sigmoid;
 	}
 	
-	private double[] runOneRound(HTMNetwork brain, double explorationChance){
+	private double[] runOneRound(HTMNetwork brain, double explorationChance, int gameNumber, boolean collectGameScores){
 		//Let it train
 		brain.getNetwork().setUsePrediction(true);
 		brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
-		runExperiment(trainingIterations, brain, runner);
+		runGame(trainingIterations, brain, runner, true, gameNumber, collectGameScores);
 		
 		//Evaluate
 		brain.getNetwork().getActionNode().setExplorationChance(0.0);
 		brain.getNetwork().setLearning(false);
 
-		double[] scores = runExperiment(evaluationIterations, brain, runner);
+		double[] scores = runGame(evaluationIterations, brain, runner, false, gameNumber, collectGameScores);
 
 		return scores;
 		

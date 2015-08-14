@@ -26,6 +26,9 @@ public class RPS {
 	protected int trainingIterations;
 	protected int evaluationIterations;
 	protected double[][] sequenceScores;
+	protected double[][][] gameScores_Sequence;
+	protected double[][][][] gamescores_experiment;
+
 	
 	protected SequenceRunner runner;
 	protected GUI gui;
@@ -62,9 +65,10 @@ public class RPS {
 
 	}
 	
-	public double[] run(HTMNetwork brain, double explorationChance) {
+	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
+		if (collectGameScores) gamescores_experiment = new double[sequences.length][][][];
 		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
 			//System.out.println("Starting on sequence " + sequenceID);
@@ -72,6 +76,7 @@ public class RPS {
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
+			if (collectGameScores) gameScores_Sequence = new double[numExperimentsPerSequence][][];
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				String name = sequenceID + " test " + sequenceIteration;
@@ -82,21 +87,22 @@ public class RPS {
 				//Let it train
 				brain.getNetwork().setUsePrediction(true);
 				brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
-				runExperiment(trainingIterations, brain, runner);
+				runGame(trainingIterations, brain, runner, true, sequenceIteration, collectGameScores);
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(false);
 				brain.reset();
 				runner.reset(false);
-				double[] scores = runExperiment(evaluationIterations, brain, runner, gui,name);
+				double[] scores = runGame(evaluationIterations, brain, runner, false, sequenceIteration, collectGameScores, gui,name);
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
-				sequencePrediction += prediction;
-
-				
+				sequencePrediction += prediction;				
 			}
+			
+			if (collectGameScores) gamescores_experiment[sequenceID] = gameScores_Sequence;
+			
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
 			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);
 			totalFitness += avgSequenceFitness;
@@ -112,13 +118,13 @@ public class RPS {
 	}
 	
 	public double[] run(HTMNetwork brain) {
-		return this.run(brain,0);
+		return this.run(brain,0, false);
 		
 	}
 	
 	
-	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
-		return this.runExperiment(numSequences, activator, runner, null, null);
+	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, int gameNumber, boolean collectGameScores){
+		return this.runGame(numEpisodes, activator, runner, training, gameNumber, collectGameScores, null, null);
 	}
 	
 	/**
@@ -128,25 +134,21 @@ public class RPS {
 	 * @param activator
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
-	protected double[] runExperiment(int numEpisodes, HTMNetwork activator, SequenceRunner runner, GUI gui, String name){
-		double totalPrediction = 0;
-		double totalFitness = 0;
-		for(int i = 0; i < numEpisodes; i++){
-			activator.getNetwork().newEpisode();
-			if (gui != null) gui.setSequenceName(name + " iteration " + i);
-			double[] result = runner.runEpisode(activator, gui);
-			totalPrediction += result[0];
-			totalFitness += result[1];
+	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, int gameNumber, boolean collectGameScores, GUI gui, String name){
+		GameRunner gr = new GameRunner();
+		double[] result = gr.runGame(numEpisodes, activator, runner, gui, name);
+		if (training){
+			if (collectGameScores) gameScores_Sequence[gameNumber] = gr.getGameScores();
 		}
 		
-		double avgPrediction = totalPrediction / (double) numEpisodes;
-		double avgFitness = totalFitness / (double) numEpisodes;
-		
-		double[] result = {avgPrediction, avgFitness};
 		return result;
 	}
 	
 	public double[][] getSequenceScores(){
 		return sequenceScores;
+	}
+	
+	public double[][][][] getGmeScores(){
+		return this.gamescores_experiment;
 	}
 }

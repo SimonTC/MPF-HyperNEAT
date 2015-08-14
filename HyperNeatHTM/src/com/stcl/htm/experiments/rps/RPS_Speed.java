@@ -54,7 +54,7 @@ public class RPS_Speed extends RPS {
 				brain.getNetwork().setLearning(true);
 				brain.reset();
 
-				double[] scores = runExperiment(trainingIterations + evaluationIterations, brain, runner); 
+				double[] scores = runGame(trainingIterations + evaluationIterations, brain, runner, false); 
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
@@ -78,12 +78,12 @@ public class RPS_Speed extends RPS {
 	/**
 	 * Evaluates the activator on the given number of sequences.
 	 * Remember to reset the runner and set the sequence before running this method
-	 * @param numSequences the number times the sequence is repeated
+	 * @param numEpisodes the number times the sequence is repeated
 	 * @param activator
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
 	@Override
-	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner){
+	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training){
 		int firstPredictionHit = -1;
 		int firstFitnessHit = -1;
 		boolean cont = true;
@@ -92,11 +92,12 @@ public class RPS_Speed extends RPS {
 		LinkedList<Double> predictionList = new LinkedList<Double>();
 		double totalPrediction = 0;
 		double totalFitness = 0;
-		
+		double[][] gameScores = new double[numEpisodes][];
 
 		do{
 			activator.getNetwork().newEpisode();
 			double[] result = runner.runSequence(activator);
+			gameScores[counter] = result;
 			double prediction = result[0];
 			double fitness = result[1];
 			totalFitness += fitness;
@@ -130,10 +131,10 @@ public class RPS_Speed extends RPS {
 			}
 			
 			counter++;
-		} while (counter < numSequences && cont);
+		} while (counter < numEpisodes && cont);
 		
-		double timeToPrediction = firstPredictionHit == -1? 1 : firstPredictionHit / (double) numSequences;
-		double timeToFitness = firstFitnessHit == -1? 1 : firstFitnessHit / (double) numSequences;
+		double timeToPrediction = firstPredictionHit == -1? 1 : firstPredictionHit / (double) numEpisodes;
+		double timeToFitness = firstFitnessHit == -1? 1 : firstFitnessHit / (double) numEpisodes;
 		
 		
 		double predictionScore = 1 - timeToPrediction;
@@ -142,6 +143,13 @@ public class RPS_Speed extends RPS {
 		if(fitnessScore < 0) fitnessScore = 0;
 		
 		double[] result = {predictionScore, fitnessScore};
+		
+		if (training){
+			gameScores_Sequence = gameScores;
+		} else {
+			gameScores_evaluation = gameScores;
+		}
+		
 		return result;
 	}
 
