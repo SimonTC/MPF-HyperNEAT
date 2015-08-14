@@ -8,7 +8,7 @@ import com.stcl.htm.experiments.rps.gui.GUI;
 import com.stcl.htm.network.HTMNetwork;
 
 public class GameRunner {
-	private double[][] gameScores;
+	protected double[][] gameScores;
 	
 	/**
 	 * Evaluates the activator on the given number of sequences.

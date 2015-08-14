@@ -35,17 +35,19 @@ public class RPS_Speed extends RPS {
 	}
 	
 	@Override
-	public double[] run(HTMNetwork brain, double explorationChance) {
+	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores, String gameScoreFolder) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
+			String sequenceFileName = gameScoreFolder + "/seq" + sequenceID + "_";
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
 
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration + ".csv";
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
 				
@@ -54,7 +56,7 @@ public class RPS_Speed extends RPS {
 				brain.getNetwork().setLearning(true);
 				brain.reset();
 
-				double[] scores = runGame(trainingIterations + evaluationIterations, brain, runner, false); 
+				double[] scores = runGame(trainingIterations + evaluationIterations, brain, runner, true, sequenceIterationFileName, false); 
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
@@ -83,71 +85,11 @@ public class RPS_Speed extends RPS {
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
 	@Override
-	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training){
-		int firstPredictionHit = -1;
-		int firstFitnessHit = -1;
-		boolean cont = true;
-		int counter = 0;
-		LinkedList<Double> fitnessList = new LinkedList<Double>();
-		LinkedList<Double> predictionList = new LinkedList<Double>();
-		double totalPrediction = 0;
-		double totalFitness = 0;
-		double[][] gameScores = new double[numEpisodes][];
-
-		do{
-			activator.getNetwork().newEpisode();
-			double[] result = runner.runSequence(activator);
-			gameScores[counter] = result;
-			double prediction = result[0];
-			double fitness = result[1];
-			totalFitness += fitness;
-			totalPrediction += prediction;
-			fitnessList.addLast(fitness);
-			predictionList.addLast(prediction);
-			if (fitnessList.size() > averageOver) totalFitness -= fitnessList.removeFirst();
-			if (predictionList.size() > averageOver) totalPrediction -= predictionList.removeFirst();
-			double avgFitness = totalFitness / (double) averageOver;
-			double avgPrediction= totalPrediction/ (double) averageOver;
-			boolean predictionGood, fitnessGood;
-			
-			if (avgPrediction >= predictionThreshold){
-				predictionGood = true;
-				if (firstPredictionHit == -1) firstPredictionHit = counter;
-			}else{
-				predictionGood = false;
-				firstPredictionHit = -1;
-			}
-			
-			if (avgFitness >= fitnessThreshold){
-				fitnessGood = true;
-				if (firstFitnessHit == -1) firstFitnessHit = counter;
-			} else {
-				fitnessGood = false;
-				firstFitnessHit = -1;
-			}
-			
-			if (predictionGood && fitnessGood){
-				cont = false;
-			}
-			
-			counter++;
-		} while (counter < numEpisodes && cont);
-		
-		double timeToPrediction = firstPredictionHit == -1? 1 : firstPredictionHit / (double) numEpisodes;
-		double timeToFitness = firstFitnessHit == -1? 1 : firstFitnessHit / (double) numEpisodes;
-		
-		
-		double predictionScore = 1 - timeToPrediction;
-		double fitnessScore = 1 - timeToFitness;
-		if(predictionScore < 0) predictionScore = 0;
-		if(fitnessScore < 0) fitnessScore = 0;
-		
-		double[] result = {predictionScore, fitnessScore};
-		
+	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, String gameScoreFile, boolean collectGameScores){
+		GameRunner gr = new GameRunner();
+		double[] result = gr.runGame(numEpisodes, activator, runner, null, null);
 		if (training){
-			gameScores_Sequence = gameScores;
-		} else {
-			gameScores_evaluation = gameScores;
+			if (collectGameScores) gr.writeGameScoresToFile(gameScoreFile);
 		}
 		
 		return result;

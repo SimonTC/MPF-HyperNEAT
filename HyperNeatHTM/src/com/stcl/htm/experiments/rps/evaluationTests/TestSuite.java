@@ -147,6 +147,7 @@ public class TestSuite implements Runnable{
 		  for (int i = 0; i < directoryListing.length; i++){
 			  File child = directoryListing[i];
 			  genomeFilePaths[i] = child.getAbsolutePath();
+			  genomeNames[i] = child.getName().substring(0, child.getName().length() - 4);
 		  }
 
 	}

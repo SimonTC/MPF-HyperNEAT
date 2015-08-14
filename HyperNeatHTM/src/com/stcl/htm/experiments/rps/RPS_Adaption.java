@@ -6,6 +6,7 @@ import org.ejml.simple.SimpleMatrix;
 
 import stcl.algo.brain.Network;
 
+import com.stcl.htm.experiments.rps.gui.GUI;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -26,11 +27,12 @@ public class RPS_Adaption extends RPS {
 	}
 	
 	@Override
-	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores) {
+	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores, String gameScoreFolder) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
 		
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
+			String sequenceFileName = gameScoreFolder + "/seq" + sequenceID + "_";
 			//System.out.println("Starting on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
@@ -38,15 +40,18 @@ public class RPS_Adaption extends RPS {
 			runner.setSequence(curSequence);
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration;
 				//System.out.println("Starting on iteration " + sequenceIteration);
 				runner.reset(false);
 				brain.getNetwork().reinitialize();
 				
-				double[] firstScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores);
+				String roundFileName = sequenceIterationFileName + "_round1.csv";
+				double[] firstScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores, roundFileName);
 				
 				runner.reset(true);
 				
-				double[] secondScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores);
+				roundFileName = sequenceIterationFileName + "_round2.csv";
+				double[] secondScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores, roundFileName);
 				
 				
 				double fitness = sigmoid(secondScores[1] / firstScores[1]);
@@ -76,21 +81,19 @@ public class RPS_Adaption extends RPS {
 		return sigmoid;
 	}
 	
-	private double[] runOneRound(HTMNetwork brain, double explorationChance, int gameNumber, boolean collectGameScores){
+	private double[] runOneRound(HTMNetwork brain, double explorationChance, int gameNumber, boolean collectGameScores, String roundFileName){
 		//Let it train
 		brain.getNetwork().setUsePrediction(true);
 		brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
-		runGame(trainingIterations, brain, runner, true, gameNumber, collectGameScores);
+		runGame(trainingIterations, brain, runner, true, roundFileName, collectGameScores);
 		
 		//Evaluate
 		brain.getNetwork().getActionNode().setExplorationChance(0.0);
 		brain.getNetwork().setLearning(false);
 
-		double[] scores = runGame(evaluationIterations, brain, runner, false, gameNumber, collectGameScores);
+		double[] scores = runGame(evaluationIterations, brain, runner, false, roundFileName, collectGameScores);
 
 		return scores;
-		
-		
 	}
 
 }
