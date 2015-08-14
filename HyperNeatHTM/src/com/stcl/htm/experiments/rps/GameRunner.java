@@ -1,5 +1,9 @@
 package com.stcl.htm.experiments.rps;
 
+import java.io.IOException;
+
+import stcl.algo.util.FileWriter;
+
 import com.stcl.htm.experiments.rps.gui.GUI;
 import com.stcl.htm.network.HTMNetwork;
 
@@ -31,6 +35,24 @@ public class GameRunner {
 		
 		double[] result = {avgPrediction, avgFitness};
 		return result;
+	}
+	
+	public void writeGameScoresToFile(String filename){
+		try {
+			FileWriter writer = new FileWriter(filename);
+			writer.openFile(false);
+			String headers = "Episode,prediction,fitness";
+			writer.writeLine(headers);
+			for (int episode = 0; episode < gameScores.length; episode++){
+				double prediction = gameScores[episode][0];
+				double fitness = gameScores[episode][1];
+				writer.writeLine(episode + "," + prediction + "," + fitness);
+			}
+			writer.closeFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public double[][] getGameScores(){

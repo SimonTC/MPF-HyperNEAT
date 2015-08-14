@@ -22,9 +22,7 @@ public abstract class Test {
 	protected RPS evaluator;
 	protected int numSequences;
 	protected Random rand;
-	
-	private HTMNetwork myBrain;
-	private double[] results;
+	protected String testName;
 
 	public void setupTest(Properties props, int[][] sequences){
 		this.sequences = sequences;
@@ -32,9 +30,13 @@ public abstract class Test {
 		possibleInputs = createInputs();
 		evaluator = setupEvaluator(props, sequences, possibleInputs);
 		this.numSequences = sequences.length;
-		
+		this.setName();
 		
 	}
+	
+	protected abstract void setName();
+	
+	public String getName(){ return testName;}
 	
 	private SimpleMatrix[] createInputs(){
 		double[][] rockData = {
@@ -72,11 +74,9 @@ public abstract class Test {
 		return tmp;
 	}
 	
-	public void setBrain(HTMNetwork brain){
-		this.myBrain = brain;
-	}
+	public RPS getEvaluator(){ return evaluator;}
 	
-	public abstract double[] test(HTMNetwork brain);
+	public abstract double[] test(HTMNetwork brain, double explorationChance, boolean collectGameScores, String scoreFolderName);
 	
 	protected abstract RPS setupEvaluator(Properties props, int[][] sequences, SimpleMatrix[] possibleInputs);
 }

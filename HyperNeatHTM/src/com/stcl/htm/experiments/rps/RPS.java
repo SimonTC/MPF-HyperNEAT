@@ -26,8 +26,6 @@ public class RPS {
 	protected int trainingIterations;
 	protected int evaluationIterations;
 	protected double[][] sequenceScores;
-	protected double[][][] gameScores_Sequence;
-	protected double[][][][] gamescores_experiment;
 
 	
 	protected SequenceRunner runner;
@@ -65,20 +63,20 @@ public class RPS {
 
 	}
 	
-	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores) {
+	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores, String gameScoreFolder) {
 		double totalFitness = 0;
 		double totalPrediction = 0;
-		if (collectGameScores) gamescores_experiment = new double[sequences.length][][][];
-		
+				
 		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
+			String sequenceFileName = gameScoreFolder + "/seq" + sequenceID + "_";
 			//System.out.println("Starting on sequence " + sequenceID);
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
 			runner.setSequence(curSequence);
-			if (collectGameScores) gameScores_Sequence = new double[numExperimentsPerSequence][][];
-			
+						
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration + ".csv";
 				String name = sequenceID + " test " + sequenceIteration;
 				//System.out.println("Starting on iteration " + sequenceIteration);
 				runner.reset(false);
@@ -87,21 +85,19 @@ public class RPS {
 				//Let it train
 				brain.getNetwork().setUsePrediction(true);
 				brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
-				runGame(trainingIterations, brain, runner, true, sequenceIteration, collectGameScores);
+				runGame(trainingIterations, brain, runner, true, sequenceIterationFileName, collectGameScores);
 				
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(false);
 				brain.reset();
 				runner.reset(false);
-				double[] scores = runGame(evaluationIterations, brain, runner, false, sequenceIteration, collectGameScores, gui,name);
+				double[] scores = runGame(evaluationIterations, brain, runner, false, sequenceIterationFileName, collectGameScores, gui,name);
 				double fitness = scores[1];
 				double prediction = scores[0];
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;				
 			}
-			
-			if (collectGameScores) gamescores_experiment[sequenceID] = gameScores_Sequence;
 			
 			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
 			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);
@@ -118,13 +114,13 @@ public class RPS {
 	}
 	
 	public double[] run(HTMNetwork brain) {
-		return this.run(brain,0, false);
+		return this.run(brain,0, false, "");
 		
 	}
 	
 	
-	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, int gameNumber, boolean collectGameScores){
-		return this.runGame(numEpisodes, activator, runner, training, gameNumber, collectGameScores, null, null);
+	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, String gameScoreFile, boolean collectGameScores){
+		return this.runGame(numEpisodes, activator, runner, training, gameScoreFile, collectGameScores, null, null);
 	}
 	
 	/**
@@ -134,11 +130,11 @@ public class RPS {
 	 * @param activator
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
-	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, int gameNumber, boolean collectGameScores, GUI gui, String name){
+	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, String gameScoreFile, boolean collectGameScores, GUI gui, String name){
 		GameRunner gr = new GameRunner();
 		double[] result = gr.runGame(numEpisodes, activator, runner, gui, name);
 		if (training){
-			if (collectGameScores) gameScores_Sequence[gameNumber] = gr.getGameScores();
+			if (collectGameScores) gr.writeGameScoresToFile(gameScoreFile);
 		}
 		
 		return result;
@@ -146,9 +142,5 @@ public class RPS {
 	
 	public double[][] getSequenceScores(){
 		return sequenceScores;
-	}
-	
-	public double[][][][] getGmeScores(){
-		return this.gamescores_experiment;
 	}
 }

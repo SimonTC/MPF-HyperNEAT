@@ -15,6 +15,7 @@ import stcl.algo.util.FileWriter;
 import com.ojcoleman.ahni.hyperneat.Properties;
 import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
 import com.stcl.htm.network.HTMNetwork;
+import com.thoughtworks.xstream.security.ExplicitTypePermission;
 
 public class TestSuite implements Runnable{
 	
@@ -22,11 +23,15 @@ public class TestSuite implements Runnable{
 	public static final String RPS_SEQUENCES_BLOCKLENGTH_MIN = "rps.sequences.blocklength.min";
 	public static final String RPS_SEQUENCES_BLOCKLENGTH_MAX = "rps.sequences.blocklength.max";
 	public static final String RPS_SEQUENCES_ALPHABET_SIZE = "rps.sequences.alphabet.size";
+	public static final String RPS_EXPLORE_CHANCE = "rps.training.explore.chance";
 	
 	private Test[] testers;
-	private File[] genomeFiles;
 	private String[] genomeFilePaths;
-	private String testFolder;
+	protected String testFolder;
+	protected String[] genomeNames;
+
+	private double explorationChance;
+	private boolean collectScores;
 	
 
 	public static void main(String[] args)  {
@@ -35,6 +40,7 @@ public class TestSuite implements Runnable{
 		
 		 File dir = new File(topFolder);
 		 File[] directoryListing = dir.listFiles();
+		 boolean collectScores = Boolean.parseBoolean(args[2]);
 		 
 		 if (directoryListing.length == 0){
 			 System.out.println("No files found in directory " + dir.getAbsolutePath());
@@ -46,7 +52,7 @@ public class TestSuite implements Runnable{
 					  File f = directoryListing[i];
 					  if (f.isDirectory()){
 						  String path = f.getAbsolutePath() + "/evaluation";
-						  TestSuite ts = new TestSuite(path, numSequences);
+						  TestSuite ts = new TestSuite(path, numSequences, collectScores);
 							executor.execute(ts);
 					  }
 				  }
@@ -69,12 +75,14 @@ public class TestSuite implements Runnable{
 	
 
 	
-	public TestSuite(String testFolder,  int numSequences) throws IOException{
+	public TestSuite(String testFolder,  int numSequences, boolean collectGameScores) throws IOException{
 		String propertiesFile = testFolder + "/props.properties";
 		Properties props = new Properties(propertiesFile);
+		explorationChance = props.getDoubleProperty(RPS_EXPLORE_CHANCE);
 		testers = setupTesters(props, numSequences);
 		loadGenomeFiles(testFolder + "/genomes");		
 		this.testFolder = testFolder;
+		this.collectScores = collectGameScores;
 	}
 	
 	@Override
@@ -95,23 +103,28 @@ public class TestSuite implements Runnable{
 	
 	private double[][][] runTest() throws FileNotFoundException{
 		double[][][] results = new double[genomeFilePaths.length][][];
-		
 		for (int i = 0; i < genomeFilePaths.length; i++){
+			String genomeFolder = testFolder + "/results/GameScores_genome_" + i;
 			String genome = genomeFilePaths[i];
-			Network_DataCollector brain = new Network_DataCollector(genome, new Random());
+			Network_DataCollector brain = buildBrain(genome);
 			HTMNetwork network = new HTMNetwork(brain);
-			results[i] = runTests(network);
+			results[i] = runTests(network, explorationChance, collectScores, genomeFolder);
 		}
 		
 		return results;		
 	}
 	
+	protected Network_DataCollector buildBrain(String genomeFile){
+		Network_DataCollector brain = new Network_DataCollector();
+		brain.initialize(genomeFile, new Random());
+		return brain;
+	}
+	
 	private void writeResults(double[][][] results, String resultFolder) throws IOException{
 		String headers = "Seq, Fitness, Prediction, Speed_Prediction, Adaption";
 		for (int i = 0; i < results.length; i++){
-			String filename = genomeFiles[i].getName();
-			filename = filename.substring(0, filename.length() - 4) + "_results.csv";
-			FileWriter writer = new FileWriter(resultFolder + "/" + filename);
+			String name = genomeNames[i] +  "_results.csv";
+			FileWriter writer = new FileWriter(resultFolder + "/" + name);
 			writer.openFile(false);
 			writer.writeLine(headers);
 			for (int sequence = 0; sequence < results[i][0].length; sequence++){
@@ -130,7 +143,6 @@ public class TestSuite implements Runnable{
 	private void loadGenomeFiles(String parentDirectory){
 		  File dir = new File(parentDirectory);
 		  File[] directoryListing = dir.listFiles();
-		  genomeFiles = directoryListing;
 		  genomeFilePaths = new String[directoryListing.length];
 		  for (int i = 0; i < directoryListing.length; i++){
 			  File child = directoryListing[i];
@@ -139,12 +151,15 @@ public class TestSuite implements Runnable{
 
 	}
 	
-	private double[][] runTests(HTMNetwork brain){
+	private double[][] runTests(HTMNetwork brain, double explorationChance, boolean collectGameScores, String mainFolder){
 		double[][] scores = new double[testers.length][];
 		
 		for (int i = 0; i < testers.length; i++){
 			Test t = testers[i];
-			scores[i] = t.test(brain);
+			String testfolder = mainFolder + "/" + t.getName();
+			File f = new File(testfolder);
+			f.mkdirs();
+			scores[i] = t.test(brain, explorationChance, collectGameScores, testfolder);
 		}
 		return scores;
 	}

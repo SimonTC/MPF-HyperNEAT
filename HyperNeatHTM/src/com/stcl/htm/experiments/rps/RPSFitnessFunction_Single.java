@@ -137,7 +137,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 			setupDataCollection(brain, genomeFile);
 		}
 		
-		eval.run(network, exploreChance, false); //Currently we dn't want to collect game scores	
+		eval.run(network, exploreChance, false, ""); //Currently we dn't want to collect game scores	
 		double[][] result = eval.getSequenceScores();
 		
 		if(collectData){

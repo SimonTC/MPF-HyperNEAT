@@ -19,6 +19,10 @@ public class Test_Adaption extends Test_Fitness {
 		RPS eval = new RPS_Adaption(possibleInputs, sequences, functions,  1, props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY), props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY), rand.nextLong(), props.getDoubleProperty(RPS_NOISE_MAGNITUDE));
 		return eval;
 	}
+	
+	protected void setName(){
+		this.testName = "Adaption";
+	}
 
 	
 

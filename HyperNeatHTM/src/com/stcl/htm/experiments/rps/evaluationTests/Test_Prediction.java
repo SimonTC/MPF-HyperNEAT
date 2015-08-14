@@ -11,9 +11,9 @@ import com.stcl.htm.network.HTMNetwork;
 public class Test_Prediction extends Test {
 
 	@Override
-	public double[] test(HTMNetwork brain) {
+	public double[] test(HTMNetwork brain, double explorationChance, boolean collectGameScores, String scoreFolderName ) {
 		double[] results = new double[numSequences];
-		evaluator.run(brain);
+		evaluator.run(brain, explorationChance, collectGameScores, scoreFolderName);
 		double[][] sequenceScores = evaluator.getSequenceScores();
 		for (int i = 0; i < numSequences; i++){
 			results[i] = sequenceScores[i][0];
@@ -27,6 +27,10 @@ public class Test_Prediction extends Test {
 		RewardFunction[] functions = {new RewardFunction_Standard()};
 		RPS eval = new RPS(possibleInputs, sequences, functions,  1, props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY), props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY), rand.nextLong(), props.getDoubleProperty(RPS_NOISE_MAGNITUDE));
 		return eval;
+	}
+	
+	protected void setName(){
+		this.testName = "Prediction";
 	}
 
 }
