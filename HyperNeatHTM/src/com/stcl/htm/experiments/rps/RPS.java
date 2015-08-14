@@ -124,23 +124,23 @@ public class RPS {
 	/**
 	 * Evaluates the activator on the given number of sequences.
 	 * Remember to reset the runner and set the sequence before running this method
-	 * @param numSequences the number times the sequence is repeated
+	 * @param numEpisodes the number times the sequence is repeated
 	 * @param activator
 	 * @return the score given as [avgPredictionSuccess, avgFitness]
 	 */
-	protected double[] runExperiment(int numSequences, HTMNetwork activator, SequenceRunner runner, GUI gui, String name){
+	protected double[] runExperiment(int numEpisodes, HTMNetwork activator, SequenceRunner runner, GUI gui, String name){
 		double totalPrediction = 0;
 		double totalFitness = 0;
-		for(int i = 0; i < numSequences; i++){
+		for(int i = 0; i < numEpisodes; i++){
 			activator.getNetwork().newEpisode();
 			if (gui != null) gui.setSequenceName(name + " iteration " + i);
-			double[] result = runner.runSequence(activator, gui);
+			double[] result = runner.runEpisode(activator, gui);
 			totalPrediction += result[0];
 			totalFitness += result[1];
 		}
 		
-		double avgPrediction = totalPrediction / (double) numSequences;
-		double avgFitness = totalFitness / (double) numSequences;
+		double avgPrediction = totalPrediction / (double) numEpisodes;
+		double avgFitness = totalFitness / (double) numEpisodes;
 		
 		double[] result = {avgPrediction, avgFitness};
 		return result;

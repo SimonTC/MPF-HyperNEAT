@@ -92,7 +92,7 @@ public class SequenceRunner {
 	
 	
 	public double[] runSequence(HTMNetwork activator){
-		return runSequence(activator, null);
+		return runEpisode(activator, null);
 	}
 	/**
 	 * Goes through the sequence once.
@@ -100,7 +100,7 @@ public class SequenceRunner {
 	 * @param activator
 	 * @return Array containing prediction success and fitness in the form [prediction,fitness]
 	 */
-	public double[] runSequence(HTMNetwork activator, GUI gui){
+	public double[] runEpisode(HTMNetwork activator, GUI gui){
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
 		
