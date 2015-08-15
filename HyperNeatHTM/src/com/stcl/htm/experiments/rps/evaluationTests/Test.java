@@ -1,5 +1,6 @@
 package com.stcl.htm.experiments.rps.evaluationTests;
 
+import java.io.File;
 import java.util.Random;
 
 import org.ejml.simple.SimpleMatrix;
@@ -24,14 +25,22 @@ public abstract class Test {
 	protected int numSequences;
 	protected Random rand;
 	protected String testName;
+	private boolean collectGameScores;
+	private HTMNetwork brain;
+	private String outputTopFolder;
+	private double explorationChance;
+	private String scoreFolderName;
+	private double[] endResult;
 
-	public void setupTest(Properties props, int[][] sequences){
+	public void setupTest(Properties props, int[][] sequences, boolean collectGameScores, String topFolder){
 		this.sequences = sequences;
 		rand = new Random();
 		possibleInputs = createInputs();
 		evaluator = setupEvaluator(props, sequences, possibleInputs);
 		this.numSequences = sequences.length;
 		this.setName();
+		this.collectGameScores = collectGameScores;
+		this.outputTopFolder = topFolder + "/" + this.getName();
 		
 	}
 	
@@ -73,6 +82,10 @@ public abstract class Test {
 		SimpleMatrix[] tmp = {rock, paper, scissors};
 
 		return tmp;
+	}
+	
+	public double[] getEndResult(){
+		return this.endResult;
 	}
 	
 	public RPS getEvaluator(){ return evaluator;}

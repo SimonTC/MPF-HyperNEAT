@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,7 +18,7 @@ import com.stcl.htm.experiments.rps.sequencecreation.SequenceBuilder;
 import com.stcl.htm.network.HTMNetwork;
 import com.thoughtworks.xstream.security.ExplicitTypePermission;
 
-public class TestSuite implements Runnable{
+public class TestSuite {
 	
 	public static final String RPS_SEQUENCES_LEVELS_KEY = "rps.sequences.levels";
 	public static final String RPS_SEQUENCES_BLOCKLENGTH_MIN = "rps.sequences.blocklength.min";
@@ -25,10 +26,16 @@ public class TestSuite implements Runnable{
 	public static final String RPS_SEQUENCES_ALPHABET_SIZE = "rps.sequences.alphabet.size";
 	public static final String RPS_EXPLORE_CHANCE = "rps.training.explore.chance";
 	
+	public static final String RPS_EVALUATION_ITERATIONS_KEY = "rps.evaluation.iterations";
+	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
+	public static final String RPS_SEQUENCES_ITERATIONS_KEY = "rps.sequences.iterations";
+	public static final String RPS_NOISE_MAGNITUDE = "rps.noise.magnitude";
+	
 	private Test[] testers;
 	private String[] genomeFilePaths;
 	protected String testFolder;
 	protected String[] genomeNames;
+	private String genomeTopFolder;
 	
 
 	private double explorationChance;
@@ -66,7 +73,7 @@ public class TestSuite implements Runnable{
 					  if (f.isDirectory()){
 						  String path = f.getAbsolutePath() + "/evaluation";
 						  TestSuite ts = new TestSuite(path, numSequences, collectScores);
-							executor.execute(ts);
+						  executor.execute(ts);
 					  }
 				  }
 				 
@@ -88,18 +95,35 @@ public class TestSuite implements Runnable{
 	
 
 	
-	public TestSuite(String testFolder,  int numSequences, boolean collectGameScores) throws IOException{
-		String propertiesFile = testFolder + "/props.properties";
-		Properties props = new Properties(propertiesFile);
-		explorationChance = props.getDoubleProperty(RPS_EXPLORE_CHANCE);
-		testers = setupTesters(props, numSequences);
-		loadGenomeFiles(testFolder + "/genomes");		
+	public TestSuite(String testFolder,  String genomeTopFolder, int numSequences, int sequenceLevels, int blockLengthMin, int blockLengthMax, boolean collectGameScores) throws IOException{
+		this.genomeTopFolder = genomeTopFolder;
+		Properties props = createExpProperties();
+		testers = setupTesters(props, numSequences, sequenceLevels, blockLengthMin, blockLengthMax);
 		this.testFolder = testFolder;
 		this.collectScores = collectGameScores;
 	}
 	
-	@Override
+	private Properties createExpProperties(){
+		Properties props = new Properties();
+		props.setProperty(RPS_NOISE_MAGNITUDE, "0.1");
+		props.setProperty(RPS_SEQUENCES_ITERATIONS_KEY, "5");
+		props.setProperty(RPS_TRAINING_ITERATIONS_KEY, "1000");
+		props.setProperty(RPS_EVALUATION_ITERATIONS_KEY, "100");
+		
+		return props;
+		
+	}
+	
 	public void run(){
+		File dir = new File(genomeTopFolder);
+		File[] genomeDirectories = dir.listFiles();
+		
+		for (File genome_dir : genomeDirectories){
+			if (genome_dir.isDirectory()){
+				runTests(genome_dir);
+			}
+		}
+		
 		try {
 			double[][][] results = this.runTest();
 			this.writeResults(results, testFolder + "/results");
@@ -113,8 +137,48 @@ public class TestSuite implements Runnable{
 	}
 	
 	
+	private void runTests(File genomeDirectory, Properties props, boolean collectGameScores, int[][] sequences) throws IOException, InterruptedException{
+		boolean simpleBrain = genomeDirectory.getName().contains("Simple Network");
+		String[] genomeFiles = loadGenomeFiles(genomeDirectory.getAbsolutePath());
+		Properties brainProperties;
+		Properties propsInBrainTester = new Properties(props);
+		ArrayList<Network_DataCollector> brains = new ArrayList<Network_DataCollector>();
+		
+		for (String genomeFile : genomeFiles){
+			if (genomeFile.contains("props")){
+				brainProperties = new Properties(genomeFile);
+				props.setProperty(RPS_EXPLORE_CHANCE, brainProperties.getProperty(RPS_EXPLORE_CHANCE));				
+			} else {
+				Network_DataCollector brain = null;
+				if (simpleBrain){
+					brain = buildSimpleBrain(genomeFile);
+				} else {
+					brain = buildBrain(genomeFile);
+				}
+				brains.add(brain);
+			}
+		}
+		ExecutorService executor = Executors.newCachedThreadPool();
+		
+		for (int i = 0; i < brains.size(); i++){
+			HTMNetwork network = new HTMNetwork(brains.get(i));
+			String outputFolder = genomeDirectory.getAbsolutePath() + "/Gamescores_genome_" + i;
+			
+			BrainTester bt = new BrainTester(network, collectGameScores, outputFolder, sequences, propsInBrainTester);
+			executor.execute(bt);
+		}
+		
+		executor.shutdown();
+		 
+		executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+		
+	}
+	
 	
 	private double[][][] runTest() throws FileNotFoundException{
+		
+		
+		
 		double[][][] results = new double[genomeFilePaths.length][][];
 		for (int i = 0; i < genomeFilePaths.length; i++){
 			String genomeFolder = testFolder + "/results/GameScores_genome_" + i;
@@ -127,7 +191,18 @@ public class TestSuite implements Runnable{
 		return results;		
 	}
 	
-	protected Network_DataCollector buildBrain(String genomeFile){
+	private Network_DataCollector buildSimpleBrain(String genomeFile){
+		Network_DataCollector brain = null;
+		try {
+			brain = new Network_DataCollector(genomeFile, new Random());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return brain;
+	}
+	
+	private Network_DataCollector buildBrain(String genomeFile){
 		Network_DataCollector brain = new Network_DataCollector();
 		brain.initialize(genomeFile, new Random());
 		return brain;
@@ -153,10 +228,10 @@ public class TestSuite implements Runnable{
 		}
 	}
 	
-	private void loadGenomeFiles(String parentDirectory){
+	private String[] loadGenomeFiles(String parentDirectory){
 		  File dir = new File(parentDirectory);
 		  File[] directoryListing = dir.listFiles();
-		  genomeFilePaths = new String[directoryListing.length];
+		  String[] genomeFilePaths = new String[directoryListing.length];
 		  genomeNames = new String[directoryListing.length];
 		  for (int i = 0; i < directoryListing.length; i++){
 			  File child = directoryListing[i];
@@ -180,22 +255,24 @@ public class TestSuite implements Runnable{
 		return scores;
 	}
 	
-	private Test[] setupTesters(Properties props, int numSequences){
+	private Test[] setupTesters(Properties props, int numSequences, int sequenceLevels, int blockLengthMin, int blockLengthMax){
 		Test[] testers = { new Test_Prediction()};
+		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
-		int[][] sequences = setupSequences(props, numSequences);
+		int[][] sequences = setupSequences(sequenceProps);
 		for (Test t : testers){
 			t.setupTest(props, sequences);
 		}
 		return testers;
 	}
 	
-	private  int[][] setupSequences(Properties props, int numSequences){
-		int sequenceLevels = props.getIntProperty(RPS_SEQUENCES_LEVELS_KEY);
-		int blockLengthMin = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MIN);
-		int blockLengthMax = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX);
-		int alphabetSize = props.getIntProperty(RPS_SEQUENCES_ALPHABET_SIZE, 3); //Currently not in use
+	private  int[][] setupSequences(int[] sequenceprops){
+		int alphabetSize = 3; //Cannot be changed currently
+		int numSequences = sequenceprops[0];
+		int sequenceLevels = sequenceprops[1];
+		int blockLengthMin = sequenceprops[2];
+		int blockLengthMax = sequenceprops[3];
 		
 		Random sequenceRand = new Random();
 		SequenceBuilder builder = new SequenceBuilder();
