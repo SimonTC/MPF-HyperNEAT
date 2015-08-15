@@ -30,32 +30,33 @@ public class TestSuite {
 	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
 	public static final String RPS_SEQUENCES_ITERATIONS_KEY = "rps.sequences.iterations";
 	public static final String RPS_NOISE_MAGNITUDE = "rps.noise.magnitude";
-	
-	private Test[] testers;
-	private String[] genomeFilePaths;
+
 	protected String testFolder;
 	protected String[] genomeNames;
 	private String genomeTopFolder;
-	
+	private int[][] sequences;
+	private Properties props;
 
-	private double explorationChance;
 	private boolean collectScores;
 	
 
-	public static void main(String[] args)  {
+	public static void main(String[] args) throws IOException, InterruptedException  {
 		String topFolder = args[0];
 		int numSequences = Integer.parseInt(args[1]);
+		boolean collectScores = Boolean.parseBoolean(args[2]);
 		
-		 File dir = new File(topFolder);
+		String genomeFolder = topFolder + "/genomes";
+		
+		 File dir = new File(genomeFolder);
 		 File[] directoryListing = dir.listFiles();
-		 boolean collectScores = Boolean.parseBoolean(args[2]);
+		 
 		 File[] whiteList = null;
 		 if (args.length > 3){
 			 whiteList = new File[args.length - 3];
 		 }
 		 if (whiteList != null){
 			 for (int i = 0; i < whiteList.length; i++){
-				 File f = new File(topFolder + "/" + args[i+3]);
+				 File f = new File(genomeFolder + "/" + args[i+3]);
 				 whiteList[i] = f;
 			 }
 		 } else {
@@ -63,29 +64,11 @@ public class TestSuite {
 		 }
 		 		 
 		 if (whiteList.length == 0){
-			 System.out.println("No files found in directory " + dir.getAbsolutePath());
+			 System.out.println("No genome files found in directory " + dir.getAbsolutePath());
 		 } else {
-		 
-			 ExecutorService executor = Executors.newFixedThreadPool(4);
-			 try {
-				 for (int i = 0; i < whiteList.length; i++){
-					  File f = whiteList[i];
-					  if (f.isDirectory()){
-						  String path = f.getAbsolutePath() + "/evaluation";
-						  TestSuite ts = new TestSuite(path, numSequences, collectScores);
-						  executor.execute(ts);
-					  }
-				  }
-				 
-				 executor.shutdown();
-				 
-				 executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-			 	} catch (IOException | InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			 
-			 
+			 Properties props = new Properties(topFolder + "/props.properties");
+			 TestSuite ts = new TestSuite(topFolder, genomeFolder, numSequences, props.getIntProperty(RPS_SEQUENCES_LEVELS_KEY), props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MIN), props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX), collectScores);
+			 ts.run(whiteList);
 			
 			 System.out.println("Finished tests");
 		 }
@@ -97,8 +80,9 @@ public class TestSuite {
 	
 	public TestSuite(String testFolder,  String genomeTopFolder, int numSequences, int sequenceLevels, int blockLengthMin, int blockLengthMax, boolean collectGameScores) throws IOException{
 		this.genomeTopFolder = genomeTopFolder;
-		Properties props = createExpProperties();
-		testers = setupTesters(props, numSequences, sequenceLevels, blockLengthMin, blockLengthMax);
+		props = createExpProperties();
+		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
+		sequences = setupSequences(sequenceProps);
 		this.testFolder = testFolder;
 		this.collectScores = collectGameScores;
 	}
@@ -114,26 +98,23 @@ public class TestSuite {
 		
 	}
 	
-	public void run(){
+	public void run(File[] whitelist) throws IOException, InterruptedException{
 		File dir = new File(genomeTopFolder);
 		File[] genomeDirectories = dir.listFiles();
 		
 		for (File genome_dir : genomeDirectories){
-			if (genome_dir.isDirectory()){
-				runTests(genome_dir);
+			if (genome_dir.isDirectory() && isInFileList(genome_dir, whitelist)){
+				runTests(genome_dir, props, collectScores, sequences);
 			}
 		}
 		
-		try {
-			double[][][] results = this.runTest();
-			this.writeResults(results, testFolder + "/results");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	}
+	
+	private boolean isInFileList(File f, File[] list){
+		for (File file : list){
+			if (f.equals(file)) return true;
 		}
-		
-		String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
-		System.out.println(timeStamp + ":  Finished tests in " + testFolder);
+		return false;
 	}
 	
 	
@@ -175,22 +156,6 @@ public class TestSuite {
 	}
 	
 	
-	private double[][][] runTest() throws FileNotFoundException{
-		
-		
-		
-		double[][][] results = new double[genomeFilePaths.length][][];
-		for (int i = 0; i < genomeFilePaths.length; i++){
-			String genomeFolder = testFolder + "/results/GameScores_genome_" + i;
-			String genome = genomeFilePaths[i];
-			Network_DataCollector brain = buildBrain(genome);
-			HTMNetwork network = new HTMNetwork(brain);
-			results[i] = runTests(network, explorationChance, collectScores, genomeFolder);
-		}
-		
-		return results;		
-	}
-	
 	private Network_DataCollector buildSimpleBrain(String genomeFile){
 		Network_DataCollector brain = null;
 		try {
@@ -208,63 +173,16 @@ public class TestSuite {
 		return brain;
 	}
 	
-	private void writeResults(double[][][] results, String resultFolder) throws IOException{
-		String headers = "Seq, Fitness, Prediction, Speed_Prediction, Adaption";
-		for (int i = 0; i < results.length; i++){
-			String name = genomeNames[i] +  "_results.csv";
-			FileWriter writer = new FileWriter(resultFolder + "/" + name);
-			writer.openFile(false);
-			writer.writeLine(headers);
-			for (int sequence = 0; sequence < results[i][0].length; sequence++){
-				writer.write(sequence + ",");
-				for (int test = 0; test < results[i].length; test++){
-					writer.write(results[i][test][sequence] + ",");
-				}
-				writer.writeLine("");
-			}
-			
-			writer.closeFile();
-			
-		}
-	}
-	
 	private String[] loadGenomeFiles(String parentDirectory){
 		  File dir = new File(parentDirectory);
 		  File[] directoryListing = dir.listFiles();
 		  String[] genomeFilePaths = new String[directoryListing.length];
-		  genomeNames = new String[directoryListing.length];
 		  for (int i = 0; i < directoryListing.length; i++){
 			  File child = directoryListing[i];
 			  genomeFilePaths[i] = child.getAbsolutePath();
-			  String filename = child.getName();
-			  genomeNames[i] = filename.substring(0, filename.length() - 4);
 		  }
+		  return genomeFilePaths;
 
-	}
-	
-	private double[][] runTests(HTMNetwork brain, double explorationChance, boolean collectGameScores, String mainFolder){
-		double[][] scores = new double[testers.length][];
-		
-		for (int i = 0; i < testers.length; i++){
-			Test t = testers[i];
-			String testfolder = mainFolder + "/" + t.getName();
-			File f = new File(testfolder);
-			f.mkdirs();
-			scores[i] = t.test(brain, explorationChance, collectGameScores, testfolder);
-		}
-		return scores;
-	}
-	
-	private Test[] setupTesters(Properties props, int numSequences, int sequenceLevels, int blockLengthMin, int blockLengthMax){
-		Test[] testers = { new Test_Prediction()};
-		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
-		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
-		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
-		int[][] sequences = setupSequences(sequenceProps);
-		for (Test t : testers){
-			t.setupTest(props, sequences);
-		}
-		return testers;
 	}
 	
 	private  int[][] setupSequences(int[] sequenceprops){

@@ -2,6 +2,7 @@ package com.stcl.htm.experiments.rps.evaluationTests;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import stcl.algo.util.FileWriter;
 
@@ -44,6 +45,9 @@ public class BrainTester implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+		System.out.println(timeStamp + ":  Finished tests for " + outputFolder);
 		
 	}
 	
