@@ -54,8 +54,8 @@ public class RPS_Adaption extends RPS {
 				double[] secondScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores, roundFileName);
 				
 				
-				double fitness = sigmoid(secondScores[1] / firstScores[1]);
-				double prediction = sigmoid(secondScores[0] / firstScores[0]);
+				double fitness = (secondScores[1] + firstScores[1]) / 2.0;
+				double prediction = (secondScores[0] + firstScores[0]) / 2.0;
 				sequenceFitness += fitness;
 				sequencePrediction += prediction;
 
