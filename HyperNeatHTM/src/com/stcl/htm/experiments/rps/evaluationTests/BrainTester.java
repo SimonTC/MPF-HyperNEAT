@@ -14,7 +14,7 @@ public class BrainTester implements Runnable{
 	private HTMNetwork brain;
 	private boolean collectGameScores;
 	private String outputFolder;
-	private double[][] scores;
+	private double[][][] scores;
 	private double explorationChance;
 	
 	public BrainTester(HTMNetwork brain, boolean collectGameScores, String outputFolder, int[][] sequences, Properties props) {
@@ -24,14 +24,10 @@ public class BrainTester implements Runnable{
 		this.outputFolder = outputFolder;
 	}
 	
-	public double[][] getScores(){
-		return scores;
-	}
-	
 	@Override
 	public void run() {
 
-		scores = new double[testers.length][];
+		scores = new double[testers.length][][];
 		
 		for (int i = 0; i < testers.length; i++){
 			Test t = testers[i];
@@ -52,16 +48,19 @@ public class BrainTester implements Runnable{
 		
 	}
 	
-	private void writeResults(double[][] results, String resultFolder) throws IOException{
-		String headers = "Seq, Fitness, Prediction, Speed_Prediction, Adaption";
+	private void writeResults(double[][][] results, String resultFolder) throws IOException{
+		String headers = "Seq, Normal_fitness, Normal_prediction, Adaption_Fitness, Adaption_Prediction";
 		String name = "_results.csv";
 		FileWriter writer = new FileWriter(resultFolder + "/" + name);
 		writer.openFile(false);
 		writer.writeLine(headers);
-		for (int sequence = 0; sequence < results[0].length; sequence++){
+		int numSequences = results[0].length;
+		for (int sequence = 0; sequence < numSequences; sequence++){
 			writer.write(sequence + ",");
 			for (int test = 0; test < results.length; test++){
-				writer.write(results[test][sequence] + ",");
+				for (int i = 0; i < 2; i++){
+					writer.write(results[test][sequence][i] + ",");
+				}
 			}
 			writer.writeLine("");
 		}
@@ -70,7 +69,7 @@ public class BrainTester implements Runnable{
 	}
 	
 	private Test[] setupTesters(Properties props, int[][] sequences, boolean collectGameScores, String outputFolder){
-		Test[] testers = { new Test_Prediction()};
+		Test[] testers = { new Test_Normal(), new Test_Adaption()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
 		for (Test t : testers){

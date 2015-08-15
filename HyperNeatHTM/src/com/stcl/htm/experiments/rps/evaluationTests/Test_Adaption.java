@@ -10,7 +10,7 @@ import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Inverse;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction_Standard;
 import com.stcl.htm.network.HTMNetwork;
 
-public class Test_Adaption extends Test_Fitness {
+public class Test_Adaption extends Test_Normal {
 
 	@Override
 	protected RPS setupEvaluator(Properties props, int[][] sequences,

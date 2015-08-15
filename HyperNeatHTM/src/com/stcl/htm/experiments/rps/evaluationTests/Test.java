@@ -90,7 +90,7 @@ public abstract class Test {
 	
 	public RPS getEvaluator(){ return evaluator;}
 	
-	public abstract double[] test(HTMNetwork brain, double explorationChance, boolean collectGameScores, String scoreFolderName);
+	public abstract double[][] test(HTMNetwork brain, double explorationChance, boolean collectGameScores, String scoreFolderName);
 	
 	protected abstract RPS setupEvaluator(Properties props, int[][] sequences, SimpleMatrix[] possibleInputs);
 }
