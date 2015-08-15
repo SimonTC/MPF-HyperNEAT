@@ -30,7 +30,7 @@ public class Test_Normal extends Test {
 	}
 	
 	protected void setName(){
-		this.testName = "Normals";
+		this.testName = "Normal";
 	}
 
 }

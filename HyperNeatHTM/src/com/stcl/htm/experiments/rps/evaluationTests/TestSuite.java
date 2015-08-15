@@ -75,7 +75,7 @@ public class TestSuite {
 			 ts.run(whiteList);
 			 
 			 timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
-			 System.out.println(timeStamp + ": Finished tests");
+			 System.out.println(timeStamp + ":  Finished tests");
 		 }
 		
 
@@ -112,7 +112,7 @@ public class TestSuite {
 				String genome_name = genome_dir.getName();
 				String resultDir = topFolder + "/results/" + genome_name;
 				String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
-				System.out.println(timeStamp + ": Starting tests on genomes from '" + genome_name + "'");
+				System.out.println(timeStamp + ":  Starting tests on genomes from '" + genome_name + "'");
 				runTests(genome_dir, resultDir, props, collectScores, sequences);
 				System.out.println();
 			}
