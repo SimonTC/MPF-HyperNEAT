@@ -21,18 +21,30 @@ public class TestSuite_SimpleNetwork extends TestSuite {
 		 File dir = new File(topFolder);
 		 File[] directoryListing = dir.listFiles();
 		 boolean collectScores = Boolean.parseBoolean(args[2]);
-		 
-		 if (directoryListing.length == 0){
+		 File[] whiteList = null;
+		 if (args.length > 3){
+			 whiteList = new File[args.length - 3];
+		 }
+		 if (whiteList != null){
+			 for (int i = 0; i < whiteList.length; i++){
+				 File f = new File(topFolder + "/" + args[i+3]);
+				 whiteList[i] = f;
+			 }
+		 } else {
+			 whiteList = directoryListing;
+		 }
+		 		 
+		 if (whiteList.length == 0){
 			 System.out.println("No files found in directory " + dir.getAbsolutePath());
 		 } else {
 		 
 			 ExecutorService executor = Executors.newFixedThreadPool(4);
 			 try {
-				 for (int i = 0; i < directoryListing.length; i++){
-					  File f = directoryListing[i];
+				 for (int i = 0; i < whiteList.length; i++){
+					  File f = whiteList[i];
 					  if (f.isDirectory()){
 						  String path = f.getAbsolutePath() + "/evaluation";
-						  TestSuite ts = new TestSuite_SimpleNetwork(path, numSequences, collectScores);
+						  TestSuite ts = new TestSuite(path, numSequences, collectScores);
 							executor.execute(ts);
 					  }
 				  }
