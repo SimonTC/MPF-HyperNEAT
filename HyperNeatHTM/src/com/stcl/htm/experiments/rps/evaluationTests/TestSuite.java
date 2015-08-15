@@ -144,10 +144,12 @@ public class TestSuite implements Runnable{
 		  File dir = new File(parentDirectory);
 		  File[] directoryListing = dir.listFiles();
 		  genomeFilePaths = new String[directoryListing.length];
+		  genomeNames = new String[directoryListing.length];
 		  for (int i = 0; i < directoryListing.length; i++){
 			  File child = directoryListing[i];
 			  genomeFilePaths[i] = child.getAbsolutePath();
-			  genomeNames[i] = child.getName().substring(0, child.getName().length() - 4);
+			  String filename = child.getName();
+			  genomeNames[i] = filename.substring(0, filename.length() - 4);
 		  }
 
 	}
@@ -166,9 +168,9 @@ public class TestSuite implements Runnable{
 	}
 	
 	private Test[] setupTesters(Properties props, int numSequences){
-		//Test[] testers = { new Test_Prediction()};
+		Test[] testers = { new Test_Prediction()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
-		Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
+		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
 		int[][] sequences = setupSequences(props, numSequences);
 		for (Test t : testers){
 			t.setupTest(props, sequences);
