@@ -128,7 +128,7 @@ public class TestSuite {
 		for (String genomeFile : genomeFiles){
 			if (genomeFile.contains("props")){
 				brainProperties = new Properties(genomeFile);
-				props.setProperty(RPS_EXPLORE_CHANCE, brainProperties.getProperty(RPS_EXPLORE_CHANCE));				
+				propsInBrainTester.setProperty(RPS_EXPLORE_CHANCE, brainProperties.getProperty(RPS_EXPLORE_CHANCE));				
 			} else {
 				Network_DataCollector brain = null;
 				if (simpleBrain){
@@ -169,7 +169,7 @@ public class TestSuite {
 	
 	private Network_DataCollector buildBrain(String genomeFile){
 		Network_DataCollector brain = new Network_DataCollector();
-		brain.initialize(genomeFile, new Random());
+		brain.initialize(genomeFile, new Random(), true);
 		return brain;
 	}
 	

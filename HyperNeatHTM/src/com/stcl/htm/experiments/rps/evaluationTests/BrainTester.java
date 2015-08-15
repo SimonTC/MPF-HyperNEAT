@@ -21,6 +21,7 @@ public class BrainTester implements Runnable{
 		this.brain = brain;
 		testers = setupTesters(props, sequences, collectGameScores, outputFolder);
 		this.explorationChance = props.getDoubleProperty(TestSuite.RPS_EXPLORE_CHANCE);
+		this.outputFolder = outputFolder;
 	}
 	
 	public double[][] getScores(){
