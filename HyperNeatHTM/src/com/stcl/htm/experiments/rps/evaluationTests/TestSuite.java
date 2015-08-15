@@ -31,7 +31,7 @@ public class TestSuite {
 	public static final String RPS_SEQUENCES_ITERATIONS_KEY = "rps.sequences.iterations";
 	public static final String RPS_NOISE_MAGNITUDE = "rps.noise.magnitude";
 
-	protected String testFolder;
+	protected String topFolder;
 	protected String[] genomeNames;
 	private String genomeTopFolder;
 	private int[][] sequences;
@@ -68,9 +68,14 @@ public class TestSuite {
 		 } else {
 			 Properties props = new Properties(topFolder + "/props.properties");
 			 TestSuite ts = new TestSuite(topFolder, genomeFolder, numSequences, props.getIntProperty(RPS_SEQUENCES_LEVELS_KEY), props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MIN), props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX), collectScores);
+			 
+			 String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+			 System.out.println(timeStamp + ":  Starting test suite");
+			 System.out.println();
 			 ts.run(whiteList);
-			
-			 System.out.println("Finished tests");
+			 
+			 timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+			 System.out.println(timeStamp + ": Finished tests");
 		 }
 		
 
@@ -78,12 +83,12 @@ public class TestSuite {
 	
 
 	
-	public TestSuite(String testFolder,  String genomeTopFolder, int numSequences, int sequenceLevels, int blockLengthMin, int blockLengthMax, boolean collectGameScores) throws IOException{
+	public TestSuite(String topFolder,  String genomeTopFolder, int numSequences, int sequenceLevels, int blockLengthMin, int blockLengthMax, boolean collectGameScores) throws IOException{
 		this.genomeTopFolder = genomeTopFolder;
 		props = createExpProperties();
 		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
 		sequences = setupSequences(sequenceProps);
-		this.testFolder = testFolder;
+		this.topFolder = topFolder;
 		this.collectScores = collectGameScores;
 	}
 	
@@ -104,7 +109,12 @@ public class TestSuite {
 		
 		for (File genome_dir : genomeDirectories){
 			if (genome_dir.isDirectory() && isInFileList(genome_dir, whitelist)){
-				runTests(genome_dir, props, collectScores, sequences);
+				String genome_name = genome_dir.getName();
+				String resultDir = topFolder + "/results/" + genome_name;
+				String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+				System.out.println(timeStamp + ": Starting tests on genomes from '" + genome_name + "'");
+				runTests(genome_dir, resultDir, props, collectScores, sequences);
+				System.out.println();
 			}
 		}
 		
@@ -118,7 +128,7 @@ public class TestSuite {
 	}
 	
 	
-	private void runTests(File genomeDirectory, Properties props, boolean collectGameScores, int[][] sequences) throws IOException, InterruptedException{
+	private void runTests(File genomeDirectory, String resultDirectoryPath, Properties props, boolean collectGameScores, int[][] sequences) throws IOException, InterruptedException{
 		boolean simpleBrain = genomeDirectory.getName().contains("Simple Network");
 		String[] genomeFiles = loadGenomeFiles(genomeDirectory.getAbsolutePath());
 		Properties brainProperties;
@@ -143,7 +153,7 @@ public class TestSuite {
 		
 		for (int i = 0; i < brains.size(); i++){
 			HTMNetwork network = new HTMNetwork(brains.get(i));
-			String outputFolder = genomeDirectory.getAbsolutePath() + "/Gamescores_genome_" + i;
+			String outputFolder = resultDirectoryPath + "/Gamescores_genome_" + i;
 			
 			BrainTester bt = new BrainTester(network, collectGameScores, outputFolder, sequences, propsInBrainTester);
 			executor.execute(bt);
