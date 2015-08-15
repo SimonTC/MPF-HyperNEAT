@@ -28,7 +28,7 @@ public class Test_Speed_Prediction extends Test {
 	protected RPS setupEvaluator(Properties props, int[][] sequences,
 			SimpleMatrix[] possibleInputs) {
 		RewardFunction[] functions = {new RewardFunction_Standard()};
-		RPS eval = new RPS_Speed(possibleInputs, sequences, functions, 1, props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY), props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY), rand.nextLong(), props.getDoubleProperty(RPS_NOISE_MAGNITUDE), predictionThreshold, 0, 5);
+		RPS eval = new RPS_Speed(possibleInputs, sequences, functions, props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY), props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY), props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY), rand.nextLong(), props.getDoubleProperty(RPS_NOISE_MAGNITUDE), predictionThreshold, 0, 5);
 		return eval;
 	}
 	

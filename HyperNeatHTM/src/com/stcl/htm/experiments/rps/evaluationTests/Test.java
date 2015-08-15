@@ -15,6 +15,7 @@ public abstract class Test {
 
 	public static final String RPS_EVALUATION_ITERATIONS_KEY = "rps.evaluation.iterations";
 	public static final String RPS_TRAINING_ITERATIONS_KEY = "rps.training.iterations";
+	public static final String RPS_SEQUENCES_ITERATIONS_KEY = "rps.sequences.iterations";
 	public static final String RPS_NOISE_MAGNITUDE = "rps.noise.magnitude";
 	
 	protected int[][] sequences;
