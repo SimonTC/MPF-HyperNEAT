@@ -63,7 +63,55 @@ public class RPS {
 
 	}
 	
+	public double[] run_random(boolean collectGameScores, String gameScoreFolder){
+		double totalFitness = 0;
+		double totalPrediction = 0;
+				
+		for (int sequenceID = 0; sequenceID < sequences.length; sequenceID++){
+			String sequenceFileName = gameScoreFolder + "/seq" + sequenceID + "_";
+			//System.out.println("Starting on sequence " + sequenceID);
+			double sequenceFitness = 0;
+			double sequencePrediction = 0;
+			int[] curSequence = sequences[sequenceID];
+			runner.setSequence(curSequence);
+						
+			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
+				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration + ".csv";
+				String name = sequenceID + " test " + sequenceIteration;
+				//System.out.println("Starting on iteration " + sequenceIteration);
+				runner.reset(false);
+				
+				//Let it train
+				runGame_random(trainingIterations, runner, true, sequenceIterationFileName, collectGameScores);
+				
+				//Evaluate
+				runner.reset(false);
+				double[] scores = runGame_random(evaluationIterations, runner, false, sequenceIterationFileName, collectGameScores);
+				double fitness = scores[1];
+				double prediction = scores[0];
+				sequenceFitness += fitness;
+				sequencePrediction += prediction;				
+			}
+			
+			double avgSequenceFitness = (sequenceFitness / (double)numExperimentsPerSequence);
+			double avgSequencePrediction = (sequencePrediction / (double)numExperimentsPerSequence);
+			totalFitness += avgSequenceFitness;
+			totalPrediction += avgSequencePrediction;
+			sequenceScores[sequenceID][0] = avgSequencePrediction;
+			sequenceScores[sequenceID][1] = avgSequenceFitness;
+		}
+		double avgFitness = totalFitness / (double)sequences.length;
+		double avgPrediction = totalPrediction / (double)sequences.length;
+		double[] result = {avgPrediction, avgFitness};
+		
+		return result;
+	}
+	
 	public double[] run(HTMNetwork brain, double explorationChance, boolean collectGameScores, String gameScoreFolder) {
+		if (brain.getNetwork() == null){
+			System.out.println("Brain is null. Running a random evaluation");
+			return run_random(collectGameScores, gameScoreFolder);
+		}
 		double totalFitness = 0;
 		double totalPrediction = 0;
 				
@@ -121,6 +169,16 @@ public class RPS {
 	
 	protected double[] runGame(int numEpisodes, HTMNetwork activator, SequenceRunner runner, boolean training, String gameScoreFile, boolean collectGameScores){
 		return this.runGame(numEpisodes, activator, runner, training, gameScoreFile, collectGameScores, null, null);
+	}
+	
+	protected double[] runGame_random(int numEpisodes, SequenceRunner runner, boolean training, String gameScoreFile, boolean collectGameScores){
+		GameRunner gr = new GameRunner();
+		double[] result = gr.runGame_random(numEpisodes, runner);
+		if (training){
+			if (collectGameScores) gr.writeGameScoresToFile(gameScoreFile);
+		}
+		
+		return result;
 	}
 	
 	/**

@@ -94,6 +94,48 @@ public class SequenceRunner {
 	public double[] runSequence(HTMNetwork activator){
 		return runEpisode(activator, null);
 	}
+	
+	public double[] runEpisode_random(){
+		double totalPredictionError = 0;
+		double totalGameScore = 0;
+		
+		//Collect initial prediction and action
+		SimpleMatrix[] initialOutput = collectOutput_random();
+		prediction = initialOutput[0];
+		actionNextTimeStep = initialOutput[1];
+		
+		
+		for (int i = 0; i < sequence.length; i++){
+			//Get input			
+			SimpleMatrix input = possibleInputs[sequence[i]];
+			
+			double predictionError = calculatePredictionError(prediction, input);
+			totalPredictionError += predictionError;
+			
+			SimpleMatrix actionThisTimestep = actionNextTimeStep;
+						
+			//Calculate reward
+			externalReward = calculateReward(actionThisTimestep, sequence[i]);
+			totalGameScore += externalReward;			
+			
+			//Collect output
+			SimpleMatrix[] output = collectOutput_random();
+			prediction = output[0];
+			actionNextTimeStep = output[1];
+			
+		}
+		
+		double avgPredictionError = totalPredictionError / (double) sequence.length;
+		double avgScore = totalGameScore / (double) sequence.length;
+		double predictionSuccess = 1 - avgPredictionError;
+		
+		//Scores can't be less than zero as the evolutionary algorithm can't work with that
+		if (avgScore < 0) avgScore = 0;
+		if (predictionSuccess < 0) predictionSuccess = 0;
+		
+		double[] result = {predictionSuccess, avgScore};
+		return result;
+	}
 	/**
 	 * Goes through the sequence once.
 	 * Remember to call reset() if the evaluation should start from scratch
@@ -235,6 +277,14 @@ public class SequenceRunner {
 		}
 		double reward = curRewardFunction.reward(inputID, actionID);
 		return reward;
+	}
+	
+	private SimpleMatrix[] collectOutput_random(){
+		SimpleMatrix prediction = possibleInputs[rand.nextInt(possibleInputs.length)];
+		SimpleMatrix actionNextTimeStep = new SimpleMatrix(1, 3);
+		actionNextTimeStep.set(rand.nextInt(3), 1);
+		SimpleMatrix[] result = {prediction, actionNextTimeStep};
+		return result;
 	}
 	
 	/**

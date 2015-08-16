@@ -123,31 +123,37 @@ public class TestSuite {
 	
 	private void runTests(File genomeDirectory, String resultDirectoryPath, Properties props, boolean collectGameScores, int[][] sequences) throws IOException, InterruptedException{
 		boolean simpleBrain = genomeDirectory.getName().contains("Simple Network");
+		boolean isRandom = genomeDirectory.getName().contains("Random");
 		String[] genomeFiles = loadGenomeFiles(genomeDirectory.getAbsolutePath());
 		Properties brainProperties;
 		Properties propsInBrainTester = new Properties(props);
 		ArrayList<Network_DataCollector> brains = new ArrayList<Network_DataCollector>();
 		
 		for (String genomeFile : genomeFiles){
-			if (genomeFile.contains("props")){
-				brainProperties = new Properties(genomeFile);
-				propsInBrainTester.setProperty(RPS_EXPLORE_CHANCE, brainProperties.getProperty(RPS_EXPLORE_CHANCE));				
-			} else {
-				Network_DataCollector brain = null;
-				if (simpleBrain){
-					brain = buildSimpleBrain(genomeFile);
+			
+				if (genomeFile.contains("props")){
+					brainProperties = new Properties(genomeFile);
+					propsInBrainTester.setProperty(RPS_EXPLORE_CHANCE, brainProperties.getProperty(RPS_EXPLORE_CHANCE));				
 				} else {
-					brain = buildBrain(genomeFile);
+					if (!isRandom){
+						Network_DataCollector brain = null;
+						if (simpleBrain){
+							brain = buildSimpleBrain(genomeFile);
+						} else {
+							brain = buildBrain(genomeFile);
+						}
+						brains.add(brain);
+					} else {
+						brains.add(null);
 				}
-				brains.add(brain);
+			
 			}
 		}
 		ExecutorService executor = Executors.newCachedThreadPool();
 		
 		for (int i = 0; i < brains.size(); i++){
 			HTMNetwork network = new HTMNetwork(brains.get(i));
-			String outputFolder = resultDirectoryPath + "/Gamescores_genome_" + i;
-			
+			String outputFolder = resultDirectoryPath + "/Gamescores_genome_" + i;				
 			BrainTester bt = new BrainTester(network, collectGameScores, outputFolder, sequences, propsInBrainTester);
 			executor.execute(bt);
 		}

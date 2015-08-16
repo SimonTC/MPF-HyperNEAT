@@ -37,6 +37,24 @@ public class GameRunner {
 		return result;
 	}
 	
+	public double[] runGame_random(int numEpisodes, SequenceRunner runner){
+		double totalPrediction = 0;
+		double totalFitness = 0;
+		gameScores = new double[numEpisodes][];
+		for(int i = 0; i < numEpisodes; i++){
+			double[] result = runner.runEpisode_random();
+			totalPrediction += result[0];
+			totalFitness += result[1];
+			gameScores[i] = result;
+		}
+		
+		double avgPrediction = totalPrediction / (double) numEpisodes;
+		double avgFitness = totalFitness / (double) numEpisodes;
+		
+		double[] result = {avgPrediction, avgFitness};
+		return result;
+	}
+	
 	public void writeGameScoresToFile(String filename){
 		try {
 			FileWriter writer = new FileWriter(filename);
