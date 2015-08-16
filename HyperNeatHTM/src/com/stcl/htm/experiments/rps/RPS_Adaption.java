@@ -101,12 +101,12 @@ public class RPS_Adaption extends RPS {
 				runner.reset(false);
 				
 				String roundFileName = sequenceIterationFileName + "_round1.csv";
-				double[] firstScores = runOneRound(sequenceIteration, collectGameScores, roundFileName);
+				double[] firstScores = runOneRound_random(sequenceIteration, collectGameScores, roundFileName);
 				
 				runner.reset(true);
 				
 				roundFileName = sequenceIterationFileName + "_round2.csv";
-				double[] secondScores = runOneRound(sequenceIteration, collectGameScores, roundFileName);
+				double[] secondScores = runOneRound_random(sequenceIteration, collectGameScores, roundFileName);
 				
 				
 				double fitness = (secondScores[1] + firstScores[1]) / 2.0;
@@ -139,6 +139,7 @@ public class RPS_Adaption extends RPS {
 	private double[] runOneRound(HTMNetwork brain, double explorationChance, int gameNumber, boolean collectGameScores, String roundFileName){
 		//Let it train
 		brain.getNetwork().setUsePrediction(true);
+		brain.getNetwork().setLearning(true);
 		brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
 		runGame(trainingIterations, brain, runner, true, roundFileName, collectGameScores);
 		
@@ -151,7 +152,7 @@ public class RPS_Adaption extends RPS {
 		return scores;
 	}
 	
-	private double[] runOneRound(int gameNumber, boolean collectGameScores, String roundFileName){
+	private double[] runOneRound_random(int gameNumber, boolean collectGameScores, String roundFileName){
 		//Let it train
 		runGame_random(trainingIterations, runner, true, roundFileName, collectGameScores);
 		
