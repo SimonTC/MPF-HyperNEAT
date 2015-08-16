@@ -67,7 +67,7 @@ public class TestSuite {
 			 System.out.println("No genome files found in directory " + dir.getAbsolutePath());
 		 } else {
 			 Properties props = new Properties(topFolder + "/props.properties");
-			 TestSuite ts = new TestSuite(topFolder, genomeFolder, numSequences, props.getIntProperty(RPS_SEQUENCES_LEVELS_KEY), props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MIN), props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX), collectScores);
+			 TestSuite ts = new TestSuite(topFolder, genomeFolder, numSequences, props, collectScores);
 			 
 			 String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
 			 System.out.println(timeStamp + ":  Starting test suite");
@@ -83,24 +83,17 @@ public class TestSuite {
 	
 
 	
-	public TestSuite(String topFolder,  String genomeTopFolder, int numSequences, int sequenceLevels, int blockLengthMin, int blockLengthMax, boolean collectGameScores) throws IOException{
+	public TestSuite(String topFolder,  String genomeTopFolder, int numSequences, Properties props, boolean collectGameScores) throws IOException{
 		this.genomeTopFolder = genomeTopFolder;
-		props = createExpProperties();
+		this.props = props;
+		int sequenceLevels = props.getIntProperty(RPS_SEQUENCES_LEVELS_KEY);
+		int blockLengthMin = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MIN);
+		int blockLengthMax = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX);
+		
 		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
 		sequences = setupSequences(sequenceProps);
 		this.topFolder = topFolder;
 		this.collectScores = collectGameScores;
-	}
-	
-	private Properties createExpProperties(){
-		Properties props = new Properties();
-		props.setProperty(RPS_NOISE_MAGNITUDE, "0.1");
-		props.setProperty(RPS_SEQUENCES_ITERATIONS_KEY, "5");
-		props.setProperty(RPS_TRAINING_ITERATIONS_KEY, "1000");
-		props.setProperty(RPS_EVALUATION_ITERATIONS_KEY, "100");
-		
-		return props;
-		
 	}
 	
 	public void run(File[] whitelist) throws IOException, InterruptedException{
