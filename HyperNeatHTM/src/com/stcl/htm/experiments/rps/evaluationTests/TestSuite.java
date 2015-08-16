@@ -92,6 +92,7 @@ public class TestSuite {
 		
 		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
 		sequences = setupSequences(sequenceProps);
+		this.printSequencesToFile(sequences, topFolder + "/sequences.txt");
 		this.topFolder = topFolder;
 		this.collectScores = collectGameScores;
 	}
@@ -208,6 +209,20 @@ public class TestSuite {
 			sequences[i] = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
 		}
 		return sequences;
+	}
+	
+	private void printSequencesToFile(int[][] sequences, String filepath) throws IOException{
+		FileWriter fw = new FileWriter(filepath);
+		fw.openFile(false);
+		for (int seq = 0; seq < sequences.length; seq++){
+			String s = "";
+			for (int i : sequences[seq]){
+				s += i + " ";
+			}
+			fw.writeLine(s);
+		}
+		
+		fw.closeFile();
 	}
 
 }
