@@ -123,7 +123,7 @@ public class TestSuite {
 	
 	private void runTests(File genomeDirectory, String resultDirectoryPath, Properties props, boolean collectGameScores, int[][] sequences) throws IOException, InterruptedException{
 		boolean simpleBrain = genomeDirectory.getName().contains("Simple Network");
-		boolean isRandom = genomeDirectory.getName().contains("Random");
+		boolean isRandom = genomeDirectory.getName().contains("Random Player");
 		String[] genomeFiles = loadGenomeFiles(genomeDirectory.getAbsolutePath());
 		Properties brainProperties;
 		Properties propsInBrainTester = new Properties(props);
