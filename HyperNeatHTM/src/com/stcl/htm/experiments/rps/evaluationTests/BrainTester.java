@@ -50,7 +50,7 @@ public class BrainTester implements Runnable{
 	}
 	
 	private void writeResults(double[][][] results, String resultFolder) throws IOException{
-		String headers = "Seq, Normal_fitness, Normal_prediction, Adaption_Fitness, Adaption_Prediction";
+		String headers = "Seq, Normal_prediction, Normal_fitness, Adaption_prediction, Adaption_fitness";
 		String name = "_results.csv";
 		FileWriter writer = new FileWriter(resultFolder + "/" + name);
 		writer.openFile(false);
