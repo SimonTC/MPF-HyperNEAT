@@ -26,9 +26,12 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
 	boolean collectData = false;
-	boolean setSequencesManually = false;
+	boolean setSequencesManually = true;
+	////////////////////////////////////////
+	boolean initializeRandomly = false; //Set to false when testing genomes created by evolution
+	////////////////////////////////////////
 	
-	boolean visualize = true;
+	boolean visualize = false;
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
@@ -128,9 +131,13 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		}
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
-		long randSeed = 0;//new Random().nextLong();
+		long randSeed = new Random().nextLong();
 		System.out.println("seed: " + randSeed);
-		Network_DataCollector brain = new Network_DataCollector(genomeFile, new Random());
+		Random rand = new Random(randSeed);
+		Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
+		if (!initializeRandomly){
+			brain.initialize(genomeFile, rand, true);
+		}
 		HTMNetwork network = new HTMNetwork(brain);
 		
 		if (collectData){
