@@ -44,6 +44,18 @@ public class HTMNetwork  implements Activator, Serializable {
 		network.step(reward);
 	}
 	
+	public void feedForward(double reward){
+		network.feedForward(reward);
+	}
+	
+	public void feedback(){
+		network.feedback();
+	}
+	
+	public void resetUnitActivity(){
+		network.resetUnitActivity();
+	}
+	
 	/**
 	 * Set the values of the input sensors
 	 * @param stimuli

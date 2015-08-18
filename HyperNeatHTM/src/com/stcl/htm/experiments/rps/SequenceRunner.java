@@ -146,17 +146,16 @@ public class SequenceRunner {
 	 * @param activator
 	 * @return Array containing prediction success and fitness in the form [prediction,fitness]
 	 */
-	public double[] runSequence(HTMNetwork brain, MPFGUI gui){
+	public double[] runEpisode(HTMNetwork activator, GUI gui){
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
 		double reward_before = 0;
 		
-		Network activator = brain.getNetwork();
 		
 		int state = 1;
-		activator.getActionNode().setPossibleActions(possibleActions);
+		activator.getNetwork().getActionNode().setPossibleActions(possibleActions);
 		
-		initializeSequence(activator);
+		emptyInput(activator, 0);
 		
 		for (int i = 0; i < sequence.length; i++){
 			
@@ -168,7 +167,6 @@ public class SequenceRunner {
 			//Collect output
 			activator.feedback();
 			
-			//activator.collectFeedBackData();
 			SimpleMatrix[] output = collectOutput(activator);
 			SimpleMatrix prediction = output[0];
 			SimpleMatrix myAction = output[1];
@@ -183,15 +181,11 @@ public class SequenceRunner {
 			
 			giveInputsToActivator(activator, noisyInput, myAction);
 			activator.feedForward(reward_before);
-			//activator.collectFeedForwardData();
 			reward_before = reward_now;
-			//activator.printDataToFiles();
 			
 		}
 		
-		endSequence(activator, reward_before);
-		
-		activator.newEpisode();
+		emptyInput(activator, reward_before);
 		
 		double avgPredictionError = totalPredictionError / (double) sequence.length;
 		double avgScore = totalGameScore / (double) sequence.length;
@@ -201,7 +195,7 @@ public class SequenceRunner {
 		return result;
 	}
 	
-	private void wmptyInput(HTMNetwork activator, double reward){
+	private void emptyInput(HTMNetwork activator, double reward){
 		//Give blank input and action to network
 		SimpleMatrix initialInput = new SimpleMatrix(5, 5);
 		SimpleMatrix initialAction = new SimpleMatrix(1, 3);

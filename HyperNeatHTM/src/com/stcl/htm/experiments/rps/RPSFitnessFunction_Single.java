@@ -80,6 +80,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		//props.setProperty("fitness.max_threads", "1");
 		//props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
 		//props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "100");
+		props.setProperty(RPS_TRAINING_ITERATIONS_KEY, "1000");
 		this.init(props);
 		this.sequencePath = sequencePath;
 		double[][] result = this.evaluate(genomeFile);
