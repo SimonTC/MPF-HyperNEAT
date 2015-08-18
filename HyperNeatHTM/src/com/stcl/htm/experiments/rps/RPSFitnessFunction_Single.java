@@ -113,7 +113,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		if (this.sequencePath.equalsIgnoreCase("")){
 			int[][] generatedSequences = super.createSequences(props, rand);
 			if (setSequencesManually){
-				int[][] mySequence ={{2,1,0}};
+				int[][] mySequence ={{0,1,2}};
 				sequencesToReturn = mySequence;
 			} else {
 				sequencesToReturn = generatedSequences;
