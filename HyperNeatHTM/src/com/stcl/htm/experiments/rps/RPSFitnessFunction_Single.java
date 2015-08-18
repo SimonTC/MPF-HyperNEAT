@@ -1,8 +1,11 @@
 package com.stcl.htm.experiments.rps;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.jgapcustomised.Chromosome;
@@ -28,8 +31,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	boolean collectData = false;
 	boolean setSequencesManually = true;
 	////////////////////////////////////////
-	boolean initializeRandomly = false; //Set to false when testing genomes created by evolution
+	boolean initializeRandomly = true; //Set to false when testing genomes created by evolution
 	////////////////////////////////////////
+	private String sequencePath;
 	
 	boolean visualize = false;
 	private int framesPerSecond = 1;
@@ -39,12 +43,18 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		double predictionSum = 0;
 		int numRepetitions = 10;
 		for (int i = 0; i < numRepetitions; i++){
+			/*
 			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/0 Normal run/HTM/Experiments/1438935911798/0";
 			String propsFileName = experimentRun + "/run.properties";
 			String genomeFile = experimentRun + "/best_performing-final-12291.txt";
-	
-			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single();
-			double[] result = eval.run(propsFileName, genomeFile);
+			*/
+			String sequencePath = "";//"C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/results 2-2-2/sequences.txt";
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/8 Simple Network";
+			String propsFileName = experimentRun + "/props.properties";
+			String genomeFile = experimentRun + "/SimpleNetwork_1.txt";
+			
+			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single(sequencePath);
+			double[] result = eval.run(propsFileName, genomeFile, sequencePath);
 			fitnessSum+= result[1];
 			predictionSum+= result[0];
 			System.out.println();
@@ -61,13 +71,17 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		System.exit(0);
 	}
 	
-	public double[] run(String propsFileName, String genomeFile) throws IOException{
+	public RPSFitnessFunction_Single(String sequencePath) {
+		this.sequencePath = sequencePath;
+	}
+	
+	public double[] run(String propsFileName, String genomeFile, String sequencePath) throws IOException{
 		Properties props = new Properties(propsFileName);
 		//props.setProperty("fitness.max_threads", "1");
 		//props.remove(RPS_SEQUENCES_RAND_SEED_KEY);
 		//props.setProperty(RPS_SEQUENCES_NUMBER_KEY, "100");
 		this.init(props);
-		
+		this.sequencePath = sequencePath;
 		double[][] result = this.evaluate(genomeFile);
 		double fitnessSum = 0;
 		double predictionSum = 0;
@@ -95,18 +109,45 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	@Override
 	protected int[][] createSequences(Properties props, Random rand){
 		int[][] sequencesToReturn = null;
-		int[][] generatedSequences = super.createSequences(props, rand);
-		if (setSequencesManually){
-			int[][] mySequence ={{0,1,2}};
-			sequencesToReturn = mySequence;
+		if (this.sequencePath.equalsIgnoreCase("")){
+			int[][] generatedSequences = super.createSequences(props, rand);
+			if (setSequencesManually){
+				int[][] mySequence ={{2,1,0}};
+				sequencesToReturn = mySequence;
+			} else {
+				sequencesToReturn = generatedSequences;
+			}
+			
+			for (int i = 0; i < sequencesToReturn.length; i++){
+				String s  = "Sequence " + i + ": ";
+				for (int j : sequencesToReturn[i]) s+= " " + j;
+				System.out.println(s);
+			}
 		} else {
-			sequencesToReturn = generatedSequences;
-		}
-		
-		for (int i = 0; i < sequencesToReturn.length; i++){
-			String s  = "Sequence " + i + ": ";
-			for (int j : sequencesToReturn[i]) s+= " " + j;
-			System.out.println(s);
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(sequencePath));
+				String line = "";
+				ArrayList<int[]> sequences = new ArrayList<int[]>();
+				while( ( line = reader.readLine() ) != null) {
+					int[] sequence = new int[line.length()];
+					String[] arr = line.split(" ");
+					for (int i = 0; i < arr.length; i++){
+						sequence[i] = Integer.parseInt(arr[i]);
+					}
+					sequences.add(sequence);
+				}
+				sequencesToReturn = new int[sequences.size()][];
+				for (int i = 0; i < sequences.size(); i++){
+					sequencesToReturn[i] = sequences.get(i);
+				}
+				reader.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return sequencesToReturn;

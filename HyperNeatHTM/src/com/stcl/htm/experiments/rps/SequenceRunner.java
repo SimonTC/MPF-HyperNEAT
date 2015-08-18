@@ -5,6 +5,10 @@ import java.util.Random;
 
 import org.ejml.simple.SimpleMatrix;
 
+import stcl.algo.brain.Network;
+import stcl.algo.brain.Network_DataCollector;
+import stcl.graphics.MPFGUI;
+
 import com.stcl.htm.experiments.rps.gui.GUI;
 import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
@@ -142,70 +146,69 @@ public class SequenceRunner {
 	 * @param activator
 	 * @return Array containing prediction success and fitness in the form [prediction,fitness]
 	 */
-	public double[] runEpisode(HTMNetwork activator, GUI gui){
+	public double[] runSequence(HTMNetwork brain, MPFGUI gui){
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
+		double reward_before = 0;
 		
-		activator.getNetwork().getActionNode().setPossibleActions(possibleActions);
+		Network activator = brain.getNetwork();
 		
-		//Give blank input and action to network
-		SimpleMatrix initialInput = new SimpleMatrix(5, 5);
-		SimpleMatrix initialAction = new SimpleMatrix(1, 3);
-		giveInputsToActivator(activator, initialInput, initialAction);
+		int state = 1;
+		activator.getActionNode().setPossibleActions(possibleActions);
 		
-		activator.step(0);
-		
-		//Collect initial prediction and action
-		SimpleMatrix[] initialOutput = collectOutput(activator);
-		prediction = initialOutput[0];
-		actionNextTimeStep = initialOutput[1];
-		
-		if (gui != null){
-			gui.update(activator.getNetwork(), initialInput, initialAction, prediction, actionNextTimeStep, -1);
-		}
+		initializeSequence(activator);
 		
 		for (int i = 0; i < sequence.length; i++){
+			
 			//Get input			
-			SimpleMatrix input = possibleInputs[sequence[i]];
+			state = sequence[i];
+			SimpleMatrix input = possibleInputs[state];
 			SimpleMatrix noisyInput = addNoise(input, noiseMagnitude);
+						
+			//Collect output
+			activator.feedback();
+			
+			//activator.collectFeedBackData();
+			SimpleMatrix[] output = collectOutput(activator);
+			SimpleMatrix prediction = output[0];
+			SimpleMatrix myAction = output[1];
+						
+			activator.resetUnitActivity();
+			
+			double reward_now = calculateReward(myAction, state);
+			totalGameScore += reward_now;	
 			
 			double predictionError = calculatePredictionError(prediction, input);
 			totalPredictionError += predictionError;
 			
-			SimpleMatrix actionThisTimestep = actionNextTimeStep;
-			double rewardForBeingInCurrentState = externalReward;
-			  
-						
-			//Calculate reward
-			externalReward = calculateReward(actionThisTimestep, sequence[i]);
-			totalGameScore += externalReward;			
+			giveInputsToActivator(activator, noisyInput, myAction);
+			activator.feedForward(reward_before);
+			//activator.collectFeedForwardData();
+			reward_before = reward_now;
+			//activator.printDataToFiles();
 			
-			//Give inputs to brain
-			giveInputsToActivator(activator, noisyInput, actionThisTimestep);
-			
-			//Do one step
-			activator.step(rewardForBeingInCurrentState);
-			
-			//Collect output
-			SimpleMatrix[] output = collectOutput(activator);
-			prediction = output[0];
-			actionNextTimeStep = output[1];
-			
-			if (gui != null){
-				gui.update(activator.getNetwork(), noisyInput, actionThisTimestep, prediction, actionNextTimeStep, i);
-			}
 		}
+		
+		endSequence(activator, reward_before);
+		
+		activator.newEpisode();
 		
 		double avgPredictionError = totalPredictionError / (double) sequence.length;
 		double avgScore = totalGameScore / (double) sequence.length;
 		double predictionSuccess = 1 - avgPredictionError;
 		
-		//Scores can't be less than zero as the evolutionary algorithm can't work with that
-		if (avgScore < 0) avgScore = 0;
-		if (predictionSuccess < 0) predictionSuccess = 0;
-		
 		double[] result = {predictionSuccess, avgScore};
 		return result;
+	}
+	
+	private void wmptyInput(HTMNetwork activator, double reward){
+		//Give blank input and action to network
+		SimpleMatrix initialInput = new SimpleMatrix(5, 5);
+		SimpleMatrix initialAction = new SimpleMatrix(1, 3);
+		giveInputsToActivator(activator, initialInput, initialAction);
+		
+		activator.feedForward(reward);
+
 	}
 	
 	private void giveInputsToActivator(HTMNetwork activator, SimpleMatrix input, SimpleMatrix action){
