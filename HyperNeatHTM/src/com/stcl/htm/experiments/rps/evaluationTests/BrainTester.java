@@ -57,13 +57,14 @@ public class BrainTester implements Runnable{
 		writer.writeLine(headers);
 		int numSequences = results[0].length;
 		for (int sequence = 0; sequence < numSequences; sequence++){
-			writer.write(sequence + ",");
+			String s = sequence + ",";
 			for (int test = 0; test < results.length; test++){
 				for (int i = 0; i < 2; i++){
-					writer.write(results[test][sequence][i] + ",");
+					s += results[test][sequence][i] + ",";
 				}
 			}
-			writer.writeLine("");
+			s = s.substring(0, s.length()-1); //Remove last comma
+			writer.writeLine(s);
 		}
 		
 		writer.closeFile();
