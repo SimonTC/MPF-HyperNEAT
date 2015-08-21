@@ -17,9 +17,9 @@ public class BrainTester implements Runnable{
 	private double[][][] scores;
 	private double explorationChance;
 	
-	public BrainTester(HTMNetwork brain, boolean collectGameScores, String outputFolder, int[][] sequences, Properties props) {
+	public BrainTester(HTMNetwork brain, boolean collectGameScores, String outputFolder, int[][] sequences, int[][] sequences_changed, Properties props) {
 		this.brain = brain;
-		testers = setupTesters(props, sequences, collectGameScores, outputFolder);
+		testers = setupTesters(props, sequences, sequences_changed, collectGameScores, outputFolder);
 		this.explorationChance = props.getDoubleProperty(TestSuite.RPS_EXPLORE_CHANCE);
 		this.outputFolder = outputFolder;
 		this.collectGameScores = collectGameScores;
@@ -69,7 +69,7 @@ public class BrainTester implements Runnable{
 		writer.closeFile();
 	}
 	
-	private Test[] setupTesters(Properties props, int[][] sequences, boolean collectGameScores, String outputFolder){
+	private Test[] setupTesters(Properties props, int[][] sequences, int[][] sequences_changed, boolean collectGameScores, String outputFolder){
 		Test[] testers = { new Test_Normal(), new Test_Adaption()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};

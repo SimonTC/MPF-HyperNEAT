@@ -6,11 +6,10 @@ import java.util.Stack;
 
 public class SequenceBuilder {
 	private Stack<SequenceLevel> levels;
-	private Random rand;
-	private int[] finalSequence;
 	private SequenceLevel topLevel;
+	
 	/**
-	 * Creates blocks of length minBlockLength >= length <= maxBlockLength
+	 * Creates a blocks of length minBlockLength >= length <= maxBlockLength
 	 * @param rand
 	 * @param numLevels
 	 * @param alphabetSize
@@ -19,16 +18,23 @@ public class SequenceBuilder {
 	 * @return
 	 */
 	public int[] buildSequence(Random rand, int numLevels, int alphabetSize, int minBlockLength, int maxBlockLength ){
-				
-		this.rand = rand;
 		levels = createLevels(numLevels, alphabetSize, minBlockLength, maxBlockLength, rand);
-		SequenceLevel topLevel = levels.peek();
-		finalSequence = topLevel.unpackBlock(0);
+		int[] finalSequence = topLevel.unpackBlock(0);
 		
 		return finalSequence;
 	}
 	
-	public int[] getFinalSequence(){
+	/**
+	 * Randomizes the values in the blocks in the lowest level. 
+	 * This way the architecture is kept intact, but the sequence values are changed.
+	 * If the values of blocks in higher levels are changed it will lead to a different architecture when variable length blocks are used
+	 * @return
+	 */
+	public int[] randomizeValues(){
+		SequenceLevel bottom = levels.firstElement();
+		bottom.randomizeLevel();
+		int[] finalSequence = topLevel.unpackBlock(0);
+		
 		return finalSequence;
 	}
 	
@@ -61,6 +67,10 @@ public class SequenceBuilder {
 		return levels;
 	}
 	
+	/**
+	 * Return the top level block in the sequence hierarchy.
+	 * @return
+	 */
 	public SequenceLevel getTopLevel(){
 		return topLevel;
 	}

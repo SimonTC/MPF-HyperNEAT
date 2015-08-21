@@ -35,6 +35,7 @@ public class TestSuite {
 	protected String[] genomeNames;
 	private String genomeTopFolder;
 	private int[][] sequences;
+	private int[][] sequences_changed;
 	private Properties props;
 
 	private boolean collectScores;
@@ -91,7 +92,7 @@ public class TestSuite {
 		int blockLengthMax = props.getIntProperty(RPS_SEQUENCES_BLOCKLENGTH_MAX);
 		
 		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
-		sequences = setupSequences(sequenceProps);
+		setupSequences(sequenceProps);
 		this.printSequencesToFile(sequences, topFolder + "/sequences.txt");
 		this.topFolder = topFolder;
 		this.collectScores = collectGameScores;
@@ -155,7 +156,7 @@ public class TestSuite {
 		for (int i = 0; i < brains.size(); i++){
 			HTMNetwork network = new HTMNetwork(brains.get(i));
 			String outputFolder = resultDirectoryPath + "/Gamescores_genome_" + i;				
-			BrainTester bt = new BrainTester(network, collectGameScores, outputFolder, sequences, propsInBrainTester);
+			BrainTester bt = new BrainTester(network, collectGameScores, outputFolder, sequences, sequences_changed, propsInBrainTester);
 			executor.execute(bt);
 		}
 		
@@ -195,7 +196,7 @@ public class TestSuite {
 
 	}
 	
-	private  int[][] setupSequences(int[] sequenceprops){
+	private  void setupSequences(int[] sequenceprops){
 		int alphabetSize = 3; //Cannot be changed currently
 		int numSequences = sequenceprops[0];
 		int sequenceLevels = sequenceprops[1];
@@ -205,10 +206,25 @@ public class TestSuite {
 		Random sequenceRand = new Random();
 		SequenceBuilder builder = new SequenceBuilder();
 		int [][] sequences = new int[numSequences][];
+		int [][] sequences_changed = new int[numSequences][];
 		for ( int i = 0; i < numSequences; i++){
-			sequences[i] = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
+			int[] sequence = builder.buildSequence(sequenceRand, sequenceLevels, alphabetSize, blockLengthMin, blockLengthMax);
+			sequences[i] = copySequence(sequence);
+			int[] sequence_changed = builder.randomizeValues();
+			sequences_changed[i] = sequence_changed; //No need to copy this since it wont be changed
 		}
-		return sequences;
+		
+		this.sequences = sequences;
+	}
+	
+	private int[] copySequence(int[] sequence){
+		int[] copy = new int[sequence.length];
+		
+		for (int i = 0; i < copy.length; i++){
+			copy[i] = sequence[i];
+		}
+		
+		return copy;	
 	}
 	
 	private void printSequencesToFile(int[][] sequences, String filepath) throws IOException{

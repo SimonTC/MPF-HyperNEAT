@@ -7,14 +7,18 @@ import java.util.Random;
 public class SequenceLevel{
 	private int[][] blocks;
 	private SequenceLevel child;
+	private Random rand;
+	private int alphabetSize;
 	
 	public SequenceLevel(int alphabetSize, int minBlockLength, int maxBlockLength, SequenceLevel child, Random rand) {
 		this.child = child;
+		this.alphabetSize = alphabetSize;
+		this.rand = rand;
 		blocks = createLevelBlocks(alphabetSize, minBlockLength, maxBlockLength, rand);		
 	}
 	
 	/**
-	 * Createsa deep copy of the given level
+	 * Creates a deep copy of the given level
 	 * @param original
 	 */
 	public SequenceLevel(SequenceLevel original){
@@ -25,6 +29,15 @@ public class SequenceLevel{
 			this.child = originalChild;
 		} else {
 			this.child = new SequenceLevel(original.getChild());
+		}
+	}
+	
+	public void randomizeLevel(){
+		for (int[] block : blocks){
+			for (int i = 0; i < block.length; i++){
+				int newSymbol = rand.nextInt(alphabetSize);
+				block[i] = newSymbol;
+			}
 		}
 	}
 	

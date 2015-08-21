@@ -21,7 +21,7 @@ public class Test_Adaption extends Test_Normal {
 	}
 	
 	protected void setName(){
-		this.testName = "Adaption";
+		this.testName = "Adaption_Rulechange";
 	}
 
 	
