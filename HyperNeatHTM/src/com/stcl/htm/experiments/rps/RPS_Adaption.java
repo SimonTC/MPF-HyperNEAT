@@ -11,18 +11,38 @@ import com.stcl.htm.experiments.rps.rewardfunctions.RewardFunction;
 import com.stcl.htm.network.HTMNetwork;
 
 public class RPS_Adaption extends RPS {
-
+	private int[][] sequences_changed;
+	private boolean changeSequences;
+	
+	/**
+	 * 
+	 * @param possibleInputs
+	 * @param sequences
+	 * @param sequences_changed
+	 * @param rewardFunctions
+	 * @param numExperimentsPerSequence
+	 * @param trainingIterations
+	 * @param evaluationIterations
+	 * @param randSeed
+	 * @param noiseMagnitude
+	 * @param changeSequences - If true adaption will be tested on sequence change. Otherwise on rule change
+	 */
 	public RPS_Adaption(SimpleMatrix[] possibleInputs, 
 			int[][] sequences,
+			int[][] sequences_changed,
 			RewardFunction[] rewardFunctions, 
 			int numExperimentsPerSequence, 
 			int trainingIterations,
 			int evaluationIterations,
 			long randSeed,
-			double noiseMagnitude){
+			double noiseMagnitude,
+			boolean changeSequences){
 		super(possibleInputs, sequences, rewardFunctions, 
 				numExperimentsPerSequence, trainingIterations,
 				evaluationIterations, randSeed, noiseMagnitude);
+		
+		this.sequences_changed = sequences_changed;
+		this.changeSequences = changeSequences;
 
 	}
 	
@@ -42,18 +62,22 @@ public class RPS_Adaption extends RPS {
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
-			runner.setSequence(curSequence);
+			int[] curSequence_changed = sequences_changed[sequenceID];
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration;
 				//System.out.println("Starting on iteration " + sequenceIteration);
-				runner.reset(false);
+				runner.changeRules(curSequence, rewardFunctions[0]);
 				brain.getNetwork().reinitialize();
 				
 				String roundFileName = sequenceIterationFileName + "_round1.csv";
 				double[] firstScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores, roundFileName);
 				
-				runner.reset(true);
+				if (changeSequences){
+					runner.changeRules(curSequence_changed, rewardFunctions[0]);
+				} else {
+					runner.changeRules(curSequence, rewardFunctions[1]);
+				}
 				
 				roundFileName = sequenceIterationFileName + "_round2.csv";
 				double[] secondScores = runOneRound(brain, explorationChance, sequenceIteration, collectGameScores, roundFileName);
@@ -93,17 +117,21 @@ public class RPS_Adaption extends RPS {
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
-			runner.setSequence(curSequence);
+			int[] curSequence_changed = sequences_changed[sequenceID];
 			
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration;
 				//System.out.println("Starting on iteration " + sequenceIteration);
-				runner.reset(false);
+				runner.changeRules(curSequence, rewardFunctions[0]);
 				
 				String roundFileName = sequenceIterationFileName + "_round1.csv";
 				double[] firstScores = runOneRound_random(sequenceIteration, collectGameScores, roundFileName);
 				
-				runner.reset(true);
+				if (changeSequences){
+					runner.changeRules(curSequence_changed, rewardFunctions[0]);
+				} else {
+					runner.changeRules(curSequence, rewardFunctions[1]);
+				}
 				
 				roundFileName = sequenceIterationFileName + "_round2.csv";
 				double[] secondScores = runOneRound_random(sequenceIteration, collectGameScores, roundFileName);

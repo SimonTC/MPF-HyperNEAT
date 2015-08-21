@@ -17,25 +17,16 @@ public class SequenceRunner {
 	
 	private SimpleMatrix[] possibleInputs;
 	private SimpleMatrix[] patternsToTestAgainst;
-	private int[] sequence;
-	private RewardFunction[] rewardFunctions;
 	private RewardFunction curRewardFunction;
 	private int curRewardFunctionID;
+	private int[] sequence;
 	private Random rand;
 	private ArrayList<SimpleMatrix> possibleActions;
 	private double noiseMagnitude;
 	
-	//Variables have to be saved here to remember values between sequence runs
-	private double externalReward;
-	private SimpleMatrix actionNextTimeStep;
-	private SimpleMatrix prediction;
-
-	public SequenceRunner(int[] sequence, SimpleMatrix[] possibleInputs, RewardFunction[] rewardFunctions, Random rand, double noiseMagnitude) {
+	public SequenceRunner(SimpleMatrix[] possibleInputs, Random rand, double noiseMagnitude) {
 		this.possibleInputs = possibleInputs;
 		this.rand = rand;
-		setSequence(sequence);
-		setRewardFunctions(rewardFunctions);
-		reset(false);
 		this.possibleActions = createPossibleActions();
 		this.noiseMagnitude = noiseMagnitude;
 		this.patternsToTestAgainst = createPatternsToTestAgainst(possibleInputs);
@@ -62,18 +53,13 @@ public class SequenceRunner {
 	}
 	
 	/**
-	 * Reset all variables to their initial values.
+	 * Sets new sequences and reward function.
+	 * @param sequence
+	 * @param rewardFunction
 	 */
-	public void reset(boolean gotoNextRewardFunction){
-		externalReward = 0;
-		double[][] tmp = {{1,0,0}};
-		actionNextTimeStep = new SimpleMatrix(tmp);
-		prediction = possibleInputs[0];		
-		if (gotoNextRewardFunction){
-			curRewardFunctionID++;
-			if (curRewardFunctionID == rewardFunctions.length) curRewardFunctionID = 0;
-			curRewardFunction = rewardFunctions[curRewardFunctionID];
-		}
+	public void changeRules(int[] sequence, RewardFunction rewardFunction){
+		this.curRewardFunction = rewardFunction;
+		this.sequence = sequence;
 	}
 	
 	private ArrayList<SimpleMatrix> createPossibleActions(){
@@ -95,7 +81,7 @@ public class SequenceRunner {
 	}
 	
 	
-	public double[] runSequence(HTMNetwork activator){
+	public double[] runEpisode(HTMNetwork activator){
 		return runEpisode(activator, null);
 	}
 	
@@ -105,8 +91,8 @@ public class SequenceRunner {
 		
 		//Collect initial prediction and action
 		SimpleMatrix[] initialOutput = collectOutput_random();
-		prediction = initialOutput[0];
-		actionNextTimeStep = initialOutput[1];
+		SimpleMatrix prediction = initialOutput[0];
+		SimpleMatrix actionNextTimeStep = initialOutput[1];
 		
 		
 		for (int i = 0; i < sequence.length; i++){
@@ -119,7 +105,7 @@ public class SequenceRunner {
 			SimpleMatrix actionThisTimestep = actionNextTimeStep;
 						
 			//Calculate reward
-			externalReward = calculateReward(actionThisTimestep, sequence[i]);
+			double externalReward = calculateReward(actionThisTimestep, sequence[i]);
 			totalGameScore += externalReward;			
 			
 			//Collect output
@@ -330,18 +316,9 @@ public class SequenceRunner {
 		return maxID;
 	}
 	
-	public void setSequence(int[] sequence){
-		this.sequence = sequence;
-	}
-	
 	public void setNoiseMagnitude(double d){
 		this.noiseMagnitude = d;
 	}
-	
-	public void setRewardFunctions(RewardFunction[] rewardFunctions){
-		this.rewardFunctions = rewardFunctions;
-		curRewardFunctionID = 0;
-		curRewardFunction = rewardFunctions[curRewardFunctionID];
-	}
+
 
 }

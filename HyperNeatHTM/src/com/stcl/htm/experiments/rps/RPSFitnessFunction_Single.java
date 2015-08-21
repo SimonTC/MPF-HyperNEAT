@@ -164,13 +164,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		
 		RPS eval;
 		RewardFunction[] functions = {new RewardFunction_Standard(), new RewardFunction_Inverse()};
-		if (speed){
-			double fitnessThreshold = 0.9;
-			double predictionThreshold = 0.0;
-			eval = new RPS_Speed(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, predictionThreshold, fitnessThreshold, 5);
-		} else {
-			eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, gui);
-		}
+		eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, gui);
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
 		long randSeed = new Random().nextLong();

@@ -70,7 +70,7 @@ public class BrainTester implements Runnable{
 	}
 	
 	private Test[] setupTesters(Properties props, int[][] sequences, int[][] sequences_changed, boolean collectGameScores, String outputFolder){
-		Test[] testers = { new Test_Normal(), new Test_Adaption()};
+		Test[] testers = { new Test_Normal(), new Test_Adaption(sequences_changed, false), new Test_Adaption(sequences_changed, true)};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
 		for (Test t : testers){

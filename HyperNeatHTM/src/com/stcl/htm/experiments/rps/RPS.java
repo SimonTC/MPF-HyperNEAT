@@ -21,6 +21,7 @@ import com.stcl.htm.network.HTMNetwork;
 public class RPS {
 	
 	protected int[][] sequences;
+	protected RewardFunction[] rewardFunctions;
 	protected Random rand;
 	protected int numExperimentsPerSequence;
 	protected int trainingIterations;
@@ -53,13 +54,14 @@ public class RPS {
 			double noiseMagnitude,
 			GUI gui){
 		rand = new Random(randSeed);
-		runner = new SequenceRunner(null, possibleInputs, rewardFunctions, rand, noiseMagnitude);
+		runner = new SequenceRunner(possibleInputs, rand, noiseMagnitude);
 		this.numExperimentsPerSequence = numExperimentsPerSequence;
 		this.trainingIterations = trainingIterations;
 		this.evaluationIterations = evaluationIterations;
 		sequenceScores = new double[sequences.length][2];
 		this.sequences = sequences;
 		this.gui = gui;
+		this.rewardFunctions = rewardFunctions;
 
 	}
 	
@@ -73,19 +75,16 @@ public class RPS {
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
-			runner.setSequence(curSequence);
+			runner.changeRules(curSequence, rewardFunctions[0]);
 						
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration + ".csv";
 				String name = sequenceID + " test " + sequenceIteration;
 				//System.out.println("Starting on iteration " + sequenceIteration);
-				runner.reset(false);
-				
 				//Let it train
 				runGame_random(trainingIterations, runner, true, sequenceIterationFileName, collectGameScores);
 				
 				//Evaluate
-				runner.reset(false);
 				double[] scores = runGame_random(evaluationIterations, runner, false, sequenceIterationFileName, collectGameScores);
 				double fitness = scores[1];
 				double prediction = scores[0];
@@ -121,13 +120,12 @@ public class RPS {
 			double sequenceFitness = 0;
 			double sequencePrediction = 0;
 			int[] curSequence = sequences[sequenceID];
-			runner.setSequence(curSequence);
+			runner.changeRules(curSequence, rewardFunctions[0]);
 						
 			for (int sequenceIteration = 0; sequenceIteration < numExperimentsPerSequence; sequenceIteration++){
 				String sequenceIterationFileName = sequenceFileName + "itr" + sequenceIteration + ".csv";
 				String name = sequenceID + " test " + sequenceIteration;
 				//System.out.println("Starting on iteration " + sequenceIteration);
-				runner.reset(false);
 				brain.getNetwork().reinitialize();
 				
 				//Let it train
@@ -139,7 +137,6 @@ public class RPS {
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(false);
 				brain.reset();
-				runner.reset(false);
 				double[] scores = runGame(evaluationIterations, brain, runner, false, sequenceIterationFileName, collectGameScores, gui,name);
 				double fitness = scores[1];
 				double prediction = scores[0];
