@@ -94,6 +94,7 @@ public class TestSuite {
 		int[] sequenceProps = {numSequences, sequenceLevels, blockLengthMin, blockLengthMax};
 		setupSequences(sequenceProps);
 		this.printSequencesToFile(sequences, topFolder + "/sequences.txt");
+		this.printSequencesToFile(sequences_changed, topFolder + "/sequences_changed.txt");
 		this.topFolder = topFolder;
 		this.collectScores = collectGameScores;
 	}
@@ -108,7 +109,7 @@ public class TestSuite {
 				String resultDir = topFolder + "/results/" + genome_name;
 				String timeStamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
 				System.out.println(timeStamp + ":  Starting tests on genomes from '" + genome_name + "'");
-				runTests(genome_dir, resultDir, props, collectScores, sequences);
+				runTests(genome_dir, resultDir, props, collectScores, sequences, sequences_changed);
 				System.out.println();
 			}
 		}
@@ -123,7 +124,7 @@ public class TestSuite {
 	}
 	
 	
-	private void runTests(File genomeDirectory, String resultDirectoryPath, Properties props, boolean collectGameScores, int[][] sequences) throws IOException, InterruptedException{
+	private void runTests(File genomeDirectory, String resultDirectoryPath, Properties props, boolean collectGameScores, int[][] sequences, int[][] sequences_changed) throws IOException, InterruptedException{
 		boolean simpleBrain = genomeDirectory.getName().contains("Simple Network");
 		boolean isRandom = genomeDirectory.getName().contains("Random Player");
 		String[] genomeFiles = loadGenomeFiles(genomeDirectory.getAbsolutePath());
@@ -215,6 +216,7 @@ public class TestSuite {
 		}
 		
 		this.sequences = sequences;
+		this.sequences_changed = sequences_changed;
 	}
 	
 	private int[] copySequence(int[] sequence){
