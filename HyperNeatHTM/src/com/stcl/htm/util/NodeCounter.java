@@ -17,7 +17,7 @@ public class NodeCounter {
 
 	public static void main(String[] args) {
 		String experimentFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1433597079636";
-		String topFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps";
+		String topFolder = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/3-2-5/HTM/Experiments";
 		NodeCounter nc = new NodeCounter();
 		try {
 			//nc.goThroughExperiment(experimentFolder);
