@@ -136,12 +136,13 @@ public class SequenceRunner {
 		double totalPredictionError = 0;
 		double totalGameScore = 0;
 		double reward_before = 0;
+		boolean collectData = activator.getNetwork().getCollectData();
 		
 		
 		int state = 1;
 		activator.getNetwork().getActionNode().setPossibleActions(possibleActions);
 		
-		emptyInput(activator, 0);
+		emptyInput(activator, 0, collectData);
 		
 		for (int i = 0; i < sequence.length; i++){
 			
@@ -152,12 +153,14 @@ public class SequenceRunner {
 						
 			//Collect output
 			activator.feedback();
+			if (collectData) activator.getNetwork().collectFeedBackData();
 			
 			SimpleMatrix[] output = collectOutput(activator);
 			SimpleMatrix prediction = output[0];
 			SimpleMatrix myAction = output[1];
 						
 			activator.resetUnitActivity();
+			if (collectData) activator.getNetwork().printDataToFiles();
 			
 			double reward_now = calculateReward(myAction, state);
 			totalGameScore += reward_now;	
@@ -167,11 +170,12 @@ public class SequenceRunner {
 			
 			giveInputsToActivator(activator, noisyInput, myAction);
 			activator.feedForward(reward_before);
+			if (collectData) activator.getNetwork().collectFeedForwardData();
 			reward_before = reward_now;
 			
 		}
-		
-		emptyInput(activator, reward_before);
+		if (collectData) activator.getNetwork().printDataToFiles();
+		emptyInput(activator, reward_before, collectData);
 		
 		double avgPredictionError = totalPredictionError / (double) sequence.length;
 		double avgScore = totalGameScore / (double) sequence.length;
@@ -181,13 +185,15 @@ public class SequenceRunner {
 		return result;
 	}
 	
-	private void emptyInput(HTMNetwork activator, double reward){
+	private void emptyInput(HTMNetwork activator, double reward, boolean collectData){
 		//Give blank input and action to network
 		SimpleMatrix initialInput = new SimpleMatrix(5, 5);
 		SimpleMatrix initialAction = new SimpleMatrix(1, 3);
 		giveInputsToActivator(activator, initialInput, initialAction);
 		
 		activator.feedForward(reward);
+		
+		if (collectData) activator.getNetwork().collectFeedForwardData();
 
 	}
 	

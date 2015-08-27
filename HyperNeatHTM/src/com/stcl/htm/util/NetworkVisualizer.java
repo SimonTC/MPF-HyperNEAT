@@ -13,8 +13,8 @@ public class NetworkVisualizer {
 	private final int width = 100;
 
 	public static void main(String[] args){
-		String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/1437817450998/0";
-		String genomeFile = experimentRun + "/best_performing-final-25275.txt";;
+		String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/2 Normal evovlved";
+		String genomeFile = experimentRun + "/0_best_performing-final-13350.txt";;
 		String outputFolder = experimentRun;
 		try {
 			Network network = new Network(genomeFile, new Random());

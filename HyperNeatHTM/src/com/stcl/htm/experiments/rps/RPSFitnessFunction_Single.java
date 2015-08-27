@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.security.ExplicitTypePermission;
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
-	boolean collectData = false;
+	boolean collectData = true;
 	boolean setSequencesManually = true;
 	////////////////////////////////////////
 	boolean initializeRandomly = true; //Set to false when testing genomes created by evolution
@@ -41,7 +41,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	public static void main(String[] args) throws IOException {
 		double fitnessSum = 0;
 		double predictionSum = 0;
-		int numRepetitions = 10;
+		int numRepetitions = 1;
 		for (int i = 0; i < numRepetitions; i++){
 			/*
 			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/0 Normal run/HTM/Experiments/1438935911798/0";
@@ -49,7 +49,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 			String genomeFile = experimentRun + "/best_performing-final-12291.txt";
 			*/
 			String sequencePath = "";//"C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/results 2-2-2/sequences.txt";
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/8 Simple Network";
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/0 Simple Network";
 			String propsFileName = experimentRun + "/props.properties";
 			String genomeFile = experimentRun + "/SimpleNetwork_1.txt";
 			
@@ -113,7 +113,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		if (this.sequencePath.equalsIgnoreCase("")){
 			int[][] generatedSequences = super.createSequences(props, rand);
 			if (setSequencesManually){
-				int[][] mySequence ={{0,1,2}};
+				int[][] mySequence ={{2, 2, 2, 0, 0, 1, 1, 2, 1, 2, 2, 2, 0, 0, 1, 1, 2, 1}};
 				sequencesToReturn = mySequence;
 			} else {
 				sequencesToReturn = generatedSequences;

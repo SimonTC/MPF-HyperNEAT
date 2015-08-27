@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.ejml.simple.SimpleMatrix;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.Network_DataCollector;
 import stcl.algo.brain.nodes.Sensor;
 
 import com.anji.integration.Activator;
@@ -15,7 +16,7 @@ public class HTMNetwork  implements Activator, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Network network;
+	private Network_DataCollector network;
 	
 	/**
 	 * base XML tag
@@ -28,10 +29,10 @@ public class HTMNetwork  implements Activator, Serializable {
 	
 	
 	public HTMNetwork(){
-		this.network = new Network();
+		this.network = new Network_DataCollector();
 	}
 	
-	public HTMNetwork(Network network){
+	public HTMNetwork(Network_DataCollector network){
 		this.network = network;
 	}
 		
@@ -221,11 +222,11 @@ public class HTMNetwork  implements Activator, Serializable {
 		return false;
 	}
 		
-	public Network getNetwork(){
+	public Network_DataCollector getNetwork(){
 		return network;
 	}
 	
-	public void setNetwork(Network network){
+	public void setNetwork(Network_DataCollector network){
 		this.network = network;
 	}
 

@@ -128,11 +128,14 @@ public class RPS {
 				//System.out.println("Starting on iteration " + sequenceIteration);
 				brain.getNetwork().reinitialize();
 				
+	brain.getNetwork().setCollectData(false);
+				
 				//Let it train
 				brain.getNetwork().setUsePrediction(true);
 				brain.getNetwork().getActionNode().setExplorationChance(explorationChance);
 				runGame(trainingIterations, brain, runner, true, sequenceIterationFileName, collectGameScores);
 				
+	brain.getNetwork().setCollectData(true);
 				//Evaluate
 				brain.getNetwork().getActionNode().setExplorationChance(0.0);
 				brain.getNetwork().setLearning(false);

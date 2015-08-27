@@ -9,6 +9,7 @@ import org.ejml.simple.SimpleMatrix;
 import org.jgapcustomised.*;
 
 import stcl.algo.brain.Network;
+import stcl.algo.brain.Network_DataCollector;
 import stcl.algo.brain.nodes.ActionNode;
 import stcl.algo.brain.nodes.Node;
 import stcl.algo.brain.nodes.Sensor;
@@ -103,7 +104,7 @@ public class HyperNEATTranscriberHTMNet extends HyperNEATTranscriber {
 		int nextFreeID = 0;
 		
 
-		Network brainNetwork = new Network();
+		Network_DataCollector brainNetwork = new Network_DataCollector();
 		nodes = new Node[depth][][];			
 		for (int l = 0; l < depth; l++){
 			nodes[l] = new Node[height[l]][width[l]];
