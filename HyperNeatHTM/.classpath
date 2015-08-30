@@ -19,11 +19,6 @@
 	<classpathentry kind="lib" path="lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.8.jar"/>
 	<classpathentry kind="lib" path="lib/wildcard-1.03.jar"/>
-	<classpathentry kind="lib" path="lib/Mario/asm-all-4.2.jar"/>
-	<classpathentry kind="lib" path="lib/Mario/jdom-1.1.3.jar"/>
-	<classpathentry kind="lib" path="lib/Mario/testng-6.8.7.jar"/>
-	<classpathentry kind="lib" path="lib/Mario/Mario_Full_Clean.jar"/>
-	<classpathentry kind="lib" path="lib/Mario/JNEAT.jar"/>
 	<classpathentry kind="lib" path="lib/Q_Learning.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
