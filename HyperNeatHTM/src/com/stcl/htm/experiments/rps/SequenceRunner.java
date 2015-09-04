@@ -15,14 +15,14 @@ import com.stcl.htm.network.HTMNetwork;
 
 public class SequenceRunner {
 	
-	private SimpleMatrix[] possibleInputs;
-	private SimpleMatrix[] patternsToTestAgainst;
+	protected SimpleMatrix[] possibleInputs;
+	protected SimpleMatrix[] patternsToTestAgainst;
 	private RewardFunction curRewardFunction;
 	private int curRewardFunctionID;
-	private int[] sequence;
+	protected int[] sequence;
 	private Random rand;
-	private ArrayList<SimpleMatrix> possibleActions;
-	private double noiseMagnitude;
+	protected ArrayList<SimpleMatrix> possibleActions;
+	protected double noiseMagnitude;
 	
 	public SequenceRunner(SimpleMatrix[] possibleInputs, Random rand, double noiseMagnitude) {
 		this.possibleInputs = possibleInputs;
@@ -185,7 +185,7 @@ public class SequenceRunner {
 		return result;
 	}
 	
-	private void emptyInput(HTMNetwork activator, double reward, boolean collectData){
+	protected void emptyInput(HTMNetwork activator, double reward, boolean collectData){
 		//Give blank input and action to network
 		SimpleMatrix initialInput = new SimpleMatrix(5, 5);
 		SimpleMatrix initialAction = new SimpleMatrix(1, 3);
@@ -197,14 +197,14 @@ public class SequenceRunner {
 
 	}
 	
-	private void giveInputsToActivator(HTMNetwork activator, SimpleMatrix input, SimpleMatrix action){
+	protected void giveInputsToActivator(HTMNetwork activator, SimpleMatrix input, SimpleMatrix action){
 		SimpleMatrix inputVector = new SimpleMatrix(1, input.getNumElements(), true, input.getMatrix().data);
 		SimpleMatrix actionVector = new SimpleMatrix(1, action.getNumElements(), true, action.getMatrix().data);
 		activator.setInput(inputVector.getMatrix().data);		
 		activator.setAction(actionVector.getMatrix().data);
 	}
 	
-	private double calculatePredictionError(SimpleMatrix prediction, SimpleMatrix actual){
+	protected double calculatePredictionError(SimpleMatrix prediction, SimpleMatrix actual){
 		double minError = Double.POSITIVE_INFINITY;
 		SimpleMatrix bestMatch = null;
 		
@@ -233,7 +233,7 @@ public class SequenceRunner {
 	 * @param noiseMagnitude
 	 * @return noisy matrix
 	 */
-	private SimpleMatrix addNoise(SimpleMatrix m, double magnitude){
+	protected SimpleMatrix addNoise(SimpleMatrix m, double magnitude){
 		SimpleMatrix noisy = new SimpleMatrix(m);
 		for (int i = 0; i < m.getNumElements(); i++){
 			double d = m.get(i);
@@ -252,7 +252,7 @@ public class SequenceRunner {
 	 * @param inputID
 	 * @return
 	 */
-	private double calculateReward(SimpleMatrix action, int inputID){
+	protected double calculateReward(SimpleMatrix action, int inputID){
 		if (action.elementSum() < 0.001) return -1; //Make sure that null actions are punished
 		
 		int actionID = -1;
@@ -268,7 +268,7 @@ public class SequenceRunner {
 		return reward;
 	}
 	
-	private SimpleMatrix[] collectOutput_random(){
+	protected SimpleMatrix[] collectOutput_random(){
 		SimpleMatrix prediction = possibleInputs[rand.nextInt(possibleInputs.length)];
 		SimpleMatrix actionNextTimeStep = new SimpleMatrix(1, 3);
 		actionNextTimeStep.set(rand.nextInt(3), 1);
@@ -281,7 +281,7 @@ public class SequenceRunner {
 	 * @param activator
 	 * @return prediction and action for the next time step
 	 */
-	private SimpleMatrix[] collectOutput(HTMNetwork activator){
+	protected SimpleMatrix[] collectOutput(HTMNetwork activator){
 		double[] predictionData = activator.getOutput();
 		SimpleMatrix prediction = new SimpleMatrix(1, predictionData.length, true, predictionData);
 		prediction.reshape(5, 5);
@@ -304,7 +304,7 @@ public class SequenceRunner {
 	 * @param m
 	 * @return
 	 */
-	private int maxID(SimpleMatrix m){
+	protected int maxID(SimpleMatrix m){
 		double[] vector = m.getMatrix().data;
 		
 		
