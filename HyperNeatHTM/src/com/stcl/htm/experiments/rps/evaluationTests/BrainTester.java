@@ -50,7 +50,7 @@ public class BrainTester implements Runnable{
 	}
 	
 	private void writeResults(double[][][] results, String resultFolder) throws IOException{
-		String headers = "Seq, Normal_prediction, Normal_fitness, Adaption_rules_prediction, Adaption_rules_fitness, Adaption_sequence_prediction, Adaption_sequence_fitness";
+		String headers = "Seq, Human_prediction, Human_fitness";//Seq, Normal_prediction, Normal_fitness, Adaption_rules_prediction, Adaption_rules_fitness, Adaption_sequence_prediction, Adaption_sequence_fitness";
 		String name = "_results.csv";
 		FileWriter writer = new FileWriter(resultFolder + "/" + name);
 		writer.openFile(false);
@@ -71,7 +71,8 @@ public class BrainTester implements Runnable{
 	}
 	
 	protected Test[] setupTesters(Properties props, int[][] sequences, int[][] sequences_changed, boolean collectGameScores, String outputFolder){
-		Test[] testers = { new Test_Normal(), new Test_Adaption(sequences_changed, false), new Test_Adaption(sequences_changed, true)};
+		Test[] testers = {new Test_HumanStrategy()};
+		//Test[] testers = { new Test_Normal(), new Test_Adaption(sequences_changed, false), new Test_Adaption(sequences_changed, true)};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Fitness(), new Test_Speed_Prediction(), new Test_Adaption()};
 		//Test[] testers = {new Test_Fitness(), new Test_Prediction(), new Test_Speed_Prediction(), new Test_Adaption()};
 		for (Test t : testers){

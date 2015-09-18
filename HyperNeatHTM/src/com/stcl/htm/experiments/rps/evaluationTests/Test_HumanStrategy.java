@@ -14,7 +14,7 @@ public class Test_HumanStrategy extends Test_Normal {
 	protected RPS setupEvaluator(Properties props, int[][] sequences,
 			SimpleMatrix[] possibleInputs) {
 		RewardFunction[] functions = {new RewardFunction_Standard()};
-		RPS eval = new RPS_HumanStrategy(possibleInputs, sequences, functions,  props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY), 1, 1, rand.nextLong(), props.getDoubleProperty(RPS_NOISE_MAGNITUDE));
+		RPS eval = new RPS_HumanStrategy(possibleInputs, sequences, functions,  props.getIntProperty(RPS_SEQUENCES_ITERATIONS_KEY), props.getIntProperty(RPS_TRAINING_ITERATIONS_KEY), props.getIntProperty(RPS_EVALUATION_ITERATIONS_KEY), rand.nextLong(), props.getDoubleProperty(RPS_NOISE_MAGNITUDE));
 		return eval;
 	}
 	

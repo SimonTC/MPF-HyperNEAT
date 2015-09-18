@@ -40,8 +40,6 @@ public class TestSuite {
 
 	private boolean collectScores;
 	
-	private boolean useHumanStrategy = true;
-	
 
 	public static void main(String[] args) throws IOException, InterruptedException  {
 		String topFolder = args[0];
@@ -159,12 +157,7 @@ public class TestSuite {
 		for (int i = 0; i < brains.size(); i++){
 			HTMNetwork network = new HTMNetwork(brains.get(i));
 			String outputFolder = resultDirectoryPath + "/Gamescores_genome_" + i;				
-			BrainTester bt;
-			if (useHumanStrategy){
-				bt = new BrainTester_HumanStrategy(network, collectGameScores, outputFolder, sequences, sequences_changed, propsInBrainTester);
-			} else {
-				bt = new BrainTester(network, collectGameScores, outputFolder, sequences, sequences_changed, propsInBrainTester);
-			}
+			BrainTester bt = new BrainTester(network, collectGameScores, outputFolder, sequences, sequences_changed, propsInBrainTester);
 			executor.execute(bt);
 		}
 		
