@@ -28,14 +28,14 @@ import com.thoughtworks.xstream.security.ExplicitTypePermission;
 public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	
 	boolean speed = false;
-	boolean collectData = true;
-	boolean setSequencesManually = true;
+	boolean collectData = false;
+	boolean setSequencesManually = false;
 	////////////////////////////////////////
-	boolean initializeRandomly = true; //Set to false when testing genomes created by evolution
+	boolean initializeRandomly = false; //Set to false when testing genomes created by evolution
 	////////////////////////////////////////
 	private String sequencePath;
 	
-	boolean visualize = false;
+	boolean visualize = true;
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
@@ -49,9 +49,9 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 			String genomeFile = experimentRun + "/best_performing-final-12291.txt";
 			*/
 			String sequencePath = "";//"C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/results 2-2-2/sequences.txt";
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/0 Simple Network";
+			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/2 Normal evolved";//"C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/0 Simple Network";
 			String propsFileName = experimentRun + "/props.properties";
-			String genomeFile = experimentRun + "/SimpleNetwork_1.txt";
+			String genomeFile = experimentRun + "/1_best_performing-final-14245.txt";
 			
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single(sequencePath);
 			double[] result = eval.run(propsFileName, genomeFile, sequencePath);
@@ -113,7 +113,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		if (this.sequencePath.equalsIgnoreCase("")){
 			int[][] generatedSequences = super.createSequences(props, rand);
 			if (setSequencesManually){
-				int[][] mySequence ={{2, 2, 2, 0, 0, 1, 1, 2, 1, 2, 2, 2, 0, 0, 1, 1, 2, 1}};
+				int[][] mySequence ={{1,2,2,0}};
 				sequencesToReturn = mySequence;
 			} else {
 				sequencesToReturn = generatedSequences;
@@ -159,12 +159,13 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 		GUI gui = null;
 		if (visualize){
 			gui = new GUI_Overview();
-			gui.initialize(5, 2, framesPerSecond);
+			gui.initialize(5, 5, framesPerSecond);
 		}
 		
 		RPS eval;
 		RewardFunction[] functions = {new RewardFunction_Standard(), new RewardFunction_Inverse()};
-		eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, gui);
+		//eval = new RPS(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, gui);
+		eval = new RPS_HumanStrategy(possibleInputs, sequences, functions, numExperimentsPerSequence, trainingIterations, evaluationIterations, rand.nextLong(), noiseMagnitude, gui);
 		//Network brain = new Network(genomeFile, rand);
 		//Network_DataCollector brain = new Network_DataCollector(genomeFile, rand);
 		long randSeed = new Random().nextLong();

@@ -81,6 +81,9 @@ public class SequenceRunner_HumanStrategy extends SequenceRunner {
 		double reward_before = 0;
 		boolean collectData = activator.getNetwork().getCollectData();
 		
+		SimpleMatrix actionBefore = new SimpleMatrix(5, 5);
+		SimpleMatrix stateBefore = new SimpleMatrix(5, 5);
+		
 		int opponentSymbol = 0;
 		
 		int state = 1;
@@ -124,6 +127,14 @@ public class SequenceRunner_HumanStrategy extends SequenceRunner {
 			activator.feedForward(reward_before);
 			if (collectData) activator.getNetwork().collectFeedForwardData();
 			reward_before = reward_now;
+			if (gui != null) {
+				int actionMax = maxID(myAction);
+				SimpleMatrix myAction_RPS = new SimpleMatrix(possibleInputs[actionMax]);
+				
+				gui.update(activator.getNetwork(), stateBefore, actionBefore, prediction, myAction_RPS, i);
+				stateBefore = new SimpleMatrix(input);
+				actionBefore = new SimpleMatrix(myAction_RPS);
+			}
 			
 		}
 		if (collectData) activator.getNetwork().printDataToFiles();
