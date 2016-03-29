@@ -35,7 +35,7 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 	////////////////////////////////////////
 	private String sequencePath;
 	
-	boolean visualize = true;
+	boolean visualize = false;
 	private int framesPerSecond = 1;
 	
 	public static void main(String[] args) throws IOException {
@@ -49,10 +49,10 @@ public class RPSFitnessFunction_Single extends RPSFitnessFunction_Fitness {
 			String genomeFile = experimentRun + "/best_performing-final-12291.txt";
 			*/
 			String sequencePath = "";//"C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/results 2-2-2/sequences.txt";
-			String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/2 Normal evolved";//"C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/0 Simple Network";
-			String propsFileName = experimentRun + "/props.properties";
-			String genomeFile = experimentRun + "/1_best_performing-final-14245.txt";
-			
+			//String experimentRun = "C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/2 Normal evolved";//"C:/Users/Simon/Google Drev/Experiments/HTM/rps/Master data/evaluation/genomes/0 Simple Network";
+			String propsFileName = "/media/simon/Data/Dropbox/ITU/Master thesis/Conference article/Evaluation/test.properties";
+			String genomeFile = "/media/simon/Data/Dropbox/ITU/Master thesis/Conference article/Genomes/Only_Q/Only_Q.txt";
+			//genomeFile ="/media/simon/Data/Dropbox/ITU/Master thesis/Handin/Code and genomes/Genomes/2 Normal evolved/0_best_performing-final-13350.txt";
 			RPSFitnessFunction_Single eval = new RPSFitnessFunction_Single(sequencePath);
 			double[] result = eval.run(propsFileName, genomeFile, sequencePath);
 			fitnessSum+= result[1];
