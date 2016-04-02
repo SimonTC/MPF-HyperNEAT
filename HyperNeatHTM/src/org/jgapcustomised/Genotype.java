@@ -32,6 +32,7 @@ import org.jgapcustomised.event.GeneticEvent;
 import org.apache.log4j.Logger;
 
 import com.anji.integration.ActivatorTranscriber;
+import com.anji.integration.SimpleSelector;
 import com.anji.integration.Transcriber;
 import com.anji.neat.AddConnectionMutationOperator;
 import com.anji.neat.Evolver;
@@ -39,6 +40,7 @@ import com.anji.neat.NeatConfiguration;
 import com.anji.neat.SpeciationStrategyOriginal;
 import com.anji.util.Properties;
 import com.ojcoleman.ahni.util.ArrayUtil;
+import com.stcl.htm.network.RandomSelector;
 
 /**
  * Genotypes are fixed-length populations of chromosomes. As an instance of a <code>Genotype</code> is evolved, all of
@@ -391,11 +393,18 @@ public class Genotype implements Serializable {
 			// ------------------------------------------------------------
 			NaturalSelector selector = m_activeConfiguration.getNaturalSelector();
 			selector.add(m_activeConfiguration, m_species, m_chromosomes, bestPerforming);
-			m_chromosomes = selector.select(m_activeConfiguration);
+			List<Chromosome> m_chromosomes_next = selector.select(m_activeConfiguration);
 			selector.empty();
+			if (!(selector instanceof RandomSelector)){
+				//If the selector is not random the best performing individual will always be in the new list of 
+				//cromosomes and we can begin using this list directly. Otherwise we need to wait a bit to
+				//report fitness for the current generation correctly.
+				//STC 02-04-2016
+				m_chromosomes = m_chromosomes_next;
+			}			
 			
 			assert m_species.contains(bestPerforming.getSpecie()) : "Species containing global bestPerforming removed from species list.";
-			assert m_chromosomes.contains(bestPerforming) : "Global bestPerforming removed from population." + bestPerforming;
+			assert m_chromosomes_next.contains(bestPerforming) : "Global bestPerforming removed from population." + bestPerforming;
 			
 			
 			// Find fittest individual (this has been moved from just below bulkFunction.evaluate(m_chromosomes) because now the
@@ -413,6 +422,9 @@ public class Genotype implements Serializable {
 				}
 			}
 			previousFittest = fittest;
+			
+			//Redundant of the selector is not random. But necessary if it is.
+			m_chromosomes = m_chromosomes_next;
 			
 			// For each species calculate the average (shared) fitness value and then cull it down to contain only parent chromosomes.
 			Iterator<Species> speciesIter = m_species.iterator();
